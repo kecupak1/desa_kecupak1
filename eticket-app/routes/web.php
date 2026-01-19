@@ -6,23 +6,20 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\Admin\AdminTicketController;
 
-// 1. Beranda Utama (Welcome)
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::middleware(['auth'])->group(function () {
     
-    // 2. DASHBOARD LOGIC (Mendukung Statistik & Beranda Admin)
+    // DASHBOARD LOGIC
     Route::get('/dashboard', function () {
         $user = Auth::user();
         $role = strtolower(trim($user->role));
 
         if ($role === 'admin') {
-            // PERBAIKAN: Admin membuka Dashboard Admin, bukan redirect ke index
             return app(AdminTicketController::class)->dashboard();
         } else {
-            // User melihat tiket mereka sendiri
             $tickets = Ticket::where('user_id', $user->id)->latest()->get();
             $isAdmin = false;
             $stats = [
@@ -35,22 +32,20 @@ Route::middleware(['auth'])->group(function () {
         }
     })->name('dashboard');
 
-    // 3. TICKET ROUTES
+    // TICKET ROUTES (USER)
     Route::resource('tickets', TicketController::class);
     Route::get('/my-tickets', [TicketController::class, 'myTickets'])->name('my.tickets');
 
-    // 4. ADMIN ROUTES
+    // ADMIN ROUTES (DIBUNGKUS DALAM PREFIX ADMIN)
     Route::prefix('admin')->name('admin.')->group(function () {
-        // Ini adalah route untuk Beranda Utama Admin yang kamu maksud
         Route::get('/dashboard', [AdminTicketController::class, 'dashboard'])->name('dashboard');
-        
         Route::get('/tickets', [AdminTicketController::class, 'index'])->name('tickets.index');
         Route::get('/tickets/{ticket}', [AdminTicketController::class, 'show'])->name('tickets.show');
+        
+        // Aksi Status & Hapus (Sekarang memiliki nama admin.tickets.destroy)
+        Route::patch('/tickets/{ticket}/status', [AdminTicketController::class, 'updateStatus'])->name('tickets.updateStatus');
+        Route::delete('/tickets/{ticket}', [AdminTicketController::class, 'destroy'])->name('tickets.destroy');
     });
-
-    // 5. AKSI STATUS & HAPUS
-    Route::patch('/tickets/{ticket}/status', [AdminTicketController::class, 'updateStatus'])->name('tickets.updateStatus');
-    Route::delete('/tickets/{ticket}', [AdminTicketController::class, 'destroy'])->name('tickets.destroy');
 });
 
 require __DIR__.'/auth.php';

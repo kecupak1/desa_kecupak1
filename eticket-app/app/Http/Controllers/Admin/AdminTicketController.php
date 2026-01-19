@@ -5,72 +5,89 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminTicketController extends Controller
 {
-    // --- TAMBAHKAN METHOD INI ---
-    public function dashboard()
-    {
-       $stats = [
-        'total' => Ticket::count(),
-        'waiting' => Ticket::where('status', 'waiting')->count(),
-        'process' => Ticket::where('status', 'process')->count(),
-        'done' => Ticket::where('status', 'done')->count(),
-    ];
-
-    // Variabel khusus untuk angka di sidebar
-    $waitingCount = $stats['waiting'];
-
-    $tickets = Ticket::with('user')->latest()->get();
-    $isAdmin = true;
-
-    return view('admin.dashboard', compact('tickets', 'stats', 'isAdmin', 'waitingCount'));
-    }
-    // ----------------------------
-
+    /**
+     * 1. Menampilkan Semua Tiket (Halaman Index)
+     * PERBAIKAN: Menambahkan Request untuk menangkap Filter & Sort
+     */
     public function index(Request $request)
     {
-        $sort = $request->get('sort', 'latest');
-        $statusFilter = $request->get('status'); 
-        $query = Ticket::query();
+        $query = Ticket::with('user');
 
-        if ($statusFilter && in_array($statusFilter, ['waiting', 'process', 'done'])) {
-            $query->where('status', $statusFilter);
+        // Filter berdasarkan Status
+        if ($request->filled('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
         }
 
-        if ($sort === 'oldest') {
+        // Logika Pengurutan
+        if ($request->get('sort') === 'oldest') {
             $query->orderBy('created_at', 'asc');
         } else {
             $query->orderBy('created_at', 'desc');
         }
 
         $tickets = $query->get();
+        
+        return view('admin.tickets.index', compact('tickets'));
+    }
+
+    /**
+     * 2. Menampilkan Dashboard Admin (Statistik)
+     */
+    public function dashboard()
+    {
         $stats = [
-            'total' => Ticket::count(),
+            'total'   => Ticket::count(),
             'waiting' => Ticket::where('status', 'waiting')->count(),
             'process' => Ticket::where('status', 'process')->count(),
-            'done' => Ticket::where('status', 'done')->count(),
+            'done'    => Ticket::where('status', 'done')->count(),
         ];
-
-        return view('admin.tickets.index', compact('tickets', 'stats'));
+        
+        $tickets = Ticket::with('user')->latest()->take(5)->get();
+        
+        return view('admin.dashboard', compact('stats', 'tickets'));
     }
 
-    public function show(Ticket $ticket)
-    {
-        $ticket->load('user'); 
-        return view('admin.tickets.show', compact('ticket'));
-    }
-
-    public function updateStatus(Request $request, Ticket $ticket)
-    {
-        $request->validate(['status' => 'required|in:waiting,process,done']);
-        $ticket->update(['status' => $request->status]);
-        return back()->with('success', 'Status tiket berhasil diperbarui!');
-    }
-
+    /**
+     * 3. Menghapus Tiket (Fungsi Destroy)
+     */
     public function destroy(Ticket $ticket)
     {
-        $ticket->delete();
-        return redirect()->route('admin.tickets.index')->with('success', 'Laporan berhasil dihapus!');
+        try {
+            // Hapus lampiran fisik dari storage jika ada
+            if ($ticket->lampiran && Storage::exists('public/' . $ticket->lampiran)) {
+                Storage::delete('public/' . $ticket->lampiran);
+            }
+
+            $ticket->delete();
+
+            return redirect()->back()->with('success', 'Tiket berhasil dihapus secara permanen.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus tiket.');
+        }
+    }
+
+    /**
+     * 4. Update Status Tiket
+     */
+    public function updateStatus(Request $request, Ticket $ticket)
+    {
+        // Tambahkan validasi agar data yang masuk konsisten
+        $request->validate([
+            'status' => 'required|in:waiting,process,done'
+        ]);
+
+        try {
+            $ticket->update([
+                'status' => $request->status
+            ]);
+
+            return redirect()->back()->with('success', 'Status tiket #' . $ticket->id . ' berhasil diperbarui menjadi ' . strtoupper($request->status));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui status.');
+        }
     }
 }

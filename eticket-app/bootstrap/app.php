@@ -16,8 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
 
-        // 2. Atur Redirect Global (Versi Stabil Laravel 11)
-        // Ini memastikan tamu dilempar ke login, dan yang sudah login ke dashboard
+        // 2. Atur Redirect Global
         $middleware->redirectTo(
             guests: '/login',
             users: '/dashboard'
@@ -25,4 +24,4 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })->create(); // Hapus withConfig agar tidak error
