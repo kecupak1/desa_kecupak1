@@ -8,48 +8,43 @@ use Illuminate\Http\Request;
 
 class AdminTicketController extends Controller
 {
-    // --- TAMBAHKAN METHOD INI ---
     public function dashboard()
     {
-       $stats = [
-        'total' => Ticket::count(),
-        'waiting' => Ticket::where('status', 'waiting')->count(),
-        'process' => Ticket::where('status', 'process')->count(),
-        'done' => Ticket::where('status', 'done')->count(),
-    ];
-
-    // Variabel khusus untuk angka di sidebar
-    $waitingCount = $stats['waiting'];
-
-    $tickets = Ticket::with('user')->latest()->get();
-    $isAdmin = true;
-
-    return view('admin.dashboard', compact('tickets', 'stats', 'isAdmin', 'waitingCount'));
-    }
-    // ----------------------------
-
-    public function index(Request $request)
-    {
-        $sort = $request->get('sort', 'latest');
-        $statusFilter = $request->get('status'); 
-        $query = Ticket::query();
-
-        if ($statusFilter && in_array($statusFilter, ['waiting', 'process', 'done'])) {
-            $query->where('status', $statusFilter);
-        }
-
-        if ($sort === 'oldest') {
-            $query->orderBy('created_at', 'asc');
-        } else {
-            $query->orderBy('created_at', 'desc');
-        }
-
-        $tickets = $query->get();
         $stats = [
             'total' => Ticket::count(),
             'waiting' => Ticket::where('status', 'waiting')->count(),
             'process' => Ticket::where('status', 'process')->count(),
             'done' => Ticket::where('status', 'done')->count(),
+        ];
+
+        $waitingCount = $stats['waiting'];
+        $tickets = Ticket::with('user')->latest()->take(5)->get();
+        $isAdmin = true;
+
+        return view('admin.dashboard', compact('tickets', 'stats', 'isAdmin', 'waitingCount'));
+    }
+
+    public function index(Request $request)
+    {
+        $query = Ticket::with('user');
+
+        // 1. Filter Berdasarkan Status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // 2. Filter Berdasarkan Urutan (Terbaru / Terlama)
+        if ($request->sort == 'oldest') {
+            $query->oldest();
+        } else {
+            $query->latest(); // Default terbaru
+        }
+
+        $tickets = $query->get();
+        
+        $stats = [
+            'total' => Ticket::count(),
+            'waiting' => Ticket::where('status', 'waiting')->count(),
         ];
 
         return view('admin.tickets.index', compact('tickets', 'stats'));
@@ -65,12 +60,13 @@ class AdminTicketController extends Controller
     {
         $request->validate(['status' => 'required|in:waiting,process,done']);
         $ticket->update(['status' => $request->status]);
-        return back()->with('success', 'Status tiket berhasil diperbarui!');
+        
+        return back()->with('success', 'Status tiket #' . ($ticket->ticket_number ?? $ticket->id) . ' berhasil diperbarui!');
     }
 
     public function destroy(Ticket $ticket)
     {
         $ticket->delete();
-        return redirect()->route('admin.tickets.index')->with('success', 'Laporan berhasil dihapus!');
+        return redirect()->route('admin.tickets.index')->with('success', 'Laporan berhasil dihapus secara permanen!');
     }
 }
