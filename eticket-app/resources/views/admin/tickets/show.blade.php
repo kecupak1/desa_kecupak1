@@ -1,98 +1,135 @@
 <x-app-layout>
-    <div class="min-h-screen bg-[#0F172A] py-12"> <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,900;1,900&family=Poppins:wght@400;500;600;700;800&display=swap');
+        .font-premium { font-family: 'Montserrat', sans-serif; }
+        .font-body { font-family: 'Poppins', sans-serif; }
+    </style>
+
+    <div class="py-6 transition-all duration-500 font-body">
+        <div class="max-w-4xl mx-auto px-4 space-y-4">
             
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 bg-[#1E293B] p-6 rounded-[2.5rem] border border-slate-800 shadow-2xl">
-                <div class="flex items-center gap-5">
-                    <a href="{{ route('admin.tickets.index') }}" class="group p-4 bg-[#0F172A] border border-slate-700 rounded-2xl hover:bg-indigo-600 transition-all duration-300 shadow-lg">
-                        <svg class="w-6 h-6 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path>
+            {{-- Header Section - Fix Link Kembali --}}
+            <div style="background: var(--card-bg); border: 1px solid var(--border-ui);" 
+                 class="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-2xl shadow-sm">
+                <div class="flex items-center gap-4">
+                    {{-- Navigasi dikunci ke route index agar tidak refresh di tempat --}}
+                    <a href="{{ route('admin.tickets.index') }}" 
+                       style="background: var(--bg-main); border: 1px solid var(--border-ui);"
+                       class="group p-2.5 rounded-xl hover:bg-blue-600 transition-all duration-300 shadow-sm">
+                        <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                            <path d="M15 19l-7-7 7-7"></path>
                         </svg>
                     </a>
                     <div>
-                        <h2 class="font-black text-3xl text-white tracking-tight leading-none italic uppercase">Detail <span class="text-indigo-500">Laporan</span></h2>
-                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mt-2 flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-                            Ticket ID: #{{ $ticket->ticket_number }}
+                        <h2 style="color: var(--text-main);" class="font-premium text-xl tracking-tight uppercase leading-none italic">
+                            Detail <span class="text-blue-600">Laporan</span>
+                        </h2>
+                        <p style="color: var(--text-muted);" class="text-[9px] font-extrabold uppercase tracking-[0.2em] mt-1 opacity-60">
+                            ID: #{{ $ticket->ticket_number }}
                         </p>
                     </div>
                 </div>
                 
-                <div class="px-8 py-3 {{ $ticket->status == 'done' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : ($ticket->status == 'process' ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20' : 'bg-amber-500/10 text-amber-500 border-amber-500/20') }} border rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] shadow-inner">
-                    Status: {{ $ticket->status }}
+                <div class="px-5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest border shadow-inner
+                    {{ $ticket->status == 'done' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : ($ticket->status == 'process' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' : 'bg-orange-500/10 text-orange-500 border-orange-500/20') }}">
+                    STATUS: {{ strtoupper($ticket->status) }}
                 </div>
             </div>
 
-            <div class="bg-[#1E293B] shadow-[0_30px_100px_-15px_rgba(0,0,0,0.4)] rounded-[3.5rem] overflow-hidden border border-slate-800 p-8 sm:p-16 relative">
-                <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-indigo-600/10 blur-[100px] rounded-full"></div>
+            {{-- Main Content Card --}}
+            <div style="background: var(--card-bg); border: 1px solid var(--border-ui);" 
+                 class="shadow-lg rounded-[2.5rem] overflow-hidden p-6 md:p-10 relative">
                 
-                <div class="flex flex-wrap items-center gap-4 mb-12 relative z-10">
-                    <div class="flex items-center px-5 py-2.5 bg-[#0F172A] text-slate-300 rounded-2xl border border-slate-700 shadow-lg">
-                        <svg class="w-4 h-4 mr-3 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        <span class="text-[10px] font-black uppercase tracking-widest">{{ $ticket->created_at->translatedFormat('d F Y') }}</span>
+                {{-- Decorative Glow --}}
+                <div class="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 bg-blue-600/5 blur-[80px] rounded-full"></div>
+                
+                {{-- Metadata Row --}}
+                <div class="flex flex-wrap items-center gap-3 mb-8 relative z-10 text-[9px] font-black uppercase tracking-widest">
+                    <div style="background: var(--bg-main); border: 1px solid var(--border-ui); color: var(--text-main);" class="flex items-center px-4 py-2 rounded-xl shadow-sm">
+                        <svg class="w-3.5 h-3.5 mr-2 text-blue-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        {{ $ticket->created_at->translatedFormat('d F Y') }}
                     </div>
-                    <div class="flex items-center px-5 py-2.5 bg-[#0F172A] text-slate-300 rounded-2xl border border-slate-700 shadow-lg">
-                        <svg class="w-4 h-4 mr-3 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span class="text-[10px] font-black uppercase tracking-widest">{{ $ticket->created_at->format('H:i') }} WIB</span>
+                    <div style="background: var(--bg-main); border: 1px solid var(--border-ui); color: var(--text-main);" class="flex items-center px-4 py-2 rounded-xl shadow-sm">
+                        <svg class="w-3.5 h-3.5 mr-2 text-blue-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        {{ $ticket->created_at->format('H:i') }} WIB
                     </div>
-                    <div class="px-5 py-2.5 bg-rose-500/10 text-rose-400 rounded-2xl border border-rose-500/20 text-[10px] font-black uppercase tracking-widest italic shadow-lg">
+                    <div class="px-4 py-2 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-xl italic">
                         {{ $ticket->created_at->diffForHumans() }}
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-10">
-                    <div class="lg:col-span-7 space-y-10">
-                        <div class="group">
-                            <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-3 block group-hover:text-indigo-400 transition-colors">Pengirim / Instansi</label>
-                            <div class="bg-[#0F172A] p-6 rounded-[2rem] border border-slate-700 group-hover:border-indigo-500/50 transition-all">
-                                <p class="font-black text-white text-2xl uppercase tracking-tighter">{{ $ticket->user->name }}</p>
-                                <p class="text-sm font-bold text-indigo-400 mt-1 uppercase tracking-widest">{{ $ticket->instansi }}</p>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 relative z-10">
+                    {{-- Sisi Kiri: Detail Text --}}
+                    <div class="lg:col-span-7 space-y-8">
+                        <div>
+                            <label style="color: var(--text-muted);" class="text-[9px] font-extrabold uppercase tracking-[0.3em] mb-3 block opacity-50">Pengirim / Instansi</label>
+                            <div style="background: var(--bg-main); border: 1px solid var(--border-ui);" class="p-6 rounded-2xl shadow-inner group">
+                                <p style="color: var(--text-main);" class="font-premium text-xl uppercase tracking-tighter">{{ $ticket->user->name }}</p>
+                                <p class="text-[11px] font-bold text-blue-600 mt-1 uppercase tracking-widest italic opacity-80">{{ $ticket->instansi ?? 'Internal Diskominfo' }}</p>
                             </div>
                         </div>
 
                         <div>
-                            <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-3 block">Kategori & Subjek</label>
-                            <span class="text-[9px] font-black text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-4 py-1.5 rounded-full inline-block mb-4 uppercase tracking-[0.2em]">{{ $ticket->category }}</span>
-                            <h3 class="font-black text-white text-xl leading-snug uppercase tracking-tight">{{ $ticket->title }}</h3>
+                            <label style="color: var(--text-muted);" class="text-[9px] font-extrabold uppercase tracking-[0.3em] mb-3 block opacity-50">Kategori & Subjek</label>
+                            <span class="text-[8px] font-extrabold text-blue-600 bg-blue-600/10 border border-blue-600/20 px-3 py-1 rounded-full mb-3 inline-block uppercase tracking-widest">{{ $ticket->category }}</span>
+                            <h3 style="color: var(--text-main);" class="font-premium text-lg uppercase italic leading-tight tracking-tight">{{ $ticket->title }}</h3>
                         </div>
 
                         <div>
-                            <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-3 block">Deskripsi Keluhan</label>
-                            <div class="bg-[#0F172A]/50 p-8 rounded-[2.5rem] text-slate-300 leading-relaxed text-base italic border border-slate-800 shadow-inner">
-                                <span class="text-3xl text-indigo-500 font-serif leading-none">“</span>
-                                {{ $ticket->description }}
-                                <span class="text-3xl text-indigo-500 font-serif leading-none flex justify-end">”</span>
+                            <label style="color: var(--text-muted);" class="text-[9px] font-extrabold uppercase tracking-[0.3em] mb-3 block opacity-50">Deskripsi Keluhan</label>
+                            <div style="background: var(--bg-main); border: 1px solid var(--border-ui);" class="p-6 rounded-2xl relative shadow-inner italic border-l-4 border-l-blue-600">
+                                <div style="color: var(--text-main);" class="relative z-10 leading-relaxed text-sm font-medium opacity-80 whitespace-pre-line">
+                                    {{ $ticket->description }}
+                                </div>
                             </div>
                         </div>
+
+                        {{-- Admin Update Status --}}
+                        @if(strtolower(auth()->user()->role) === 'admin')
+                        <div class="pt-6 border-t" style="border-color: var(--border-ui);">
+                            <label style="color: var(--text-muted);" class="text-[9px] font-extrabold uppercase tracking-[0.3em] mb-4 block opacity-50 text-center">Update Progress</label>
+                            <form action="{{ route('admin.tickets.updateStatus', $ticket) }}" method="POST" class="grid grid-cols-3 gap-3">
+                                @csrf @method('PATCH')
+                                <button name="status" value="waiting" class="py-2.5 rounded-xl border font-black text-[9px] uppercase transition-all {{ $ticket->status == 'waiting' ? 'bg-orange-500 text-white border-orange-500 shadow-md' : 'bg-transparent text-slate-500 border-slate-700 opacity-40 hover:opacity-100' }}">Waiting</button>
+                                <button name="status" value="process" class="py-2.5 rounded-xl border font-black text-[9px] uppercase transition-all {{ $ticket->status == 'process' ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-transparent text-slate-500 border-slate-700 opacity-40 hover:opacity-100' }}">Process</button>
+                                <button name="status" value="done" class="py-2.5 rounded-xl border font-black text-[9px] uppercase transition-all {{ $ticket->status == 'done' ? 'bg-emerald-500 text-white border-emerald-500 shadow-md' : 'bg-transparent text-slate-500 border-slate-700 opacity-40 hover:opacity-100' }}">Done</button>
+                            </form>
+                        </div>
+                        @endif
                     </div>
 
+                    {{-- Sisi Kanan: Lampiran --}}
                     <div class="lg:col-span-5">
-                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-5 block">Bukti Lampiran</label>
+                        <label style="color: var(--text-muted);" class="text-[9px] font-extrabold uppercase tracking-[0.3em] mb-4 block opacity-50">Bukti Lampiran</label>
                         @if($ticket->image)
                             <div class="relative group">
-                                <div class="absolute -inset-2 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-[3rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-                                <a href="{{ asset('storage/' . $ticket->image) }}" target="_blank" class="relative block overflow-hidden rounded-[2.8rem] border-4 border-[#0F172A] shadow-2xl">
-                                    <img src="{{ asset('storage/' . $ticket->image) }}" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-700">
-                                    <div class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center backdrop-blur-sm">
-                                        <div class="bg-white p-4 rounded-2xl shadow-2xl scale-75 group-hover:scale-100 transition-all duration-500">
-                                            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                                <a href="{{ asset('storage/' . $ticket->image) }}" target="_blank" 
+                                   style="border: 4px solid var(--bg-main);"
+                                   class="relative block overflow-hidden rounded-2xl shadow-xl transition-all duration-500 group-hover:scale-[1.02]">
+                                    <img src="{{ asset('storage/' . $ticket->image) }}" class="w-full h-auto object-cover max-h-[350px]">
+                                    <div class="absolute inset-0 bg-blue-900/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm">
+                                        <div class="bg-white text-blue-600 px-4 py-2 rounded-lg font-premium text-[8px] uppercase tracking-widest shadow-2xl">
+                                            Perbesar
                                         </div>
                                     </div>
                                 </a>
                             </div>
                         @else
-                            <div class="aspect-square bg-[#0F172A] rounded-[3rem] border-2 border-dashed border-slate-700 flex flex-col items-center justify-center p-10 text-center group">
-                                <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mb-6 group-hover:bg-slate-700 transition-colors">
-                                    <svg class="w-10 h-10 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                </div>
-                                <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Tidak Ada Lampiran</p>
+                            <div style="background: var(--bg-main); border: 2px dashed var(--border-ui);" 
+                                 class="aspect-video rounded-2xl flex flex-col items-center justify-center p-8 text-center opacity-30">
+                                <svg class="w-8 h-8 mb-2 text-slate-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <p class="text-[8px] font-black uppercase tracking-widest">Tidak Ada Lampiran</p>
                             </div>
                         @endif
                     </div>
                 </div>
             </div>
 
-            <div class="mt-12 text-center">
-                <p class="text-[9px] font-black text-slate-600 uppercase tracking-[0.5em]">Diskominfostandi Kota Binjai • E-Ticket System v2.0</p>
+            {{-- Footer Branding --}}
+            <div class="text-center pt-4">
+                <p style="color: var(--text-muted);" class="text-[8px] font-black uppercase tracking-[0.5em] opacity-30 italic">
+                    Diskominfostandi Kota Binjai • E-Ticket System v2.0
+                </p>
             </div>
         </div>
     </div>

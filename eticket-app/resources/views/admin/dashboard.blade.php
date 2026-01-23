@@ -1,245 +1,204 @@
 <x-app-layout>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* CSS Variables yang mendukung Dark/Light Mode */
+        :root {
+            /* Mode Gelap (Default) */
+            --primary-bg: #0b1120;
+            --main-gradient: linear-gradient(135deg, #1a2332 0%, #0f172a 100%);
+            --secondary-bg: #1e293b;
+            --accent-blue: #3B82F6;
+            --accent-orange: #F97316;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --border-color: rgba(59, 130, 246, 0.15);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+            
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0b1120;
-            color: #f8fafc;
+        /* Mode Terang (Aktif jika layout utama diubah ke light) */
+        [data-theme="light"] {
+            --primary-bg: #f1f5f9;
+            --main-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --secondary-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.05);
         }
 
-        /* Main Container */
-        .dashboard-container {
-            padding: 2rem;
+        .main-content {
             max-width: 1400px;
             margin: 0 auto;
+            padding: var(--spacing-lg);
+            animation: fadeIn 0.6s ease-out;
+            background: var(--main-gradient);
+            min-height: 100vh;
+            transition: background 0.3s ease;
         }
 
-        /* Page Header */
-        .page-header {
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .page-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: var(--spacing-xl); }
+        .header-badge { background: var(--accent-blue); color: white; padding: 0.5rem 1.25rem; border-radius: var(--radius-md); font-weight: 700; font-size: 0.875rem; }
+        .page-title { font-size: 2rem; font-weight: 800; color: var(--text-primary); }
+        .title-highlight { color: var(--accent-orange); }
+        .page-subtitle { color: var(--text-secondary); }
+
+        .welcome-banner { 
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(249, 115, 22, 0.1) 100%); 
+            border: 2px solid var(--border-color); 
+            border-radius: var(--radius-lg); 
+            padding: var(--spacing-lg); 
+            margin-bottom: var(--spacing-xl); 
+            position: relative; 
+            backdrop-filter: blur(10px); 
+        }
+        
+        .banner-border { position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: linear-gradient(180deg, var(--accent-blue) 0%, var(--accent-orange) 100%); }
+        .banner-title { color: var(--text-primary); font-weight: 800; }
+        .banner-subtitle { color: var(--text-secondary); }
+
+        .dashboard-card { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--radius-xl); 
+            padding: var(--spacing-xl); 
+            box-shadow: var(--shadow-lg); 
+            transition: background 0.3s ease;
         }
 
-        .page-header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 0.5rem;
+        .dashboard-header { display: grid; grid-template-columns: auto 1fr auto; gap: var(--spacing-lg); align-items: center; margin-bottom: var(--spacing-xl); padding-bottom: var(--spacing-lg); border-bottom: 2px solid var(--border-color); }
+        .dashboard-title { color: var(--text-primary); font-size: 1.5rem; font-weight: 800; }
+        .dashboard-location { color: var(--text-secondary); }
+        .dashboard-badge { background: var(--accent-blue); color: white; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 800; display: inline-block; margin-bottom: 0.5rem; }
+
+        .btn-create-report { display: flex; align-items: center; gap: 0.625rem; background: var(--accent-orange); color: white; padding: 0.875rem 1.75rem; border-radius: var(--radius-md); font-weight: 700; text-decoration: none; transition: all 0.3s ease; }
+        .btn-create-report:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--spacing-lg); }
+        .stat-card { background: var(--secondary-bg); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: var(--spacing-lg); transition: all 0.3s ease; }
+        .stat-card:hover { transform: translateY(-4px); border-color: var(--accent-blue); }
+        .stat-label { color: var(--text-secondary); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.05em; }
+        .stat-value { font-size: 2.5rem; font-weight: 800; color: var(--text-primary); }
+        .stat-unit { color: var(--text-secondary); font-weight: 600; margin-left: 0.5rem; }
+
+        .realtime-card { 
+            background: var(--secondary-bg); 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--radius-lg); 
+            padding: var(--spacing-lg); 
+            display: grid; 
+            grid-template-columns: auto 1fr auto; 
+            gap: var(--spacing-lg); 
+            align-items: center; 
+            margin-top: var(--spacing-xl); 
         }
-
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: #94a3b8;
-        }
-
-        /* Welcome Banner */
-        .welcome-banner {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            padding: 2rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .welcome-content h2 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .welcome-action .btn-primary {
-            background: white;
-            color: #1e40af;
-            padding: 0.875rem 2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .welcome-action .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .stat-card {
-            background: rgba(30, 41, 59, 0.5);
-            backdrop-filter: blur(10px);
-            padding: 1.75rem;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(59, 130, 246, 0.4);
-            background: rgba(30, 41, 59, 0.8);
-        }
-
-        .stat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .stat-card:nth-child(1) .stat-icon { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
-        .stat-card:nth-child(2) .stat-icon { background: rgba(251, 146, 60, 0.2); color: #fb923c; }
-        .stat-card:nth-child(3) .stat-icon { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
-        .stat-card:nth-child(4) .stat-icon { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
-
-        .stat-label {
-            font-size: 0.875rem;
-            color: #94a3b8;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            line-height: 1;
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-card:nth-child(1) .stat-value { color: #60a5fa; }
-        .stat-card:nth-child(2) .stat-value { color: #fb923c; }
-        .stat-card:nth-child(3) .stat-value { color: #4ade80; }
-        .stat-card:nth-child(4) .stat-value { color: #c084fc; }
-
-        .stat-footer {
-            padding-top: 0.75rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.8125rem;
-            color: #94a3b8;
-        }
-
-        @media (max-width: 768px) {
-            .welcome-banner { flex-direction: column; text-align: center; gap: 1.5rem; }
-        }
+        .realtime-title { color: var(--text-primary); font-weight: 800; }
+        .realtime-subtitle { color: var(--text-secondary); }
+        .btn-view-all { background: var(--accent-blue); color: white; padding: 0.75rem 1.5rem; border-radius: var(--radius-md); text-decoration: none; font-weight: 700; }
+        .realtime-icon { color: var(--accent-blue); }
     </style>
 
-    <div class="dashboard-container">
+    <div class="main-content">
         <div class="page-header">
-            <h1>Dashboard Administrator</h1>
-            <div class="breadcrumb">
-                <span>Beranda › Dashboard</span>
+            <div class="header-badge">DISKOMINFO</div>
+            <div class="header-title-wrapper">
+                <h1 class="page-title">E-Ticket <span class="title-highlight">Binjai</span></h1>
+                <p class="page-subtitle">Pusat Layanan Terpadu</p>
             </div>
         </div>
 
         <div class="welcome-banner">
-            <div class="welcome-content">
-                <h2>Selamat Datang di Sistem E-Ticket</h2>
-                <p>Portal Layanan Teknologi Informasi DISKOMINFO Kota Binjai</p>
-            </div>
-            <div class="welcome-action">
-                <a href="{{ route('tickets.create') }}" class="btn-primary">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    Buat Laporan Baru
-                </a>
+            <div class="banner-border"></div>
+            <div class="banner-content">
+                <h2 class="banner-title">BERANDA</h2>
+                <p class="banner-subtitle">Pusat Layanan Terpadu DISKOMINFO Kota Binjai.</p>
             </div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-content">
-                        <span class="stat-label">Total Tiket</span>
-                        <div class="stat-value">{{ $stats['total'] }}</div>
-                    </div>
-                    <div class="stat-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
+        <div class="dashboard-card">
+            <div class="dashboard-header">
+                <div class="dashboard-logo">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </div>
-                <div class="stat-footer"><span>📊 Seluruh sistem</span></div>
+                <div class="dashboard-title-section">
+                    <div class="dashboard-badge">DISKOMINFO</div>
+                    <h2 class="dashboard-title">Dashboard <span class="title-admin" style="color: var(--accent-orange)">{{ auth()->user()->role === 'admin' ? 'Admin' : 'User' }}</span></h2>
+                    <p class="dashboard-location">Kota Binjai - Sistem Pelaporan Terintegrasi</p>
+                </div>
+                <div class="dashboard-actions">
+                    @php
+                        $createRoute = auth()->user()->role === 'admin' ? 'admin.tickets.create' : 'tickets.create';
+                    @endphp
+                    <a href="{{ Route::has($createRoute) ? route($createRoute) : route('tickets.create') }}" class="btn-create-report">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        BUAT LAPORAN
+                    </a>
+                </div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-content">
-                        <span class="stat-label">Menunggu</span>
-                        <div class="stat-value">{{ $stats['waiting'] }}</div>
-                    </div>
-                    <div class="stat-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">TOTAL MASUK</div>
+                    <div class="stat-value-wrapper flex items-baseline">
+                        <h3 class="stat-value">{{ $stats['total'] }}</h3>
+                        <span class="stat-unit">Tiket</span>
                     </div>
                 </div>
-                <div class="stat-footer"><span>⏱️ Perlu atensi</span></div>
+
+                <div class="stat-card">
+                    <div class="stat-label" style="color: var(--accent-orange)">MENUNGGU</div>
+                    <div class="stat-value-wrapper flex items-baseline">
+                        <h3 class="stat-value">{{ $stats['waiting'] }}</h3>
+                        <span class="stat-unit">Urgent</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label" style="color: #10B981">RESOLVED</div>
+                    <div class="stat-value-wrapper flex items-baseline">
+                        <h3 class="stat-value">{{ $stats['done'] }}</h3>
+                        <span class="stat-unit">Selesai</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label" style="color: var(--accent-blue)">USER AKTIF</div>
+                    <div class="stat-value-wrapper flex items-baseline">
+                        <h3 class="stat-value">{{ \App\Models\User::count() }}</h3>
+                        <span class="stat-unit">OPD</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-content">
-                        <span class="stat-label">Selesai</span>
-                        <div class="stat-value">{{ $stats['done'] }}</div>
-                    </div>
-                    <div class="stat-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
+            <div class="realtime-card">
+                <div class="realtime-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </div>
-                <div class="stat-footer"><span>✅ Laporan selesai</span></div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-content">
-                        <span class="stat-label">Pengguna</span>
-                        <div class="stat-value">{{ \App\Models\User::count() }}</div>
-                    </div>
-                    <div class="stat-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
+                <div class="realtime-content">
+                    <h3 class="realtime-title">Laporan Masuk Real-Time</h3>
+                    <p class="realtime-subtitle">Update otomatis setiap detik</p>
                 </div>
-                <div class="stat-footer"><span>👥 Instansi OPD</span></div>
+                @php
+                    $indexRoute = auth()->user()->role === 'admin' ? 'admin.tickets.index' : 'tickets.index';
+                @endphp
+                <a href="{{ Route::has($indexRoute) ? route($indexRoute) : route('tickets.index') }}" class="btn-view-all">
+                    LIHAT SEMUA
+                </a>
             </div>
         </div>
     </div>

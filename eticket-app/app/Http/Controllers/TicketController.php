@@ -6,22 +6,47 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\View;
 
 class TicketController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        // Admin melihat semua, User melihat miliknya sendiri
-        if (strtolower(trim($user->role)) === 'admin') {
-            $tickets = Ticket::with('user')->latest()->get();
-        } else {
-            $tickets = Ticket::where('user_id', $user->id)->latest()->get();
+        
+        // 1. Inisialisasi Query
+        $query = Ticket::with('user');
+
+        // 2. Filter berdasarkan Role (Admin lihat semua, User lihat milik sendiri)
+        if (strtolower(trim($user->role)) !== 'admin') {
+            $query->where('user_id', $user->id);
         }
-        return view('tickets.index', compact('tickets'));
+
+        // 3. Logika Filter Status (dari dropdown "status")
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // 4. Logika Urutkan (dari dropdown "sort")
+        if ($request->sort === 'oldest') {
+            $query->orderBy('created_at', 'asc');
+        } else {
+            $query->orderBy('created_at', 'desc'); // Default terbaru
+        }
+
+        // 5. Eksekusi Pagination & pertahankan parameter URL saat pindah halaman
+        $tickets = $query->paginate(10)->withQueryString();
+        
+        // --- PERBAIKAN LOGIKA VIEW DISINI ---
+        // Jika yang login Admin, arahkan ke folder admin/tickets/index
+        // Jika bukan, arahkan ke folder tickets/index
+        if (strtolower(trim($user->role)) === 'admin') {
+            return view('admin.tickets.index', compact('tickets', 'user'));
+        }
+
+        return view('tickets.index', compact('tickets', 'user'));
     }
 
-    // TAMBAHKAN METHOD INI AGAR ERROR "Undefined Method" HILANG
     public function create()
     {
         return view('tickets.create');
@@ -42,7 +67,7 @@ class TicketController extends Controller
             $imagePath = $request->file('image')->store('tickets', 'public');
         }
 
-        $ticket = Ticket::create([
+        Ticket::create([
             'ticket_number' => 'TCK-' . strtoupper(Str::random(6)), 
             'user_id'       => Auth::id(), 
             'title'         => $validated['title'],
@@ -54,42 +79,38 @@ class TicketController extends Controller
             'priority'      => $request->priority ?? 'low',
         ]);
 
-        // Debug kalau mau
-        // dd('SAMPAI SINI', $ticket);
-
-        return redirect()->route('dashboard')
-            ->with('success', 'Laporan berhasil terkirim!');
+        return redirect()->route('dashboard')->with('success', 'Laporan berhasil terkirim!');
     }
 
-    /**
-     * Update Status Tiket (Hanya untuk Admin)
-     */
     public function updateStatus(Request $request, Ticket $ticket)
     {
-        if (auth()->user()->role !== 'admin') { 
+        if (strtolower(trim(auth()->user()->role)) !== 'admin') { 
             abort(403); 
         }
 
-        $request->validate([
-            'status' => 'required|in:waiting,process,done',
-        ]);
-
+        $request->validate(['status' => 'required|in:waiting,process,done']);
         $ticket->update(['status' => $request->status]);
 
         return back()->with('success', 'Status Tiket #' . $ticket->ticket_number . ' Berhasil diperbarui!');
     }
 
-    /**
-     * Hapus Tiket (Hanya untuk Admin)
-     */
     public function destroy(Ticket $ticket)
     {
-        if (auth()->user()->role !== 'admin') { 
+        if (strtolower(trim(auth()->user()->role)) !== 'admin') { 
             abort(403); 
         }
 
         $ticket->delete();
-
         return back()->with('success', 'Laporan Berhasil dihapus secara permanen!');
+    }
+
+    public function show(Ticket $ticket)
+    {
+        if (strtolower(trim(auth()->user()->role)) !== 'admin' && $ticket->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $viewPath = View::exists('admin.tickets.show') ? 'admin.tickets.show' : 'tickets.show';
+        return view($viewPath, compact('ticket'));
     }
 }
