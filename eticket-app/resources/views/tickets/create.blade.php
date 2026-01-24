@@ -1,16 +1,32 @@
 <x-app-layout>
     <style>
-        /* Menggunakan variabel warna agar tidak merusak layout asli */
+        /* Root Variables */
         :root {
             --form-bg: #ffffff;
             --form-text: #1e293b;
-            --form-label: #475569;
+            --form-label: #64748b;
             --form-input-bg: #f8fafc;
             --form-border: #e2e8f0;
+            --form-input-border: #cbd5e1;
         }
 
-        /* Perbaikan container agar tidak 'pecah' */
-        .form-page { padding: 2rem 1rem; background: transparent; }
+        [data-theme="dark"] {
+            --form-bg: #1e293b;
+            --form-text: #f1f5f9;
+            --form-label: #94a3b8;
+            --form-input-bg: #0f172a;
+            --form-border: #334155;
+            --form-input-border: #475569;
+        }
+
+        .form-page { 
+            padding: 2rem 1rem; 
+            background: transparent;
+            min-height: 100vh;
+            /* Penyesuaian agar tidak terlihat terlalu zoom */
+            zoom: 0.9;
+        }
+        
         .form-container { 
             max-width: 900px; 
             margin: 0 auto; 
@@ -18,101 +34,502 @@
             border-radius: 20px; 
             padding: 2.5rem;
             border: 1px solid var(--form-border);
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
-        .form-title { color: var(--form-text); font-weight: 800; }
-        .form-label { color: var(--form-label); font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 0.875rem; }
+        /* Header dengan gradient yang lebih soft */
+        .form-header {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 16px;
+            padding: 1.75rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25);
+        }
+
+        .form-header-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .form-header-text h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            letter-spacing: -0.3px;
+        }
+
+        .form-header-text p {
+            color: rgba(255, 255, 255, 0.95);
+            margin: 0;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Labels dengan icon */
+        .form-label { 
+            color: var(--form-text);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 0.875rem;
+        }
+
+        .form-label svg {
+            width: 16px;
+            height: 16px;
+            color: #3b82f6;
+            flex-shrink: 0;
+        }
         
-        /* Input & Select2 Adaptif */
-        .form-input, .form-textarea, .form-input-file {
+        /* Input & Textarea */
+        .form-input, .form-textarea, .form-select-native {
             background: var(--form-input-bg) !important;
-            border: 2px solid var(--form-border) !important;
+            border: 1.5px solid var(--form-input-border) !important;
             color: var(--form-text) !important;
             border-radius: 12px;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            padding: 12px 16px !important;
+            width: 100%;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select-native:focus {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            outline: none;
+            background: var(--form-bg) !important;
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: var(--form-label);
+            opacity: 0.6;
+        }
+
+        /* Select2 Styling - FIXED */
+        .select2-container {
+            width: 100% !important;
         }
 
         .select2-container--default .select2-selection--single {
             background-color: var(--form-input-bg) !important;
-            border: 2px solid var(--form-border) !important;
-            height: 50px !important;
+            border: 1.5px solid var(--form-input-border) !important;
+            height: 46px !important;
             border-radius: 12px !important;
+            transition: all 0.2s ease;
+        }
+
+        .select2-container--default.select2-container--focus .select2-selection--single,
+        .select2-container--default.select2-container--open .select2-selection--single {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background-color: var(--form-bg) !important;
         }
 
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             color: var(--form-text) !important;
-            line-height: 45px !important;
+            line-height: 43px !important;
+            padding-left: 16px !important;
+            padding-right: 40px !important;
+            font-size: 14px;
         }
 
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: var(--form-label) !important;
+            opacity: 0.6;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 43px !important;
+            right: 10px !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            border-color: var(--form-label) transparent transparent transparent !important;
+        }
+
+        /* Dropdown styling */
         .select2-dropdown {
             background-color: var(--form-bg) !important;
-            border: 2px solid var(--form-border) !important;
-            color: var(--form-text) !important;
+            border: 1.5px solid var(--form-border) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            margin-top: 4px;
         }
 
-        .select2-results__option { color: var(--form-text) !important; }
-        .select2-results__option--highlighted[aria-selected] { background-color: #3b82f6 !important; }
+        .select2-search--dropdown {
+            padding: 12px;
+        }
 
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-        @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
+        .select2-search--dropdown .select2-search__field {
+            background-color: var(--form-input-bg) !important;
+            border: 1.5px solid var(--form-input-border) !important;
+            color: var(--form-text) !important;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 14px;
+        }
 
-        .btn-submit { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); color: white; padding: 12px; border-radius: 12px; font-weight: 700; border: none; cursor: pointer; }
-        .btn-cancel { background: var(--form-input-bg); color: var(--form-label); border: 2px solid var(--form-border); padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-weight: 700; }
+        .select2-search--dropdown .select2-search__field:focus {
+            border-color: #3b82f6 !important;
+            outline: none;
+        }
+
+        .select2-results__options {
+            max-height: 300px;
+        }
+
+        .select2-results__option { 
+            color: var(--form-text) !important; 
+            background-color: transparent !important;
+            padding: 10px 16px !important;
+            transition: all 0.15s;
+            font-size: 14px;
+        }
+        
+        .select2-results__option--highlighted[aria-selected] { 
+            background-color: rgba(59, 130, 246, 0.1) !important; 
+            color: #3b82f6 !important;
+        }
+
+        .select2-results__option[aria-selected=true] {
+            background-color: rgba(59, 130, 246, 0.15) !important;
+            color: #3b82f6 !important;
+            font-weight: 600;
+        }
+
+        .select2-results__group {
+            color: var(--form-label) !important;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px 16px 6px 16px !important;
+            background: transparent !important;
+        }
+
+        [data-theme="dark"] .select2-results__group {
+            color: #94a3b8 !important;
+        }
+
+        /* Form group spacing */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 1.25rem; 
+        }
+        
+        @media (max-width: 768px) { 
+            .form-row { 
+                grid-template-columns: 1fr; 
+            }
+            .form-container {
+                padding: 1.75rem 1.25rem;
+            }
+            .form-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Buttons */
+        .btn-submit { 
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); 
+            color: white; 
+            padding: 14px 28px; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            border: none; 
+            cursor: pointer; 
+            transition: all 0.2s ease;
+            font-size: 15px;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+            width: 100%;
+        }
+        
+        .btn-submit:hover { 
+            transform: translateY(-1px); 
+            box-shadow: 0 6px 16px rgba(249, 115, 22, 0.4);
+        }
+        
+        .btn-cancel { 
+            background: var(--form-input-bg); 
+            color: var(--form-text); 
+            border: 1.5px solid var(--form-border); 
+            padding: 14px 28px; 
+            border-radius: 12px; 
+            text-decoration: none; 
+            text-align: center; 
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-block;
+            font-size: 15px;
+            width: 100%;
+        }
+
+        .btn-cancel:hover {
+            background: var(--form-border);
+            transform: translateY(-1px);
+        }
+
+        /* File input custom */
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--form-input-bg);
+            border: 1.5px dashed var(--form-input-border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--form-text);
+        }
+
+        .file-input-label:hover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .file-input-label svg {
+            width: 20px;
+            height: 20px;
+            color: #3b82f6;
+            flex-shrink: 0;
+        }
+
+        .file-name {
+            color: var(--form-label);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Info badge */
+        .info-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            background: rgba(59, 130, 246, 0.08);
+            border-radius: 8px;
+            font-size: 12px;
+            color: #3b82f6;
+            font-weight: 500;
+            margin-top: 6px;
+        }
+
+        .info-badge svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        [data-theme="dark"] .info-badge {
+            background: rgba(96, 165, 250, 0.12);
+            color: #60a5fa;
+        }
+
+        /* Action buttons container */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1.5px solid var(--form-border);
+        }
+
+        @media (max-width: 640px) {
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 
     <div class="form-page">
         <div class="form-container">
-            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px; border-bottom: 2px solid var(--form-border); padding-bottom: 20px;">
-                <div style="width: 60px; height: 60px; background: #3b82f6; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: white;">
-                    <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+            <div class="form-header">
+                <div class="form-header-icon">
+                    <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                    </svg>
                 </div>
-                <div>
-                    <h1 class="form-title" style="font-size: 24px; margin: 0;">Buat Laporan Tiket</h1>
-                    <p style="color: #64748b; margin: 0;">DISKOMINFO Kota Binjai</p>
+                <div class="form-header-text">
+                    <h1>Buat Laporan Tiket</h1>
                 </div>
             </div>
 
-            <form action="{{ route('tickets.store') }}" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 20px;">
+            <form action="{{ route('tickets.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                
                 <div class="form-group">
-                    <label class="form-label">Subjek Masalah</label>
-                    <input type="text" name="title" class="form-input" style="width: 100%; padding: 12px;" placeholder="Apa masalahnya?" required>
+                    <label class="form-label">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                        </svg>
+                        Subjek Masalah
+                    </label>
+                    <input type="text" name="title" class="form-input" placeholder="Jelaskan masalah secara singkat..." required>
                 </div>
 
-                <div class="form-group" id="select-area">
-                    <label class="form-label">Instansi / OPD</label>
+                <div class="form-group">
+                    <label class="form-label">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                        Instansi / OPD
+                    </label>
                     <select name="instansi" id="instansi_select" class="form-select" required>
                         <option value=""></option>
-                        <option value="Inspektur Kota Binjai">Inspektur Kota Binjai</option>
-                        <option value="Kepala Dinas Pendidikan Kota Binjai">Kepala Dinas Pendidikan Kota Binjai</option>
-                        <option value="Kepala Dinas Kesehatan Kota Binjai">Kepala Dinas Kesehatan Kota Binjai</option>
-                        </select>
+                        <optgroup label="Pemerintahan">
+                            <option value="Inspektorat Kota Binjai">Inspektorat Kota Binjai</option>
+                            <option value="Badan Perencanaan Pembangunan Daerah">Badan Perencanaan Pembangunan Daerah</option>
+                            <option value="Badan Pengelolaan Keuangan dan Aset Daerah">Badan Pengelolaan Keuangan dan Aset Daerah</option>
+                            <option value="Badan Kepegawaian dan Pengembangan SDM">Badan Kepegawaian dan Pengembangan SDM</option>
+                            <option value="Badan Pendapatan Daerah">Badan Pendapatan Daerah</option>
+                        </optgroup>
+                        <optgroup label="Pendidikan & Sosial">
+                            <option value="Dinas Pendidikan">Dinas Pendidikan</option>
+                            <option value="Dinas Sosial">Dinas Sosial</option>
+                            <option value="Dinas Perpustakaan dan Kearsipan">Dinas Perpustakaan dan Kearsipan</option>
+                            <option value="Dinas Pemberdayaan Perempuan dan Perlindungan Anak">Dinas Pemberdayaan Perempuan dan Perlindungan Anak</option>
+                        </optgroup>
+                        <optgroup label="Kesehatan">
+                            <option value="Dinas Kesehatan">Dinas Kesehatan</option>
+                            <option value="RSUD Kota Binjai">RSUD Kota Binjai</option>
+                        </optgroup>
+                        <optgroup label="Pembangunan & Infrastruktur">
+                            <option value="Dinas Pekerjaan Umum dan Penataan Ruang">Dinas Pekerjaan Umum dan Penataan Ruang</option>
+                            <option value="Dinas Perumahan dan Kawasan Permukiman">Dinas Perumahan dan Kawasan Permukiman</option>
+                            <option value="Dinas Perhubungan">Dinas Perhubungan</option>
+                        </optgroup>
+                        <optgroup label="Lingkungan & Pertanian">
+                            <option value="Dinas Lingkungan Hidup">Dinas Lingkungan Hidup</option>
+                            <option value="Dinas Pertanian dan Pangan">Dinas Pertanian dan Pangan</option>
+                        </optgroup>
+                        <optgroup label="Ekonomi & Pariwisata">
+                            <option value="Dinas Koperasi, UKM, Perindustrian dan Perdagangan">Dinas Koperasi, UKM, Perindustrian dan Perdagangan</option>
+                            <option value="Dinas Pariwisata">Dinas Pariwisata</option>
+                            <option value="Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu">Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu</option>
+                        </optgroup>
+                        <optgroup label="Masyarakat & Kebudayaan">
+                            <option value="Dinas Kependudukan dan Pencatatan Sipil">Dinas Kependudukan dan Pencatatan Sipil</option>
+                            <option value="Dinas Pemuda dan Olahraga">Dinas Pemuda dan Olahraga</option>
+                            <option value="Dinas Kebudayaan">Dinas Kebudayaan</option>
+                        </optgroup>
+                        <optgroup label="Teknologi & Komunikasi">
+                            <option value="Dinas Komunikasi dan Informatika">Dinas Komunikasi dan Informatika</option>
+                        </optgroup>
+                        <optgroup label="Keamanan & Ketertiban">
+                            <option value="Satuan Polisi Pamong Praja">Satuan Polisi Pamong Praja</option>
+                            <option value="Badan Penanggulangan Bencana Daerah">Badan Penanggulangan Bencana Daerah</option>
+                        </optgroup>
+                        <optgroup label="Kecamatan">
+                            <option value="Kecamatan Binjai Kota">Kecamatan Binjai Kota</option>
+                            <option value="Kecamatan Binjai Utara">Kecamatan Binjai Utara</option>
+                            <option value="Kecamatan Binjai Selatan">Kecamatan Binjai Selatan</option>
+                            <option value="Kecamatan Binjai Timur">Kecamatan Binjai Timur</option>
+                            <option value="Kecamatan Binjai Barat">Kecamatan Binjai Barat</option>
+                        </optgroup>
+                    </select>
+                    <div class="info-badge">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Pilih instansi terkait dengan masalah Anda
+                    </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Kategori</label>
-                        <select name="category" class="form-input" style="width: 100%; padding: 12px;" required>
-                            <option value="">Pilih...</option>
+                        <label class="form-label">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                            </svg>
+                            Kategori
+                        </label>
+                        <select name="category" class="form-input form-select-native" required>
+                            <option value="">Pilih kategori...</option>
                             <option value="Sistem Informasi">Sistem Informasi</option>
                             <option value="Jaringan">Jaringan</option>
                             <option value="Hardware">Hardware</option>
+                            <option value="Software">Software</option>
+                            <option value="Email">Email</option>
+                            <option value="Website">Website</option>
+                            <option value="Lainnya">Lainnya</option>
                         </select>
                     </div>
+                    
                     <div class="form-group">
-                        <label class="form-label">Foto Bukti</label>
-                        <input type="file" name="image" class="form-input-file" style="width: 100%; padding: 8px;">
+                        <label class="form-label">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            Foto Bukti (Opsional)
+                        </label>
+                        <div class="file-input-wrapper">
+                            <input type="file" name="image" id="file-input" accept="image/*">
+                            <label for="file-input" class="file-input-label">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                </svg>
+                                <span class="file-name">Pilih file atau drag & drop</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Deskripsi</label>
-                    <textarea name="description" rows="5" class="form-textarea" style="width: 100%; padding: 12px;" placeholder="Detail masalah..." required></textarea>
+                    <label class="form-label">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Deskripsi Detail
+                    </label>
+                    <textarea name="description" rows="6" class="form-textarea" placeholder="Jelaskan masalah secara detail, termasuk kapan terjadi, frekuensi, dan dampaknya..." required></textarea>
+                    <div class="info-badge">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                        Semakin detail, semakin cepat kami dapat membantu
+                    </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--form-border);">
-                    <a href="{{ url()->previous() }}" class="btn-cancel">Batal</a>
-                    <button type="submit" class="btn-submit">Kirim Laporan</button>
+                <div class="action-buttons">
+                    <a href="{{ url()->previous() }}" class="btn-cancel">
+                        ← Batal
+                    </a>
+                    <button type="submit" class="btn-submit">
+                        Kirim Laporan →
+                    </button>
                 </div>
             </form>
         </div>
@@ -121,12 +538,58 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
         $(document).ready(function() {
+            // Initialize Select2
             $('#instansi_select').select2({
-                placeholder: "Cari instansi...",
+                placeholder: "🔍 Cari instansi...",
                 allowClear: true,
                 width: '100%'
+            });
+
+            // File input display name
+            $('#file-input').on('change', function() {
+                var fileName = $(this).val().split('\\').pop();
+                if(fileName) {
+                    $(this).siblings('label').find('.file-name').text('📎 ' + fileName);
+                } else {
+                    $(this).siblings('label').find('.file-name').text('Pilih file atau drag & drop');
+                }
+            });
+
+            // Logika Notifikasi Saat Kirim (DIPERBARUI)
+            $('form').on('submit', function(e) {
+                e.preventDefault();
+                let form = this;
+
+                Swal.fire({
+                    title: 'Laporan Berhasil Terkirim!',
+                    text: 'Terima kasih atas laporannya. Tim kami akan segera meninjau tiket Anda.',
+                    icon: 'success',
+                    iconColor: '#3b82f6',
+                    background: '#ffffff',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Selesai',
+                    confirmButtonColor: '#3b82f6',
+                    customClass: {
+                        popup: 'rounded-20',
+                        title: 'font-bold text-slate-800',
+                        confirmButton: 'px-8 py-3 rounded-lg font-semibold'
+                    },
+                    buttonsStyling: true,
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInUp animate__faster'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutDown animate__faster'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
             });
         });
     </script>

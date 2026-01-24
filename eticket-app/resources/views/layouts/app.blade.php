@@ -292,6 +292,15 @@
             gap: 0.625rem;
             cursor: pointer;
         }
+
+        .badge-notification {
+            background: #ef4444;
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 6px;
+            margin-left: auto;
+        }
     </style>
 </head>
 <body>
@@ -320,6 +329,16 @@
                     </svg>
                     <span>Dashboard</span>
                 </a>
+
+                {{-- Menu Buat Laporan Khusus User --}}
+                @if(Auth::user()->role == 'user')
+                <a href="{{ route('tickets.create') }}" class="nav-link {{ request()->is('tickets/create') ? 'active' : '' }}">
+                    <svg class="nav-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span>Buat Laporan</span>
+                </a>
+                @endif
             </div>
 
             @if(Auth::user()->role == 'admin')
@@ -415,15 +434,13 @@
 
         function updateThemeIcon(theme) {
             if (theme === 'light') {
-                // Icon Bulan (ke Dark)
                 themeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>';
             } else {
-                // Icon Matahari (ke Light)
                 themeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.364 17.636l-.707.707M6.364 6.364l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path>';
             }
         }
 
-        // === LOGIKA SIDEBAR & LOGOUT (TETAP) ===
+        // === LOGIKA SIDEBAR & LOGOUT ===
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const wrapper = document.getElementById('mainWrapper');
@@ -436,14 +453,15 @@
         }
 
         function confirmLogout() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
             Swal.fire({
                 title: 'Konfirmasi Keluar',
                 text: "Sesi Anda akan diakhiri secara aman.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3b82f6',
-                background: savedTheme === 'dark' ? '#1e293b' : '#fff',
-                color: savedTheme === 'dark' ? '#fff' : '#000',
+                background: currentTheme === 'dark' ? '#1e293b' : '#fff',
+                color: currentTheme === 'dark' ? '#fff' : '#000',
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('logoutForm').submit();
