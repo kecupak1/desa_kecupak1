@@ -1,5 +1,28 @@
 <x-app-layout>
     <div class="space-y-6">
+        {{-- Notifikasi - Adaptif Mode Terang/Gelap --}}
+        @if(session('success'))
+        <div id="notif-header" 
+             class="flex items-center justify-between p-5 rounded-3xl shadow-lg border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-md ring-1 ring-emerald-500/20 animate-fade-in-down">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                        <path d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-emerald-500 dark:text-emerald-400 text-[11px] font-[900] uppercase tracking-wider leading-none">Berhasil Terupdate</p>
+                    <p class="text-emerald-600/90 dark:text-emerald-300/80 text-[10px] font-bold mt-1 uppercase tracking-tight">{{ session('success') }}</p>
+                </div>
+            </div>
+            <button onclick="this.parentElement.remove()" class="p-2 hover:bg-emerald-500/20 rounded-lg transition-colors group">
+                <svg class="w-4 h-4 text-emerald-500 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        @endif
+
         {{-- Header Section --}}
         <div style="background: var(--card-bg); border: 1px solid var(--border-ui);" 
              class="rounded-3xl p-8 transition-all duration-300 shadow-sm">
@@ -24,7 +47,7 @@
                 </a>
             </div>
 
-            {{-- Form Filter Utama - Ini yang membuat Urutan & Status berfungsi kembali --}}
+            {{-- Form Filter Utama --}}
             <form action="{{ route('admin.tickets.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 border-t" style="border-color: var(--border-ui);">
                 <div class="space-y-2">
                     <label style="color: var(--text-muted);" class="text-[9px] font-black uppercase tracking-widest ml-1 opacity-60">URUTAN DATA</label>
