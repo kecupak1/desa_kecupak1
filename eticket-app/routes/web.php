@@ -50,6 +50,8 @@ Route::middleware(['auth'])->group(function () {
     // PROFILE ROUTES
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // PERBAIKAN DI SINI: Mengubah URL agar tidak bertabrakan dengan rute bawaan auth.php
+    Route::patch('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // ADMIN ROUTES
