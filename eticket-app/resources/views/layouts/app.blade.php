@@ -203,6 +203,7 @@
             font-size: 1.25rem;
             font-weight: 800;
             color: var(--text-main);
+            text-transform: uppercase;
         }
 
         .header-brand h2 span {
@@ -301,10 +302,10 @@
         <div class="sidebar-header">
             <div class="logo-wrapper">
                 <div class="logo-icon">
-                    <img src="{{ asset('images/kominfo.png') }}" alt="DISKOMINFO">
+                    <img src="{{ asset('images/binjai.png') }}" alt="Binjai">
                 </div>
                 <div class="logo-text">
-                    <h1>DISKOMINFO</h1>
+                    <h1>E-TICKET</h1>
                     <p>Kota Binjai</p>
                 </div>
             </div>
@@ -365,7 +366,7 @@
             </button>
 
             <div class="header-brand ml-4">
-                <h2>E-TICKET <span>DISKOMINFO</span></h2>
+                <h2>E-TICKET <span>BINJAI</span></h2>
             </div>
 
             <div class="user-profile-wrapper">
