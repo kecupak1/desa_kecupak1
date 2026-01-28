@@ -354,7 +354,7 @@
                                             {{ $ticket->status == 'done' ? 'bg-emerald-100 text-emerald-700' : 
                                                ($ticket->status == 'process' ? 'bg-amber-100 text-amber-700' : 
                                                'bg-blue-100 text-blue-700') }}">
-                                            {{ $ticket->status == 'done' ? '✓ Selesai' : ($ticket->status == 'process' ? '⏱ Proses' : '📝 Baru') }}
+                                            {{ $ticket->status == 'done' ? '✓ Selesai' : ($ticket->status == 'process' ? '⏱ Proses' : '📝 waiting') }}
                                         </span>
                                     </td>
                                     <td class="px-8 py-5 text-right">

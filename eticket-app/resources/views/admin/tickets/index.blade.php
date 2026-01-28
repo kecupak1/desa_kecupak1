@@ -39,12 +39,6 @@
                         </p>
                     </div>
                 </div>
-                
-                <a href="{{ route('admin.tickets.create') }}" 
-                   class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-[900] text-xs tracking-widest transition-all shadow-lg shadow-blue-600/10 flex items-center gap-3">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
-                    BUAT LAPORAN BARU
-                </a>
             </div>
 
             {{-- Form Filter Utama --}}

@@ -40,9 +40,9 @@
             animation: fadeIn 0.6s ease-out;
             background: transparent; 
             min-height: 100vh;
-            /* Skala dinaikkan menjadi 0.95 */
-            zoom: 0.95;
-            -moz-transform: scale(0.95);
+            /* Skala dinaikkan menjadi 1.05 untuk efek zoom in */
+            zoom: 1.05;
+            -moz-transform: scale(1.05);
             -moz-transform-origin: top center;
         }
 
@@ -85,12 +85,9 @@
             box-shadow: var(--shadow-lg); 
         }
 
-        .dashboard-header { display: grid; grid-template-columns: auto 1fr auto; gap: var(--spacing-lg); align-items: center; margin-bottom: var(--spacing-xl); padding-bottom: var(--spacing-lg); border-bottom: 1px solid var(--border-color); }
+        .dashboard-header { display: grid; grid-template-columns: auto 1fr; gap: var(--spacing-lg); align-items: center; margin-bottom: var(--spacing-xl); padding-bottom: var(--spacing-lg); border-bottom: 1px solid var(--border-color); }
         .dashboard-title { color: var(--text-primary); font-size: 1.25rem; font-weight: 800; }
         .dashboard-location { color: var(--text-secondary); font-size: 0.875rem; }
-
-        .btn-create-report { display: flex; align-items: center; gap: 0.5rem; background: var(--accent-orange); color: white; padding: 0.75rem 1.5rem; border-radius: var(--radius-md); font-weight: 700; font-size: 0.875rem; text-decoration: none; transition: all 0.3s ease; }
-        .btn-create-report:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3); }
 
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg); }
         .stat-card { background: var(--inner-card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem; transition: all 0.3s ease; }
@@ -145,17 +142,6 @@
                 <div class="dashboard-title-section">
                     <h2 class="dashboard-title">Dashboard <span class="title-admin" style="color: var(--accent-orange)">{{ auth()->user()->role === 'admin' ? 'Admin' : 'User' }}</span></h2>
                     <p class="dashboard-location">Kota Binjai - Sistem Pelaporan Terintegrasi</p>
-                </div>
-                <div class="dashboard-actions">
-                    @php
-                        $createRoute = auth()->user()->role === 'admin' ? 'admin.tickets.create' : 'tickets.create';
-                    @endphp
-                    <a href="{{ Route::has($createRoute) ? route($createRoute) : route('tickets.create') }}" class="btn-create-report">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        BUAT LAPORAN
-                    </a>
                 </div>
             </div>
 
