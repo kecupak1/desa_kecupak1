@@ -246,10 +246,89 @@
                 .table-header {
                     background-color: var(--ds-bg-table-header);
                 }
+
+                /* Search Input Styling */
+                .ds-search-input {
+                    background: var(--ds-bg-card);
+                    border: 1px solid var(--ds-border);
+                    border-radius: 12px;
+                    padding: 10px 16px 10px 40px;
+                    color: var(--ds-text-main);
+                    width: 100%;
+                    max-width: 300px;
+                    transition: all 0.2s;
+                }
+
+                .ds-search-input:focus {
+                    outline: none;
+                    border-color: var(--ds-primary);
+                }
+
+                /* Filter Select Styling */
+                .ds-filter-select {
+                    background: var(--ds-bg-card);
+                    border: 1px solid var(--ds-border);
+                    border-radius: 12px;
+                    padding: 10px 36px 10px 16px;
+                    color: var(--ds-text-main);
+                    font-size: 14px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    appearance: none;
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+                    background-repeat: no-repeat;
+                    background-position: right 12px center;
+                    background-size: 16px;
+                }
+
+                .ds-filter-select:focus {
+                    outline: none;
+                    border-color: var(--ds-primary);
+                }
+
+                /* Styling Pagination agar serasi dengan Deep Slate */
+                .pagination-modern nav {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                }
+
+                .pagination-modern svg {
+                    width: 20px;
+                    height: 20px;
+                    display: inline;
+                }
+
+                /* Sembunyikan pagination versi mobile yang sering bikin berantakan */
+                .pagination-modern nav > div:first-child {
+                    display: none;
+                }
+
+                @media (min-width: 640px) {
+                    .pagination-modern nav > div:first-child {
+                        display: flex;
+                    }
+                }
+
+                /* Warna Angka Aktif */
+                .pagination-modern span[aria-current="page"] span {
+                    background-color: var(--ds-primary) !important;
+                    color: white !important;
+                    border-radius: 8px;
+                }
+
+                /* Warna Angka Lainnya */
+                .pagination-modern a, .pagination-modern span {
+                    border-radius: 8px !important;
+                    background-color: var(--ds-bg-card) !important;
+                    color: var(--ds-text-main) !important;
+                    border: 1px solid var(--ds-border) !important;
+                }
             </style>
 
             <div class="dashboard-scope space-y-8">
-                <!-- Header Section -->
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                     <div>
                         <h1 class="text-5xl font-black tracking-tight mb-2">
@@ -269,7 +348,6 @@
                     </a>
                 </div>
 
-                <!-- Stats Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="ds-stat-card bg-gradient-to-br from-blue-500 to-blue-600">
                         <div class="stat-icon">
@@ -278,7 +356,7 @@
                             </svg>
                         </div>
                         <p class="text-sm font-bold uppercase tracking-widest opacity-90 relative z-1">Total Tiket</p>
-                        <h2 class="text-6xl font-black mt-3 relative z-1">{{ $tickets->count() }}</h2>
+                        <h2 class="text-6xl font-black mt-3 relative z-1">{{ $tickets->total() }}</h2>
                         <p class="text-xs opacity-75 mt-2 relative z-1">Semua laporan</p>
                     </div>
 
@@ -305,20 +383,41 @@
                     </div>
                 </div>
 
-                <!-- Recent Reports Table -->
                 <div class="ds-card overflow-hidden">
-                    <div class="px-8 py-6 border-b flex justify-between items-center" style="border-color: var(--ds-border)">
+                    <div class="px-8 py-6 border-b flex flex-col md:flex-row justify-between items-start md:items-center gap-4" style="border-color: var(--ds-border)">
                         <div>
                             <h2 class="font-black text-2xl main-title">Laporan Terbaru</h2>
-                            <p class="text-sm mt-1 subtitle">5 laporan terakhir yang masuk</p>
+                            <p class="text-sm mt-1 subtitle">Data laporan yang masuk ke sistem</p>
                         </div>
-                        <span class="live-badge">LIVE DATA</span>
+                        
+                        <div class="flex flex-wrap items-center gap-4 w-full md:w-auto">
+                            <form action="{{ request()->url() }}" method="GET" class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                                <div class="relative flex-1 md:flex-none">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <svg class="h-5 w-5 subtitle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                        </svg>
+                                    </span>
+                                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari laporan..." class="ds-search-input">
+                                </div>
+                                
+                                {{-- PERUBAHAN: Menambahkan onchange untuk fungsi filter --}}
+                                <select name="status" onchange="this.form.submit()" class="ds-filter-select">
+                                    <option value="">Semua Status</option>
+                                    <option value="waiting" {{ request('status') == 'waiting' ? 'selected' : '' }}>📝 Waiting</option>
+                                    <option value="process" {{ request('status') == 'process' ? 'selected' : '' }}>⏱ Process</option>
+                                    <option value="done" {{ request('status') == 'done' ? 'selected' : '' }}>✓ Done</option>
+                                </select>
+                            </form>
+                            <span class="live-badge hidden lg:inline-flex">LIVE DATA</span>
+                        </div>
                     </div>
 
                     <div class="overflow-x-auto">
                         <table class="w-full">
                             <thead>
                                 <tr class="text-xs font-bold uppercase tracking-wider border-b table-header" style="color: var(--ds-text-soft); border-color: var(--ds-border)">
+                                    <th class="text-center px-6 py-5 w-16">No</th>
                                     <th class="text-left px-8 py-5">Ref ID</th>
                                     <th class="text-left px-8 py-5">Permasalahan</th>
                                     <th class="text-center px-8 py-5">Status</th>
@@ -326,8 +425,11 @@
                                 </tr>
                             </thead>
                             <tbody style="color: var(--ds-text-main)">
-                                @forelse($tickets->take(5) as $ticket)
+                                @forelse($tickets as $index => $ticket)
                                 <tr class="border-b last:border-0 ds-table-row" style="border-color: var(--ds-border)">
+                                    <td class="px-6 py-5 text-center font-medium subtitle">
+                                        {{ $tickets->firstItem() + $index }}
+                                    </td>
                                     <td class="px-8 py-5">
                                         <div class="flex items-center gap-3">
                                             <div class="w-10 h-10 rounded-xl icon-box flex items-center justify-center">
@@ -352,8 +454,8 @@
                                     <td class="px-8 py-5 text-center">
                                         <span class="ds-badge 
                                             {{ $ticket->status == 'done' ? 'bg-emerald-100 text-emerald-700' : 
-                                               ($ticket->status == 'process' ? 'bg-amber-100 text-amber-700' : 
-                                               'bg-blue-100 text-blue-700') }}">
+                                                ($ticket->status == 'process' ? 'bg-amber-100 text-amber-700' : 
+                                                'bg-blue-100 text-blue-700') }}">
                                             {{ $ticket->status == 'done' ? '✓ Selesai' : ($ticket->status == 'process' ? '⏱ Proses' : '📝 waiting') }}
                                         </span>
                                     </td>
@@ -368,7 +470,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="4" class="py-20 text-center">
+                                    <td colspan="5" class="py-20 text-center">
                                         <div class="flex flex-col items-center gap-4">
                                             <div class="w-20 h-20 rounded-full empty-state-icon flex items-center justify-center">
                                                 <svg class="w-10 h-10 subtitle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -377,7 +479,7 @@
                                             </div>
                                             <div>
                                                 <p class="font-bold text-lg main-title">Belum ada laporan</p>
-                                                <p class="text-sm mt-1 subtitle">Buat laporan pertama Anda sekarang</p>
+                                                <p class="text-sm mt-1 subtitle">Data tidak ditemukan atau belum ada laporan</p>
                                             </div>
                                         </div>
                                     </td>
@@ -385,6 +487,13 @@
                                 @endforelse
                             </tbody>
                         </table>
+                    </div>
+                    
+                    <div class="px-8 py-6 border-t" style="border-color: var(--ds-border)">
+                        {{-- PERUBAHAN: Dibungkus dengan class pagination-modern --}}
+                        <div class="mt-4 pagination-modern">
+                            {{ $tickets->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

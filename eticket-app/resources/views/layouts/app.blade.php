@@ -17,6 +17,7 @@
         :root {
             --primary-dark: #0b1120;
             --sidebar-width: 280px;
+            --sidebar-collapsed-width: 80px;
             
             /* Variabel Warna Dinamis */
             --bg-main: var(--primary-dark);
@@ -72,11 +73,29 @@
             flex-direction: column;
             border-right: 1px solid var(--border-ui);
             box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .sidebar.hidden {
-            transform: translateX(-100%);
+        /* Sidebar Saat Tertutup (Mini) */
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar.collapsed .logo-text,
+        .sidebar.collapsed .nav-link span,
+        .sidebar.collapsed .nav-section-title,
+        .sidebar.collapsed .logout-btn span {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 0.875rem 0;
+            margin: 0.25rem 0.75rem;
+        }
+
+        .sidebar.collapsed .logo-wrapper {
+            justify-content: center;
         }
 
         .sidebar-header {
@@ -101,6 +120,7 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+            flex-shrink: 0;
         }
 
         .logo-icon img {
@@ -170,11 +190,11 @@
         .main-wrapper {
             margin-left: var(--sidebar-width);
             min-height: 100vh;
-            transition: margin-left 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .main-wrapper.full-width {
-            margin-left: 0;
+            margin-left: var(--sidebar-collapsed-width);
         }
 
         .top-header {
@@ -190,7 +210,6 @@
             z-index: 50;
             border-bottom: 1px solid var(--border-ui);
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-            transition: background 0.3s ease;
         }
 
         .menu-toggle {
@@ -261,6 +280,7 @@
             justify-content: center;
             font-weight: 800;
             color: white;
+            flex-shrink: 0;
         }
 
         .user-role {
@@ -304,11 +324,16 @@
             border-radius: 6px;
             margin-left: auto;
         }
+
+        .sidebar.collapsed .badge-notification {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            margin-left: 0;
+        }
     </style>
 </head>
 <body>
-
-    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <aside id="sidebar" class="sidebar">
         <div class="sidebar-header">
@@ -333,7 +358,6 @@
                     <span>Dashboard</span>
                 </a>
 
-                {{-- Menu Buat Laporan Khusus User --}}
                 @if(Auth::user()->role == 'user')
                 <a href="{{ route('tickets.create') }}" class="nav-link {{ request()->is('tickets/create') ? 'active' : '' }}">
                     <svg class="nav-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -353,6 +377,13 @@
                         </svg>
                         <span>Kelola Tiket</span>
                         <span class="badge-notification">{{ \App\Models\Ticket::count() }}</span>
+                    </a>
+                    
+                    <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                        <svg class="nav-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        <span>Kelola Pengguna</span>
                     </a>
                 </div>
             @endif
@@ -393,8 +424,7 @@
 
             <div class="user-profile-wrapper">
                 <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">
-                    <svg id="themeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        </svg>
+                    <svg id="themeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"></svg>
                 </button>
 
                 <div class="user-profile-btn">
@@ -421,7 +451,6 @@
         const htmlElement = document.documentElement;
         const themeIcon = document.getElementById('themeIcon');
         
-        // Cek Local Storage saat reload
         const savedTheme = localStorage.getItem('theme') || 'dark';
         htmlElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
@@ -429,7 +458,6 @@
         function toggleTheme() {
             const currentTheme = htmlElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
             htmlElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             updateThemeIcon(newTheme);
@@ -443,16 +471,14 @@
             }
         }
 
-        // === LOGIKA SIDEBAR & LOGOUT ===
+        // === LOGIKA SIDEBAR TERTUTUP (MINI) ===
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const wrapper = document.getElementById('mainWrapper');
-            if (window.innerWidth >= 1024) {
-                sidebar.classList.toggle('hidden');
-                wrapper.classList.toggle('full-width');
-            } else {
-                sidebar.classList.toggle('active');
-            }
+            
+            // Toggle class 'collapsed' untuk sidebar dan 'full-width' untuk margin konten
+            sidebar.classList.toggle('collapsed');
+            wrapper.classList.toggle('full-width');
         }
 
         function confirmLogout() {

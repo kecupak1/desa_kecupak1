@@ -1,70 +1,60 @@
 <?php
 
-use App\Models\Ticket;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\TicketController;
-use App\Http\Controllers\Admin\AdminTicketController;
-use App\Http\Controllers\ProfileController;
+use Illuminate\Http\Request;
 
-// 1. Jalankan rute bawaan Laravel Breeze dulu
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\AdminTicketController;
+use App\Http\Controllers\Admin\UserController;
+
+// 1. AUTHENTICATION & GUEST ROUTES
 require __DIR__.'/auth.php';
 
-// 2. TIMPA rute login & register bawaan dengan view welcome kamu (Deep Slate)
-// Dengan menaruhnya di bawah 'require', rute ini yang akan diprioritaskan
+// Timpa rute Breeze agar login/register kembali ke welcome (Deep Slate)
 Route::get('/', function () { return view('welcome'); });
 Route::get('/login', function () { return view('welcome'); })->name('login');
 Route::get('/register', function () { return view('welcome'); })->name('register');
 
-// ROUTE SUPPORT
-Route::get('/support', function () {
-    return view('support');
-})->name('support');
+Route::get('/support', function () { return view('support'); })->name('support');
 
+// 2. PROTECTED ROUTES (AUTH)
 Route::middleware(['auth'])->group(function () {
     
-    // DASHBOARD LOGIC
-    Route::get('/dashboard', function () {
-        $user = Auth::user();
-        $role = strtolower(trim($user->role));
+    // Dashboard (Logika ditangani DashboardController)
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        if ($role === 'admin') {
-            return app(AdminTicketController::class)->dashboard();
-        } else {
-            $tickets = Ticket::where('user_id', $user->id)->latest()->get();
-            $isAdmin = false;
-            $stats = [
-                'total'   => $tickets->count(),
-                'waiting' => $tickets->where('status', 'waiting')->count(),
-                'process' => $tickets->where('status', 'process')->count(),
-                'done'    => $tickets->where('status', 'done')->count(),
-            ];
-            return view('dashboard', compact('tickets', 'isAdmin', 'stats'));
-        }
-    })->name('dashboard');
-
-    // TICKET ROUTES
+    // Ticket Resources (Biasa & My Tickets)
     Route::resource('tickets', TicketController::class);
     Route::get('/my-tickets', [TicketController::class, 'myTickets'])->name('my.tickets');
 
-    // PROFILE ROUTES
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // PERBAIKAN DI SINI: Mengubah URL agar tidak bertabrakan dengan rute bawaan auth.php
-    Route::patch('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Profile Management
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('/profile', 'edit')->name('profile.edit');
+        Route::patch('/profile', 'update')->name('profile.update');
+        Route::patch('/profile/update-password', 'updatePassword')->name('profile.password.update');
+        Route::delete('/profile', 'destroy')->name('profile.destroy');
+    });
 
-    // ADMIN ROUTES
+    // 3. ADMIN ROUTES
     Route::prefix('admin')->name('admin.')->group(function () {
+        // Dashboard Khusus Admin
         Route::get('/dashboard', [AdminTicketController::class, 'dashboard'])->name('dashboard');
-        Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
         
-        // Penambahan rute agar tombol "Buat Laporan" admin berfungsi
-        Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
-        Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
-        
-        Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
-        Route::patch('/tickets/{ticket}/status', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
-        Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy'])->name('tickets.destroy');
+        // Ticket Management untuk Admin
+        Route::controller(TicketController::class)->group(function () {
+            Route::get('/tickets', 'index')->name('tickets.index');
+            Route::get('/tickets/create', 'create')->name('tickets.create');
+            Route::post('/tickets', 'store')->name('tickets.store');
+            Route::get('/tickets/{ticket}', 'show')->name('tickets.show');
+            Route::patch('/tickets/{ticket}/status', 'updateStatus')->name('tickets.updateStatus');
+            Route::delete('/tickets/{ticket}', 'destroy')->name('tickets.destroy');
+        });
+
+        // User Management
+        Route::resource('users', UserController::class);
+        Route::patch('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.resetPassword');
     });
 });

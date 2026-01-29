@@ -22,6 +22,18 @@ class TicketController extends Controller
             $query->where('user_id', $user->id);
         }
 
+        // --- TAMBAHAN FITUR SEARCH DISINI ---
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'LIKE', "%{$search}%")
+                  ->orWhere('ticket_number', 'LIKE', "%{$search}%")
+                  ->orWhereHas('user', function($userQuery) use ($search) {
+                      $userQuery->where('name', 'LIKE', "%{$search}%");
+                  });
+            });
+        }
+
         // 3. Logika Filter Status (dari dropdown "status")
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -37,9 +49,8 @@ class TicketController extends Controller
         // 5. Eksekusi Pagination & pertahankan parameter URL saat pindah halaman
         $tickets = $query->paginate(10)->withQueryString();
         
+        
         // --- PERBAIKAN LOGIKA VIEW DISINI ---
-        // Jika yang login Admin, arahkan ke folder admin/tickets/index
-        // Jika bukan, arahkan ke folder tickets/index
         if (strtolower(trim($user->role)) === 'admin') {
             return view('admin.tickets.index', compact('tickets', 'user'));
         }
