@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tickets', function (Blueprint $blueprint) {
-            // Kita menggunakan nullable agar data lama yang sudah ada tidak error
-            // Column diletakkan setelah kolom 'description' (opsional)
-            $blueprint->timestamp('created_at')->nullable()->after('description');
-            $blueprint->timestamp('updated_at')->nullable()->after('created_at');
+        Schema::table('tickets', function (Blueprint $table) {
+            // Kita cek dulu, kalau belum ada kolom created_at baru kita buat
+            if (!Schema::hasColumn('tickets', 'created_at')) {
+                $table->timestamp('created_at')->nullable()->after('description');
+            }
+            
+            // Cek juga untuk updated_at
+            if (!Schema::hasColumn('tickets', 'updated_at')) {
+                $table->timestamp('updated_at')->nullable()->after('created_at');
+            }
         });
     }
 
@@ -24,8 +29,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tickets', function (Blueprint $blueprint) {
-            $blueprint->dropColumn(['created_at', 'updated_at']);
+        Schema::table('tickets', function (Blueprint $table) {
+            $table->dropColumn(['created_at', 'updated_at']);
         });
     }
 };
