@@ -80,14 +80,11 @@ class TicketController extends Controller
         }
 
         // --- PERBAIKAN LOGIKA WHATSAPP ---
-        // 1. Hilangkan spasi atau karakter aneh
         $waRaw = str_replace([' ', '-', '+'], '', $request->whatsapp);
-        // 2. Hilangkan angka 0 atau 62 di depan jika user tetap mengetiknya
         $waClean = ltrim($waRaw, '0');
         if (str_starts_with($waClean, '62')) {
             $waClean = substr($waClean, 2);
         }
-        // 3. Gabungkan dengan 62
         $finalWhatsapp = '62' . $waClean;
 
         Ticket::create([
@@ -113,9 +110,25 @@ class TicketController extends Controller
         }
 
         $request->validate(['status' => 'required|in:waiting,process,done']);
+        
+        // Update Status
         $ticket->update(['status' => $request->status]);
 
-        return back()->with('success', 'Status Tiket #' . $ticket->ticket_number . ' Berhasil diperbarui!');
+        // --- LOGIKA CHAT WA OTOMATIS BERDASARKAN STATUS ---
+        $statusText = [
+            'waiting' => 'MENUNGGU ANTRIAN',
+            'process' => 'SEDANG DIPROSES',
+            'done'    => 'SELESAI/BERHASIL DITANGANI'
+        ];
+
+        $pesan = "Halo, kami menginformasikan bahwa laporan Anda dengan nomor tiket *" . $ticket->ticket_number . "* telah diperbarui menjadi: *" . $statusText[$request->status] . "*.\n\nTerima kasih.";
+        
+        $waUrl = "https://wa.me/{$ticket->whatsapp}?text=" . urlencode($pesan);
+
+        return back()->with([
+            'success' => 'Status Tiket #' . $ticket->ticket_number . ' Berhasil diperbarui!',
+            'waUrl' => $waUrl
+        ]);
     }
 
     public function destroy(Ticket $ticket)

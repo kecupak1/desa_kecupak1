@@ -518,7 +518,8 @@
                         <div style="display: flex; align-items: center; background: var(--form-input-bg); border: 1.5px solid var(--form-input-border); border-radius: 12px; padding: 12px 16px; color: var(--form-text); font-size: 14px; font-weight: 600; min-width: 60px;">
                             +62
                         </div>
-                        <input type="text" 
+                        <input type="text"
+                                maxlength="15" 
                                name="whatsapp" 
                                class="form-input" 
                                placeholder="8123456789" 

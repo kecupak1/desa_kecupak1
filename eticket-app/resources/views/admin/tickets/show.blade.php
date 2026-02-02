@@ -21,11 +21,65 @@
             display: block;
             opacity: 0.7;
         }
+        
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.3s ease-out;
+        }
     </style>
 
     <div class="py-10 transition-all duration-500 font-body min-h-screen">
         <div class="max-w-5xl mx-auto px-4 space-y-6">
             
+            {{-- Flash Message Alert --}}
+            @if(session('success'))
+            <div class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-6 py-4 rounded-2xl flex items-center gap-4 animate-fade-in">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <p class="font-bold text-sm uppercase tracking-wider">Berhasil!</p>
+                    <p class="text-xs opacity-80 mt-1">{{ session('success') }}</p>
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-emerald-400 hover:text-emerald-300 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            @endif
+
+            @if(session('error'))
+            <div class="bg-red-500/10 border border-red-500/30 text-red-400 px-6 py-4 rounded-2xl flex items-center gap-4 animate-fade-in">
+                <div class="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <p class="font-bold text-sm uppercase tracking-wider">Gagal!</p>
+                    <p class="text-xs opacity-80 mt-1">{{ session('error') }}</p>
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-300 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            @endif
+
             {{-- Header Section --}}
             <div style="background: var(--card-bg); border: 1px solid var(--border-ui);" 
                  class="flex flex-col md:flex-row items-center justify-between gap-6 p-6 rounded-3xl shadow-sm overflow-hidden relative">
@@ -54,13 +108,13 @@
                 <div class="flex items-center gap-3">
                     <div class="text-right hidden md:block">
                         <p style="color: var(--text-muted);" class="text-[9px] font-bold uppercase tracking-widest opacity-50">Status Saat Ini</p>
-                        <p class="font-premium text-xs {{ $ticket->status == 'done' ? 'text-emerald-500' : ($ticket->status == 'process' ? 'text-blue-500' : 'text-orange-500') }}">
+                        <p class="font-premium text-xs {{ $ticket->status == 'done' ? 'text-emerald-500' : ($ticket->status == 'process' ? 'text-blue-500' : 'text-yellow-500') }}">
                             {{ strtoupper($ticket->status) }}
                         </p>
                     </div>
                     <div class="w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner
-                        {{ $ticket->status == 'done' ? 'bg-emerald-500/10 border border-emerald-500/20' : ($ticket->status == 'process' ? 'bg-blue-500/10 border border-blue-500/20' : 'bg-orange-500/10 border border-orange-500/20') }}">
-                        <div class="w-3 h-3 rounded-full {{ $ticket->status == 'done' ? 'bg-emerald-500' : ($ticket->status == 'process' ? 'bg-blue-500' : 'bg-orange-500') }}"></div>
+                        {{ $ticket->status == 'done' ? 'bg-emerald-500/10 border border-emerald-500/20' : ($ticket->status == 'process' ? 'bg-blue-500/10 border border-blue-500/20' : 'bg-yellow-500/10 border border-yellow-500/20') }}">
+                        <div class="w-3 h-3 rounded-full {{ $ticket->status == 'done' ? 'bg-emerald-500' : ($ticket->status == 'process' ? 'bg-blue-500' : 'bg-yellow-500') }}"></div>
                     </div>
                 </div>
             </div>
@@ -145,35 +199,35 @@
                                         <p class="text-[9px] font-bold uppercase tracking-widest">Tidak Ada Lampiran</p>
                                     </div>
                                 @endif
+
+                                {{-- Admin Status Controller - DI BAWAH GAMBAR --}}
+                                @if(strtolower(trim(auth()->user()->role)) === 'admin')
+                                <div class="mt-8 pt-8 border-t" style="border-color: var(--border-ui);">
+                                    <span class="detail-label text-center mb-6 block">Pembaruan Status</span>
+                                    <form action="{{ route('admin.tickets.updateStatus', $ticket) }}" method="POST" class="flex flex-col gap-3">
+                                        @csrf @method('PATCH')
+                                        
+                                        <button name="status" value="waiting" 
+                                            class="flex items-center justify-between px-6 py-4 rounded-xl border-2 transition-all duration-300 {{ $ticket->status == 'waiting' ? 'bg-yellow-500 border-yellow-500 text-white shadow-lg shadow-yellow-500/20' : 'bg-transparent border-slate-700/20 text-slate-500 hover:border-yellow-500/40' }}">
+                                            <span class="font-bold text-[10px] uppercase tracking-widest">Menunggu (Waiting)</span>
+                                            <div class="w-2 h-2 rounded-full {{ $ticket->status == 'waiting' ? 'bg-white' : 'bg-slate-600' }}"></div>
+                                        </button>
+
+                                        <button name="status" value="process" 
+                                            class="flex items-center justify-between px-6 py-4 rounded-xl border-2 transition-all duration-300 {{ $ticket->status == 'process' ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent border-slate-700/20 text-slate-500 hover:border-blue-600/40' }}">
+                                            <span class="font-bold text-[10px] uppercase tracking-widest">Diproses (Process)</span>
+                                            <div class="w-2 h-2 rounded-full {{ $ticket->status == 'process' ? 'bg-white' : 'bg-slate-600' }}"></div>
+                                        </button>
+
+                                        <button name="status" value="done" 
+                                            class="flex items-center justify-between px-6 py-4 rounded-xl border-2 transition-all duration-300 {{ $ticket->status == 'done' ? 'bg-emerald-500 border-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-transparent border-slate-700/20 text-slate-500 hover:border-emerald-500/40' }}">
+                                            <span class="font-bold text-[10px] uppercase tracking-widest">Selesai (Done)</span>
+                                            <div class="w-2 h-2 rounded-full {{ $ticket->status == 'done' ? 'bg-white' : 'bg-slate-600' }}"></div>
+                                        </button>
+                                    </form>
+                                </div>
+                                @endif
                             </div>
-
-                            {{-- Admin Status Controller --}}
-                            @if(strtolower(auth()->user()->role) === 'admin')
-                            <div class="pt-10 border-t" style="border-color: var(--border-ui);">
-                                <span class="detail-label text-center mb-6">Pembaruan Status</span>
-                                <form action="{{ route('admin.tickets.updateStatus', $ticket) }}" method="POST" class="flex flex-col gap-3">
-                                    @csrf @method('PATCH')
-                                    
-                                    <button name="status" value="waiting" 
-                                        class="flex items-center justify-between px-6 py-4 rounded-xl border-2 transition-all duration-300 {{ $ticket->status == 'waiting' ? 'bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-transparent border-slate-700/20 text-slate-500 hover:border-orange-500/40' }}">
-                                        <span class="font-bold text-[10px] uppercase tracking-widest">Menunggu (Waiting)</span>
-                                        <div class="w-2 h-2 rounded-full {{ $ticket->status == 'waiting' ? 'bg-white' : 'bg-slate-600' }}"></div>
-                                    </button>
-
-                                    <button name="status" value="process" 
-                                        class="flex items-center justify-between px-6 py-4 rounded-xl border-2 transition-all duration-300 {{ $ticket->status == 'process' ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent border-slate-700/20 text-slate-500 hover:border-blue-600/40' }}">
-                                        <span class="font-bold text-[10px] uppercase tracking-widest">Diproses (Process)</span>
-                                        <div class="w-2 h-2 rounded-full {{ $ticket->status == 'process' ? 'bg-white' : 'bg-slate-600' }}"></div>
-                                    </button>
-
-                                    <button name="status" value="done" 
-                                        class="flex items-center justify-between px-6 py-4 rounded-xl border-2 transition-all duration-300 {{ $ticket->status == 'done' ? 'bg-emerald-500 border-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-transparent border-slate-700/20 text-slate-500 hover:border-emerald-500/40' }}">
-                                        <span class="font-bold text-[10px] uppercase tracking-widest">Selesai (Done)</span>
-                                        <div class="w-2 h-2 rounded-full {{ $ticket->status == 'done' ? 'bg-white' : 'bg-slate-600' }}"></div>
-                                    </button>
-                                </form>
-                            </div>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -187,4 +241,12 @@
             </div>
         </div>
     </div>
+
+    {{-- Auto Open WhatsApp Script --}}
+    @if(session('waUrl'))
+    <script>
+        // Auto open WhatsApp after status update
+        window.open('{{ session("waUrl") }}', '_blank');
+    </script>
+    @endif
 </x-app-layout>

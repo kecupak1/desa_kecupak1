@@ -47,11 +47,20 @@
                         </div>
                     </div>
 
-                    <div class="w-full lg:w-96">
+                    <div class="w-full lg:w-auto flex flex-col sm:flex-row gap-3">
+                        {{-- Tombol Tambah Tiket --}}
+                        <a href="{{ route('admin.tickets.create') }}" 
+                           class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition-all shadow-lg shadow-blue-500/25">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Tambah Tiket
+                        </a>
+
                         <form action="{{ route('admin.tickets.index') }}" method="GET" class="flex gap-2">
-                            <div class="relative flex-1 group">
+                            <div class="relative flex-1 lg:w-80 group">
                                 <input type="text" name="search" value="{{ request('search') }}" 
-                                       placeholder="Cari judul, nomor, atau pelapor..." 
+                                       placeholder="Cari tiket..." 
                                        style="background: var(--bg-main); color: var(--text-main); border: 1.5px solid var(--border-ui);"
                                        class="w-full pl-11 pr-4 py-3 rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-sm">
                                 <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600 dark:text-blue-400 group-focus-within:scale-110 transition-transform">
@@ -136,6 +145,7 @@
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wide" style="color: var(--text-muted);">Info Tiket</th>
+                            <th class="px-6 py-4 text-center text-xs font-bold uppercase tracking-wide" style="color: var(--text-muted);">Kategori</th>
                             <th class="px-6 py-4 text-center text-xs font-bold uppercase tracking-wide" style="color: var(--text-muted);">Waktu</th>
                             <th class="px-6 py-4 text-center text-xs font-bold uppercase tracking-wide" style="color: var(--text-muted);">WhatsApp</th>
                             <th class="px-6 py-4 text-center text-xs font-bold uppercase tracking-wide" style="color: var(--text-muted);">Status</th>
@@ -179,6 +189,13 @@
                                     </div>
                                 </div>
                             </td>
+
+                            <td class="px-6 py-5 text-center">
+                                <span style="background: var(--bg-main); border: 1px solid var(--border-ui); color: var(--text-main);" 
+                                      class="inline-flex px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm">
+                                    {{ $ticket->category->name ?? 'Tanpa Kategori' }}
+                                </span>
+                            </td>
                             
                             <td class="px-6 py-5 text-center">
                                 <div class="inline-flex flex-col items-center gap-1 px-4 py-2.5 rounded-xl border" style="background: var(--bg-main); border-color: var(--border-ui);">
@@ -192,7 +209,6 @@
                                 </div>
                             </td>
 
-                            {{-- KOLOM WHATSAPP --}}
                             <td class="px-6 py-5 text-center">
                                 @if($ticket->whatsapp)
                                     <div class="flex flex-col items-center gap-2">
@@ -259,7 +275,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="px-8 py-20 text-center">
+                            <td colspan="7" class="px-8 py-20 text-center">
                                 <div class="flex flex-col items-center justify-center gap-4">
                                     <div class="w-24 h-24 rounded-3xl flex items-center justify-center border" style="background: var(--bg-main); border-color: var(--border-ui);">
                                         <svg class="w-12 h-12" style="color: var(--text-muted); opacity: 0.3;" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
