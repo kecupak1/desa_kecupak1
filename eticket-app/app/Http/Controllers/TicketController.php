@@ -70,6 +70,7 @@ class TicketController extends Controller
             'instansi'    => 'required|string', 
             'category'    => 'required',
             'description' => 'required',
+            'whatsapp'    => 'required|numeric', // Validasi angka saja
             'image'       => 'nullable|image|mimes:jpeg,png,jpg|max:10000',
         ]);
 
@@ -78,6 +79,17 @@ class TicketController extends Controller
             $imagePath = $request->file('image')->store('tickets', 'public');
         }
 
+        // --- PERBAIKAN LOGIKA WHATSAPP ---
+        // 1. Hilangkan spasi atau karakter aneh
+        $waRaw = str_replace([' ', '-', '+'], '', $request->whatsapp);
+        // 2. Hilangkan angka 0 atau 62 di depan jika user tetap mengetiknya
+        $waClean = ltrim($waRaw, '0');
+        if (str_starts_with($waClean, '62')) {
+            $waClean = substr($waClean, 2);
+        }
+        // 3. Gabungkan dengan 62
+        $finalWhatsapp = '62' . $waClean;
+
         Ticket::create([
             'ticket_number' => 'TCK-' . strtoupper(Str::random(6)), 
             'user_id'       => Auth::id(), 
@@ -85,6 +97,7 @@ class TicketController extends Controller
             'instansi'      => $validated['instansi'],
             'category'      => $validated['category'],
             'description'   => $validated['description'],
+            'whatsapp'      => $finalWhatsapp, 
             'image'         => $imagePath,
             'status'        => 'waiting',
             'priority'      => $request->priority ?? 'low',

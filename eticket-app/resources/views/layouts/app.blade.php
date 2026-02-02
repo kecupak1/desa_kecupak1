@@ -547,7 +547,7 @@
                     <span>Dashboard</span>
                 </a>
 
-                @if(Auth::user()->role == 'user')
+                @if(isset(Auth::user()->role) && strtolower(trim(Auth::user()->role)) === 'user')
                 <a href="{{ route('tickets.create') }}" class="nav-link {{ request()->is('tickets/create') ? 'active' : '' }}">
                     <svg class="nav-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -557,7 +557,7 @@
                 @endif
             </div>
 
-            @if(Auth::user()->role == 'admin')
+            @if(isset(Auth::user()->role) && strtolower(trim(Auth::user()->role)) === 'admin')
                 <div class="nav-section">
                     <div class="nav-section-title">Administrator</div>
                     <a href="/tickets" class="nav-link {{ request()->is('tickets') ? 'active' : '' }}">
