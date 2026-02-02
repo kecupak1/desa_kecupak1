@@ -87,8 +87,8 @@
                 <div class="absolute left-0 top-0 w-1.5 h-full bg-blue-600"></div>
 
                 <div class="flex items-center gap-5">
-                    {{-- Tombol Kembali yang diperbaiki --}}
-                    <a href="{{ auth()->user()->role === 'admin' ? route('admin.tickets.index') : route('dashboard') }}" 
+                    {{-- Tombol Kembali - Diarahkan ke Kelola Tiket (Admin) --}}
+                    <a href="{{ route('admin.tickets.index') }}" 
                        style="background: var(--bg-main); border: 1px solid var(--border-ui);"
                        class="group p-3 rounded-2xl hover:bg-blue-600 transition-all duration-300 shadow-sm">
                         <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
@@ -207,6 +207,10 @@
                                     <form action="{{ route('admin.tickets.updateStatus', $ticket) }}" method="POST" class="flex flex-col gap-3">
                                         @csrf @method('PATCH')
                                         
+                                        {{-- Hidden inputs untuk mengirim data user ke controller agar bisa buat link WA --}}
+                                        <input type="hidden" name="phone" value="{{ $ticket->user->phone }}">
+                                        <input type="hidden" name="ticket_number" value="{{ $ticket->ticket_number }}">
+
                                         <button name="status" value="waiting" 
                                             class="flex items-center justify-between px-6 py-4 rounded-xl border-2 transition-all duration-300 {{ $ticket->status == 'waiting' ? 'bg-yellow-500 border-yellow-500 text-white shadow-lg shadow-yellow-500/20' : 'bg-transparent border-slate-700/20 text-slate-500 hover:border-yellow-500/40' }}">
                                             <span class="font-bold text-[10px] uppercase tracking-widest">Menunggu (Waiting)</span>
@@ -242,11 +246,32 @@
         </div>
     </div>
 
-    {{-- Auto Open WhatsApp Script --}}
+  {{-- Auto Open WhatsApp Script --}}
     @if(session('waUrl'))
     <script>
-        // Auto open WhatsApp after status update
-        window.open('{{ session("waUrl") }}', '_blank');
+        document.addEventListener('DOMContentLoaded', function() {
+            const waUrl = "{!! session('waUrl') !!}";
+            
+            if (waUrl) {
+                // Mencoba membuka otomatis
+                const win = window.open(waUrl, '_blank');
+                
+                // Jika diblokir browser, munculkan tombol melayang agar admin bisa klik manual
+                if (!win || win.closed || typeof win.closed == 'undefined') {
+                    const div = document.createElement('div');
+                    div.innerHTML = `
+                        <div style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; animate-fade-in">
+                            <a href="${waUrl}" target="_blank" 
+                               style="background: #25D366; color: white; padding: 16px 24px; border-radius: 16px; text-decoration: none; font-weight: bold; box-shadow: 0 10px 25px rgba(37,211,102,0.3); display: flex; align-items: center; gap: 10px; border: 2px solid white;">
+                                <svg style="width: 20px; height: 20px" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 0 5.414 0 12.05c0 2.123.555 4.197 1.61 6.06L0 24l6.095-1.599a11.77 11.77 0 005.95 1.6h.005c6.635 0 12.05-5.414 12.05-12.05a11.77 11.77 0 00-3.41-8.435z"/></svg>
+                                KIRIM PESAN WA
+                            </a>
+                        </div>
+                    `;
+                    document.body.appendChild(div);
+                }
+            }
+        });
     </script>
     @endif
 </x-app-layout>

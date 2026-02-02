@@ -25,7 +25,7 @@ class AdminTicketController extends Controller
         return view('admin.dashboard', compact('tickets', 'stats', 'isAdmin', 'waitingCount'));
     }
 
-    // 2. Method Index untuk Halaman Kelola Tiket
+    // 2. Method Index untuk Halaman Kelola Tiket (FIXED PAGINATION)
     public function index(Request $request)
     {
         $query = Ticket::with('user');
@@ -34,7 +34,8 @@ class AdminTicketController extends Controller
             $query->where('status', $request->status);
         }
 
-        $tickets = $query->latest()->get();
+        // PERBAIKAN: Menggunakan paginate() agar method currentPage() tersedia di Blade
+        $tickets = $query->latest()->paginate(10); 
         
         $stats = [
             'total' => Ticket::count(),
@@ -42,5 +43,40 @@ class AdminTicketController extends Controller
         ];
 
         return view('admin.tickets.index', compact('tickets', 'stats'));
+    }
+
+    // Tambahan Method Update Status & WhatsApp (Sudah Diperbaiki)
+    public function updateStatus(Request $request, Ticket $ticket)
+    {
+        $statusMap = [
+            'waiting' => 'MENUNGGU ANTRIAN',
+            'process' => 'SEDANG DIPROSES',
+            'done'    => 'SELESAI KERJAKAN'
+        ];
+
+        $newStatus = $request->status;
+        $ticket->update(['status' => $newStatus]);
+
+        // Ambil nomor langsung dari kolom 'whatsapp' di tabel tickets
+        $phone = $ticket->whatsapp ?? '0'; 
+        
+        // Bersihkan nomor HP jika ada karakter non-digit
+        $cleanPhone = preg_replace('/[^0-9]/', '', $phone);
+        
+        // Pastikan format internasional (62)
+        if (str_starts_with($cleanPhone, '0')) {
+            $cleanPhone = '62' . substr($cleanPhone, 1);
+        }
+
+        // Format pesan WhatsApp
+        $txtStatus = $statusMap[$newStatus] ?? strtoupper($newStatus);
+        $pesan = "Halo, kami menginformasikan bahwa laporan Anda dengan nomor tiket *{$ticket->ticket_number}* telah diperbarui menjadi: *{$txtStatus}*. Terima kasih.";
+        
+        $waUrl = "https://api.whatsapp.com/send?phone=" . $cleanPhone . "&text=" . urlencode($pesan);
+
+        return back()->with([
+            'success' => "Status Tiket #{$ticket->ticket_number} Berhasil diperbarui!",
+            'waUrl' => $waUrl
+        ]);
     }
 }

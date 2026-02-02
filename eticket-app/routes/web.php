@@ -13,24 +13,19 @@ use App\Http\Controllers\Admin\UserController;
 // 1. AUTHENTICATION & GUEST ROUTES
 require __DIR__.'/auth.php';
 
-// Timpa rute Breeze agar login/register kembali ke welcome (Deep Slate)
 Route::get('/', function () { return view('welcome'); });
 Route::get('/login', function () { return view('welcome'); })->name('login');
 Route::get('/register', function () { return view('welcome'); })->name('register');
-
 Route::get('/support', function () { return view('support'); })->name('support');
 
 // 2. PROTECTED ROUTES (AUTH)
 Route::middleware(['auth'])->group(function () {
     
-    // Dashboard (Logika ditangani DashboardController)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Ticket Resources (Biasa & My Tickets)
     Route::resource('tickets', TicketController::class);
     Route::get('/my-tickets', [TicketController::class, 'myTickets'])->name('my.tickets');
 
-    // Profile Management
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile', 'edit')->name('profile.edit');
         Route::patch('/profile', 'update')->name('profile.update');
@@ -44,13 +39,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [AdminTicketController::class, 'dashboard'])->name('dashboard');
         
         // Ticket Management untuk Admin
-        Route::controller(TicketController::class)->group(function () {
+        Route::controller(AdminTicketController::class)->group(function () {
             Route::get('/tickets', 'index')->name('tickets.index');
-            Route::get('/tickets/create', 'create')->name('tickets.create');
-            Route::post('/tickets', 'store')->name('tickets.store');
-            Route::get('/tickets/{ticket}', 'show')->name('tickets.show');
+            
+            // Tambahkan rute ini agar tombol "Create" dan "Delete" di halaman admin tidak error
+            Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
+            Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
+            Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy'])->name('tickets.destroy');
+
+            // Menampilkan detail tiket
+            Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
+            
+            // Rute Update Status yang baru kita buat
             Route::patch('/tickets/{ticket}/status', 'updateStatus')->name('tickets.updateStatus');
-            Route::delete('/tickets/{ticket}', 'destroy')->name('tickets.destroy');
         });
 
         // User Management
