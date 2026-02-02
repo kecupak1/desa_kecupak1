@@ -89,12 +89,131 @@
         .dashboard-title { color: var(--text-primary); font-size: 1.25rem; font-weight: 800; }
         .dashboard-location { color: var(--text-secondary); font-size: 0.875rem; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg); }
-        .stat-card { background: var(--inner-card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem; transition: all 0.3s ease; }
-        .stat-card:hover { transform: translateY(-4px); border-color: var(--accent-blue); }
-        .stat-label { color: var(--text-secondary); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.05em; }
-        .stat-value { font-size: 2rem; font-weight: 800; color: var(--text-primary); }
-        .stat-unit { color: var(--text-secondary); font-weight: 600; font-size: 0.875rem; margin-left: 0.4rem; }
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 1.5rem; 
+        }
+
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .stat-card { 
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(37, 99, 235, 0.85) 100%);
+            border: none;
+            border-radius: 20px; 
+            padding: 2rem 1.75rem; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card:hover { 
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+        }
+
+        .stat-card.orange { 
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.9) 0%, rgba(234, 88, 12, 0.85) 100%);
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.3);
+        }
+
+        .stat-card.orange:hover {
+            box-shadow: 0 15px 40px rgba(249, 115, 22, 0.4);
+        }
+
+        .stat-card.green { 
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.9) 0%, rgba(5, 150, 105, 0.85) 100%);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .stat-card.green:hover {
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        .stat-card.cyan { 
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.9) 0%, rgba(8, 145, 178, 0.85) 100%);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
+        }
+
+        .stat-card.cyan:hover {
+            box-shadow: 0 15px 40px rgba(6, 182, 212, 0.4);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: white;
+        }
+
+        .stat-label { 
+            color: rgba(255, 255, 255, 0.95); 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            letter-spacing: 0.05em; 
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+        
+        .stat-value { 
+            font-size: 2.75rem; 
+            font-weight: 800; 
+            color: white;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-unit { 
+            color: rgba(255, 255, 255, 0.85); 
+            font-weight: 600; 
+            font-size: 0.95rem; 
+            margin-left: 0.5rem; 
+        }
+
+        .stat-description {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
 
         .realtime-card { 
             background: var(--inner-card-bg); 
@@ -114,6 +233,23 @@
         .realtime-icon { color: var(--accent-blue); }
         
         [data-theme="light"] .dashboard-logo svg { stroke: var(--accent-blue); }
+
+        /* Mode Terang - Kartu Statistik */
+        [data-theme="light"] .stat-card {
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
+        }
+
+        [data-theme="light"] .stat-card.orange {
+            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.2);
+        }
+
+        [data-theme="light"] .stat-card.green {
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+        }
+
+        [data-theme="light"] .stat-card.cyan {
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.2);
+        }
     </style>
 
     <div class="main-content">
@@ -147,35 +283,55 @@
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-label">TOTAL MASUK</div>
+                    <div class="stat-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-label">TOTAL TIKET</div>
                     <div class="stat-value-wrapper flex items-baseline">
                         <h3 class="stat-value">{{ $stats['total'] }}</h3>
-                        <span class="stat-unit">Tiket</span>
                     </div>
+                    <div class="stat-description">Semua laporan</div>
                 </div>
 
-                <div class="stat-card">
-                    <div class="stat-label" style="color: var(--accent-orange)">MENUNGGU</div>
+                <div class="stat-card orange">
+                    <div class="stat-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-label">SEDANG DIPROSES</div>
                     <div class="stat-value-wrapper flex items-baseline">
                         <h3 class="stat-value">{{ $stats['waiting'] }}</h3>
-                        <span class="stat-unit">Urgent</span>
                     </div>
+                    <div class="stat-description">Dalam penanganan</div>
                 </div>
 
-                <div class="stat-card">
-                    <div class="stat-label" style="color: #10B981">RESOLVED</div>
+                <div class="stat-card green">
+                    <div class="stat-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-label">TUNTAS</div>
                     <div class="stat-value-wrapper flex items-baseline">
                         <h3 class="stat-value">{{ $stats['done'] }}</h3>
-                        <span class="stat-unit">Selesai</span>
                     </div>
+                    <div class="stat-description">Selesai ditangani</div>
                 </div>
 
-                <div class="stat-card">
-                    <div class="stat-label" style="color: var(--accent-blue)">USER AKTIF</div>
+                <div class="stat-card cyan">
+                    <div class="stat-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-label">USER AKTIF</div>
                     <div class="stat-value-wrapper flex items-baseline">
                         <h3 class="stat-value">{{ \App\Models\User::count() }}</h3>
-                        <span class="stat-unit">OPD</span>
                     </div>
+                    <div class="stat-description">OPD Terdaftar</div>
                 </div>
             </div>
 

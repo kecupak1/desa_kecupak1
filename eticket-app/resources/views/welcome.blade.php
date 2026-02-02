@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>E-Ticket Binjai</title>
+    <title>E-Ticket DISKOMINFO</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -103,7 +103,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Style khusus untuk icon mata */
         .eye-button {
             position: absolute;
             right: 12px;
@@ -114,18 +113,26 @@
             transition: color 0.2s;
         }
         .eye-button:hover { color: #3b82f6; }
+        
+        .logo-box {
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body class="antialiased">
     <div class="bg-pattern"></div>
     <div class="bg-grid"></div>
 
-    <header class="w-full px-6 lg:px-16 py-6 flex justify-between items-center relative z-10">
-        <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-white flex items-center justify-center rounded-xl overflow-hidden">
-                <img src="{{ asset('images/binjai.png') }}" alt="Logo Binjai" class="w-9 h-9 object-contain">
+    <header class="w-full px-6 lg:px-16 py-8 flex justify-between items-center relative z-10">
+        <div class="flex items-center gap-3.5">
+            <div class="w-11 h-11 logo-box flex items-center justify-center rounded-xl">
+                <img src="{{ asset('images/kominfo.png') }}" alt="Logo Kominfo" class="w-8 h-8 object-contain">
             </div>
-            <h1 class="font-bold text-white text-lg tracking-tight uppercase">E-TICKET BINJAI</h1>
+            <div class="flex flex-col">
+                <h1 class="font-bold text-white text-lg leading-tight">E-TICKET</h1>
+                <h1 class="text-slate-400 text-sm font-medium leading-tight">DISKOMINFO</h1>
+            </div>
         </div>
     </header>
 
@@ -136,7 +143,7 @@
                     <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                     <span class="text-xs font-semibold text-blue-400">Sistem Terintegrasi</span>
                 </div>
-                <h2 class="text-5xl lg:text-7xl font-extrabold text-gradient leading-tight mb-6">E-TICKET BINJAI.</h2>
+                <h2 class="text-5xl lg:text-7xl font-extrabold text-gradient leading-tight mb-6">E-Ticket Diskominfo.</h2>
                 <p class="text-slate-400 text-lg max-w-xl font-light">
                     Sistem manajemen layanan IT terpadu untuk efisiensi komunikasi antar Organisasi Perangkat Daerah Kota Binjai.
                 </p>
@@ -225,7 +232,7 @@
     </main>
 
     <footer class="w-full px-6 lg:px-16 py-6 relative z-10 flex flex-col md:flex-row justify-between items-center gap-4 max-w-[1400px] mx-auto text-xs text-slate-500">
-        <div>&copy; 2026 E-TICKET BINJAI.</div>
+        <div>&copy; 2026 E-Ticket Diskominfo.</div>
         <div class="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
             <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
             <span class="text-emerald-400 font-bold uppercase">System Online</span>
@@ -233,17 +240,11 @@
     </footer>
 
     <script>
-        // Fungsi untuk toggle password (lihat/sembunyi)
         function toggleVisibility(id) {
             const input = document.getElementById(id);
-            if (input.type === "password") {
-                input.type = "text";
-            } else {
-                input.type = "password";
-            }
+            input.type = input.type === "password" ? "text" : "password";
         }
 
-        // Fungsi pindah form
         function toggleForm(target) {
             const login = document.getElementById('login-form');
             const register = document.getElementById('register-form');

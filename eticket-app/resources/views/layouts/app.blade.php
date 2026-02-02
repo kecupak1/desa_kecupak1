@@ -73,7 +73,7 @@
             flex-direction: column;
             border-right: 1px solid var(--border-ui);
             box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Sidebar Saat Tertutup (Mini) */
@@ -85,6 +85,7 @@
         .sidebar.collapsed .nav-link span,
         .sidebar.collapsed .nav-section-title,
         .sidebar.collapsed .logout-btn span {
+            opacity: 0;
             display: none;
         }
 
@@ -102,17 +103,19 @@
             padding: 1.75rem 1.5rem;
             border-bottom: 1px solid var(--border-ui);
             background: linear-gradient(180deg, rgba(59, 130, 246, 0.05) 0%, transparent 100%);
+            transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .logo-wrapper {
             display: flex;
             align-items: center;
             gap: 1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .logo-icon {
-            width: 48px;
-            height: 48px;
+            width: 56px;
+            height: 56px;
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(37, 99, 235, 0.1) 100%);
             border: 1px solid rgba(59, 130, 246, 0.3);
             border-radius: 12px;
@@ -121,11 +124,22 @@
             justify-content: center;
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
             flex-shrink: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .logo-icon img {
-            width: 28px;
+            /* Ukuran diperbesar dari 34px ke 44px agar lebih jelas */
+            width: 44px;
             height: auto;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.collapsed .logo-icon {
+            transform: scale(0.9);
+        }
+
+        .sidebar.collapsed .logo-icon img {
+            transform: rotate(360deg);
         }
 
         .logo-text h1 {
@@ -135,6 +149,7 @@
             line-height: 1.2;
             letter-spacing: -0.02em;
             margin-bottom: 2px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
         .logo-text p {
@@ -143,12 +158,59 @@
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.08em;
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
         .sidebar-nav {
             flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
             padding: 1.5rem 0;
+        }
+
+        .sidebar-nav::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.2);
+            border-radius: 3px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-section {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .nav-section:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .nav-section:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .nav-section:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .nav-section-title {
@@ -158,6 +220,9 @@
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
         .nav-link {
@@ -170,27 +235,69 @@
             color: var(--text-muted);
             font-weight: 600;
             font-size: 0.9375rem;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%);
+            transform: scaleY(0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link:hover::before {
+            transform: scaleY(1);
+        }
+
+        .nav-link span {
+            transition: all 0.3s ease;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .nav-link svg {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
         }
 
         .nav-link:hover {
             color: var(--text-main);
             background: rgba(59, 130, 246, 0.05);
+            transform: translateX(4px);
+        }
+
+        .nav-link:hover svg {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .nav-link.active {
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
             color: #60a5fa;
             border: 1px solid rgba(59, 130, 246, 0.3);
+            transform: translateX(4px);
+        }
+
+        .nav-link.active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-link.active svg {
+            transform: scale(1.05);
         }
 
         /* ========== TOP HEADER ========== */
         .main-wrapper {
             margin-left: var(--sidebar-width);
             min-height: 100vh;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .main-wrapper.full-width {
@@ -219,6 +326,17 @@
             color: var(--text-muted);
             border-radius: 10px;
             cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-toggle:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: rotate(90deg);
+        }
+
+        .menu-toggle:active {
+            transform: rotate(90deg) scale(0.95);
         }
 
         .header-brand h2 {
@@ -244,12 +362,17 @@
             color: var(--text-main);
             border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .theme-toggle-btn:hover {
             background: rgba(59, 130, 246, 0.1);
             border-color: rgba(59, 130, 246, 0.4);
+            transform: rotate(180deg) scale(1.1);
+        }
+
+        .theme-toggle-btn:active {
+            transform: rotate(180deg) scale(0.95);
         }
 
         /* User Profile */
@@ -268,6 +391,12 @@
             align-items: center;
             gap: 0.875rem;
             cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .user-profile-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
         }
 
         .user-avatar {
@@ -281,6 +410,11 @@
             font-weight: 800;
             color: white;
             flex-shrink: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .user-profile-btn:hover .user-avatar {
+            transform: scale(1.05);
         }
 
         .user-role {
@@ -299,6 +433,7 @@
         .sidebar-footer {
             padding: 1rem 1rem 1.5rem;
             border-top: 1px solid var(--border-ui);
+            transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .logout-btn {
@@ -314,6 +449,47 @@
             justify-content: center;
             gap: 0.625rem;
             cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .logout-btn:hover::before {
+            left: 100%;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .logout-btn:active {
+            transform: translateY(0);
+        }
+
+        .logout-btn svg {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logout-btn:hover svg {
+            transform: translateX(4px);
+        }
+
+        .logout-btn span {
+            transition: all 0.3s ease;
         }
 
         .badge-notification {
@@ -323,6 +499,19 @@
             padding: 2px 6px;
             border-radius: 6px;
             margin-left: auto;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.9;
+            }
         }
 
         .sidebar.collapsed .badge-notification {
@@ -339,11 +528,11 @@
         <div class="sidebar-header">
             <div class="logo-wrapper">
                 <div class="logo-icon">
-                    <img src="{{ asset('images/binjai.png') }}" alt="Binjai">
+                    <img src="{{ asset('images/Kominfo.png') }}" alt="Binjai">
                 </div>
                 <div class="logo-text">
                     <h1>E-TICKET</h1>
-                    <p>Kota Binjai</p>
+                    <p>DISKOMINFO</p>
                 </div>
             </div>
         </div>
@@ -377,13 +566,6 @@
                         </svg>
                         <span>Kelola Tiket</span>
                         <span class="badge-notification">{{ \App\Models\Ticket::count() }}</span>
-                    </a>
-                    
-                    <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                        <svg class="nav-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
-                        </svg>
-                        <span>Kelola Pengguna</span>
                     </a>
                 </div>
             @endif
@@ -476,7 +658,6 @@
             const sidebar = document.getElementById('sidebar');
             const wrapper = document.getElementById('mainWrapper');
             
-            // Toggle class 'collapsed' untuk sidebar dan 'full-width' untuk margin konten
             sidebar.classList.toggle('collapsed');
             wrapper.classList.toggle('full-width');
         }

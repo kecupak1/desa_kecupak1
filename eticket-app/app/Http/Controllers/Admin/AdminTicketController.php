@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class AdminTicketController extends Controller
 {
+    // 1. Method Dashboard
     public function dashboard()
     {
         $stats = [
@@ -24,23 +25,16 @@ class AdminTicketController extends Controller
         return view('admin.dashboard', compact('tickets', 'stats', 'isAdmin', 'waitingCount'));
     }
 
+    // 2. Method Index untuk Halaman Kelola Tiket
     public function index(Request $request)
     {
         $query = Ticket::with('user');
 
-        // 1. Filter Berdasarkan Status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        // 2. Filter Berdasarkan Urutan (Terbaru / Terlama)
-        if ($request->sort == 'oldest') {
-            $query->oldest();
-        } else {
-            $query->latest(); // Default terbaru
-        }
-
-        $tickets = $query->get();
+        $tickets = $query->latest()->get();
         
         $stats = [
             'total' => Ticket::count(),
@@ -48,25 +42,5 @@ class AdminTicketController extends Controller
         ];
 
         return view('admin.tickets.index', compact('tickets', 'stats'));
-    }
-
-    public function show(Ticket $ticket)
-    {
-        $ticket->load('user'); 
-        return view('admin.tickets.show', compact('ticket'));
-    }
-
-    public function updateStatus(Request $request, Ticket $ticket)
-    {
-        $request->validate(['status' => 'required|in:waiting,process,done']);
-        $ticket->update(['status' => $request->status]);
-        
-        return back()->with('success', 'Status tiket #' . ($ticket->ticket_number ?? $ticket->id) . ' berhasil diperbarui!');
-    }
-
-    public function destroy(Ticket $ticket)
-    {
-        $ticket->delete();
-        return redirect()->route('admin.tickets.index')->with('success', 'Laporan berhasil dihapus secara permanen!');
     }
 }

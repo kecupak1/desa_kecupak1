@@ -23,11 +23,10 @@
         </div>
         @endif
 
-        {{-- Header Section dengan Gradasi Modern --}}
+        {{-- Header Section --}}
         <div style="background: var(--card-bg); border: 1px solid var(--border-ui);" 
              class="rounded-3xl p-8 shadow-lg relative overflow-hidden">
             
-            {{-- Dekorasi Background --}}
             <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/5 to-purple-500/5 dark:from-blue-400/10 dark:to-purple-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
             
             <div class="relative">
@@ -48,7 +47,6 @@
                         </div>
                     </div>
 
-                    {{-- Search Bar dengan Style Modern --}}
                     <div class="w-full lg:w-96">
                         <form action="{{ route('admin.tickets.index') }}" method="GET" class="flex gap-2">
                             <div class="relative flex-1 group">
@@ -58,7 +56,7 @@
                                        class="w-full pl-11 pr-4 py-3 rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-sm">
                                 <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-600 dark:text-blue-400 group-focus-within:scale-110 transition-transform">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                     </svg>
                                 </div>
                             </div>
@@ -76,7 +74,6 @@
                     </div>
                 </div>
 
-                {{-- Filter Cards dengan Grid Layout --}}
                 <form action="{{ route('admin.tickets.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 border-t" style="border-color: var(--border-ui);">
                     <div class="space-y-2">
                         <label style="color: var(--text-muted);" class="text-xs font-semibold uppercase tracking-wide ml-1 flex items-center gap-2">
@@ -123,10 +120,6 @@
                             </div>
                         </div>
                     </div>
-
-                    @if(request('search'))
-                        <input type="hidden" name="search" value="{{ request('search') }}">
-                    @endif
                 </form>
             </div>
         </div>
@@ -199,25 +192,25 @@
                             </td>
                             
                             <td class="px-6 py-5 text-center">
-                                <form action="{{ route('admin.tickets.updateStatus', $ticket->id) }}" method="POST" class="flex justify-center">
-                                    @csrf @method('PATCH')
-                                    <div class="relative group/select">
-                                        <select name="status" onchange="this.form.submit()" 
-                                            class="appearance-none cursor-pointer rounded-xl text-xs font-bold py-2.5 px-5 pr-9 border-2 transition-all shadow-sm hover:shadow-md
-                                            {{ $ticket->status == 'waiting' ? 'text-orange-600 border-orange-200 bg-orange-50 dark:bg-orange-900/20 dark:border-orange-800/30 hover:border-orange-400' : '' }}
-                                            {{ $ticket->status == 'process' ? 'text-blue-600 border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-800/30 hover:border-blue-400' : '' }}
-                                            {{ $ticket->status == 'done' ? 'text-emerald-600 border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800/30 hover:border-emerald-400' : '' }}">
-                                            <option value="waiting" {{ $ticket->status == 'waiting' ? 'selected' : '' }}>⏳ Waiting</option>
-                                            <option value="process" {{ $ticket->status == 'process' ? 'selected' : '' }}>⚙️ Process</option>
-                                            <option value="done" {{ $ticket->status == 'done' ? 'selected' : '' }}>✅ Done</option>
-                                        </select>
-                                        <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </form>
+                                {{-- Status Badge Statis (Bukan Dropdown) --}}
+                                @if($ticket->status == 'waiting')
+                                    <span class="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl text-xs font-black bg-orange-50 text-orange-600 border border-orange-200 dark:bg-orange-900/20 dark:border-orange-800/30 uppercase tracking-wider shadow-sm">
+                                        <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+                                        Waiting
+                                    </span>
+                                @elseif($ticket->status == 'process')
+                                    <span class="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl text-xs font-black bg-blue-50 text-blue-600 border border-blue-200 dark:bg-blue-900/20 dark:border-blue-800/30 uppercase tracking-wider shadow-sm">
+                                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                        Process
+                                    </span>
+                                @elseif($ticket->status == 'done')
+                                    <span class="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl text-xs font-black bg-emerald-50 text-emerald-600 border border-emerald-200 dark:bg-emerald-900/20 dark:border-emerald-800/30 uppercase tracking-wider shadow-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        Done
+                                    </span>
+                                @endif
                             </td>
                             
                             <td class="px-6 py-5 text-right">
@@ -267,7 +260,7 @@
             </div>
         </div>
 
-        {{-- Pagination Modern --}}
+        {{-- Pagination --}}
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4 px-2">
             <p style="color: var(--text-muted);" class="text-sm font-semibold flex items-center gap-2">
                 <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -285,7 +278,7 @@
                     </span>
                 @else
                     <a href="{{ $tickets->previousPageUrl() }}" 
-                       class="w-10 h-10 flex items-center justify-center rounded-xl border-2 hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-all shadow-sm hover:shadow-md" 
+                       class="w-10 h-10 flex items-center justify-center rounded-xl border-2 hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-all shadow-sm" 
                        style="border-color: var(--border-ui); background: var(--card-bg); color: var(--text-main);">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
@@ -293,14 +286,15 @@
                     </a>
                 @endif
 
-                @foreach ($tickets->getUrlRange(1, $tickets->lastPage()) as $page => $url)
+                {{-- Nomor Halaman --}}
+                @foreach ($tickets->getUrlRange(max(1, $tickets->currentPage() - 2), min($tickets->lastPage(), $tickets->currentPage() + 2)) as $page => $url)
                     @if ($page == $tickets->currentPage())
                         <span class="min-w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 text-white text-sm font-bold shadow-lg shadow-blue-500/30 px-4">
                             {{ $page }}
                         </span>
                     @else
                         <a href="{{ $url }}" 
-                           class="min-w-10 h-10 flex items-center justify-center rounded-xl border-2 hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-slate-900/50 transition-all text-sm font-bold shadow-sm hover:shadow-md px-4" 
+                           class="min-w-10 h-10 flex items-center justify-center rounded-xl border-2 hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-slate-900/50 transition-all text-sm font-bold shadow-sm px-4" 
                            style="border-color: var(--border-ui); background: var(--card-bg); color: var(--text-main);">
                             {{ $page }}
                         </a>
@@ -309,7 +303,7 @@
 
                 @if($tickets->hasMorePages())
                     <a href="{{ $tickets->nextPageUrl() }}" 
-                       class="w-10 h-10 flex items-center justify-center rounded-xl border-2 hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-all shadow-sm hover:shadow-md" 
+                       class="w-10 h-10 flex items-center justify-center rounded-xl border-2 hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-all shadow-sm" 
                        style="border-color: var(--border-ui); background: var(--card-bg); color: var(--text-main);">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
@@ -320,7 +314,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                         </svg>
-                    </a>
+                    </span>
                 @endif
             </div>
         </div>
