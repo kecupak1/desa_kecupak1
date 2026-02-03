@@ -46,6 +46,8 @@
                     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
                     position: relative;
                     overflow: hidden;
+                    text-decoration: none !important; /* Memastikan link tidak ada garis bawah */
+                    display: block;
                 }
 
                 .ds-stat-card:hover {
@@ -104,18 +106,6 @@
                     letter-spacing: 0.05em;
                 }
 
-                .ds-table-row {
-                    transition: all 0.2s ease;
-                }
-
-                .ds-table-row:hover {
-                    background-color: rgba(59, 130, 246, 0.05);
-                }
-
-                [data-theme="dark"] .ds-table-row:hover {
-                    background-color: rgba(96, 165, 250, 0.1);
-                }
-
                 .stat-icon {
                     position: relative;
                     z-index: 1;
@@ -162,34 +152,6 @@
                     50% { opacity: 0.5; }
                 }
 
-                .action-link {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 6px;
-                    padding: 8px 16px;
-                    background: rgba(59, 130, 246, 0.1);
-                    color: #3b82f6;
-                    border-radius: 10px;
-                    font-weight: 700;
-                    font-size: 13px;
-                    transition: all 0.2s;
-                }
-
-                [data-theme="dark"] .action-link {
-                    background: rgba(96, 165, 250, 0.15);
-                    color: #60a5fa;
-                }
-
-                .action-link:hover {
-                    background: #3b82f6;
-                    color: white;
-                    transform: translateX(4px);
-                }
-
-                [data-theme="dark"] .action-link:hover {
-                    background: #60a5fa;
-                }
-
                 /* Main title with consistent colors */
                 .main-title {
                     color: var(--ds-text-main);
@@ -205,46 +167,6 @@
 
                 .subtitle {
                     color: var(--ds-text-soft);
-                }
-
-                /* Icon backgrounds */
-                .icon-box {
-                    background: rgba(59, 130, 246, 0.1);
-                }
-
-                [data-theme="dark"] .icon-box {
-                    background: rgba(96, 165, 250, 0.15);
-                }
-
-                .icon-box svg {
-                    color: #3b82f6;
-                }
-
-                [data-theme="dark"] .icon-box svg {
-                    color: #60a5fa;
-                }
-
-                /* Ref ID styling */
-                .ref-id {
-                    color: #3b82f6;
-                }
-
-                [data-theme="dark"] .ref-id {
-                    color: #60a5fa;
-                }
-
-                /* Empty state */
-                .empty-state-icon {
-                    background: rgba(59, 130, 246, 0.1);
-                }
-
-                [data-theme="dark"] .empty-state-icon {
-                    background: rgba(96, 165, 250, 0.15);
-                }
-
-                /* Table header background */
-                .table-header {
-                    background-color: var(--ds-bg-table-header);
                 }
 
                 /* Search Input Styling */
@@ -287,44 +209,370 @@
                     border-color: var(--ds-primary);
                 }
 
-                /* Styling Pagination agar serasi dengan Deep Slate */
-                .pagination-modern nav {
+                /* NEW CARD-BASED TABLE STYLES */
+                .table-header-modern {
+                    display: grid;
+                    grid-template-columns: 80px 1.5fr 1fr 200px 200px;
+                    gap: 2rem;
+                    padding: 1rem 2rem;
+                    background: var(--ds-bg-table-header);
+                    border-bottom: 1px solid var(--ds-border);
+                }
+
+                .table-header-cell {
+                    font-size: 0.688rem;
+                    font-weight: 800;
+                    color: var(--ds-text-soft);
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
                     display: flex;
-                    justify-content: space-between;
                     align-items: center;
-                    width: 100%;
                 }
 
-                .pagination-modern svg {
-                    width: 20px;
-                    height: 20px;
-                    display: inline;
+                .tickets-list-modern {
+                    padding: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0;
                 }
 
-                /* Sembunyikan pagination versi mobile yang sering bikin berantakan */
-                .pagination-modern nav > div:first-child {
-                    display: none;
+                .ticket-card-modern {
+                    background: var(--ds-bg-card);
+                    border: none;
+                    border-bottom: 1px solid var(--ds-border);
+                    border-radius: 0;
+                    padding: 1.5rem 2rem;
+                    display: grid;
+                    grid-template-columns: 80px 1.5fr 1fr 200px 200px;
+                    gap: 2rem;
+                    align-items: center;
+                    transition: all 0.2s ease;
                 }
 
-                @media (min-width: 640px) {
-                    .pagination-modern nav > div:first-child {
-                        display: flex;
-                    }
+                .ticket-card-modern:hover {
+                    background: var(--ds-bg-table-header);
                 }
 
-                /* Warna Angka Aktif */
-                .pagination-modern span[aria-current="page"] span {
-                    background-color: var(--ds-primary) !important;
-                    color: white !important;
+                .ticket-card-modern:last-child {
+                    border-bottom: none;
+                }
+
+                .ticket-number-badge {
+                    width: 56px;
+                    height: 56px;
+                    border-radius: 16px;
+                    background: rgba(59, 130, 246, 0.08);
+                    border: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 600;
+                    color: var(--ds-primary);
+                    font-size: 1rem;
+                }
+
+                .ticket-info-modern {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    min-width: 0;
+                }
+
+                .ticket-id-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.375rem;
+                    padding: 0.375rem 0.75rem;
+                    background: rgba(59, 130, 246, 0.1);
+                    border: none;
                     border-radius: 8px;
+                    width: fit-content;
                 }
 
-                /* Warna Angka Lainnya */
-                .pagination-modern a, .pagination-modern span {
-                    border-radius: 8px !important;
-                    background-color: var(--ds-bg-card) !important;
-                    color: var(--ds-text-main) !important;
-                    border: 1px solid var(--ds-border) !important;
+                .ticket-id-hash {
+                    font-size: 0.75rem;
+                    color: var(--ds-primary);
+                    font-weight: 700;
+                }
+
+                .ticket-id-code {
+                    font-size: 0.875rem;
+                    font-weight: 700;
+                    color: var(--ds-primary);
+                    letter-spacing: -0.01em;
+                }
+
+                .ticket-title-modern {
+                    font-size: 0.938rem;
+                    font-weight: 600;
+                    color: var(--ds-text-main);
+                    margin-top: 0.25rem;
+                    line-height: 1.4;
+                }
+
+                .ticket-author-modern {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.375rem;
+                    font-size: 0.813rem;
+                    color: var(--ds-text-soft);
+                    font-weight: 400;
+                    margin-top: 0.125rem;
+                }
+
+                .ticket-author-modern svg {
+                    width: 14px;
+                    height: 14px;
+                    flex-shrink: 0;
+                }
+
+                /* CSS untuk membuat konten di tengah kolom */
+                .ticket-time-modern {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;    /* Membuat konten rata tengah secara horizontal */
+                    justify-content: center; /* Membuat konten rata tengah secara vertikal */
+                    text-align: center;
+                    gap: 2px;               /* Jarak antara tanggal dan jam */
+                    width: 100%;            /* Memastikan mengambil ruang penuh kolom */
+                }
+
+                .ticket-date-modern {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center; /* Memastikan icon dan teks tanggal juga center */
+                    gap: 6px;
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                    color: var(--ds-text-main);
+                }
+
+                .ticket-date-modern svg {
+                    width: 16px;
+                    height: 16px;
+                    flex-shrink: 0;
+                }
+
+                .ticket-time-label {
+                    font-size: 0.75rem;
+                    color: var(--ds-text-soft);
+                    /* Hapus padding-left jika sebelumnya ada agar tidak berat sebelah */
+                    padding-left: 0; 
+                }
+
+                .ticket-status-modern {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .status-badge-modern {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 0.5rem 1rem;
+                    border-radius: 10px;
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                }
+
+                .status-badge-modern.process {
+                    background: rgba(59, 130, 246, 0.1);
+                    color: #2563eb;
+                    border: none;
+                }
+
+                .status-badge-modern.waiting {
+                    background: rgba(249, 115, 22, 0.1);
+                    color: #ea580c;
+                    border: none;
+                }
+
+                .status-badge-modern.done {
+                    background: rgba(16, 185, 129, 0.1);
+                    color: #059669;
+                    border: none;
+                }
+
+                .status-badge-modern::before {
+                    content: '';
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background: currentColor;
+                }
+
+                .ticket-actions {
+                    display: flex;
+                    justify-content: center;
+                }
+
+                .action-btn-detail {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.5rem;
+                    padding: 0.5rem 1rem;
+                    background: rgba(59, 130, 246, 0.1);
+                    color: var(--ds-primary);
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    transition: all 0.2s ease;
+                    cursor: pointer;
+                    text-decoration: none;
+                    white-space: nowrap;
+                }
+
+                .action-btn-detail:hover {
+                    background: rgba(59, 130, 246, 0.15);
+                    color: var(--ds-primary);
+                }
+
+                .action-btn-detail svg {
+                    width: 16px;
+                    height: 16px;
+                    transition: transform 0.2s;
+                }
+
+                .action-btn-detail:hover svg {
+                    transform: translateX(3px);
+                }
+
+                /* Empty state */
+                .empty-state-modern {
+                    padding: 4rem 2rem;
+                    text-align: center;
+                }
+
+                .empty-state-icon-modern {
+                    width: 80px;
+                    height: 80px;
+                    margin: 0 auto 1.5rem;
+                    border-radius: 50%;
+                    background: var(--ds-bg-table-header);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .empty-state-icon-modern svg {
+                    width: 40px;
+                    height: 40px;
+                    color: var(--ds-text-soft);
+                }
+
+                .empty-state-modern h3 {
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                    color: var(--ds-text-main);
+                    margin-bottom: 0.5rem;
+                }
+
+                .empty-state-modern p {
+                    font-size: 0.875rem;
+                    color: var(--ds-text-soft);
+                }
+
+                /* CUSTOM PAGINATION STYLES */
+                .pagination-btn {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 10px;
+                    transition: all 0.2s ease;
+                    border: 1px solid var(--ds-border);
+                    background-color: var(--ds-bg-card);
+                }
+
+                .pagination-btn-active {
+                    color: var(--ds-text-main);
+                    cursor: pointer;
+                }
+
+                .pagination-btn-active:hover {
+                    background-color: var(--ds-primary);
+                    color: white;
+                    border-color: var(--ds-primary);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+                }
+
+                .pagination-btn-disabled {
+                    color: var(--ds-text-soft);
+                    opacity: 0.4;
+                    cursor: not-allowed;
+                }
+
+                .pagination-number {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 40px;
+                    height: 40px;
+                    padding: 0 12px;
+                    border-radius: 10px;
+                    font-weight: 600;
+                    font-size: 14px;
+                    transition: all 0.2s ease;
+                    border: 1px solid var(--ds-border);
+                    background-color: var(--ds-bg-card);
+                    color: var(--ds-text-main);
+                    cursor: pointer;
+                }
+
+                .pagination-number:hover {
+                    background-color: rgba(59, 130, 246, 0.1);
+                    border-color: var(--ds-primary);
+                    color: var(--ds-primary);
+                }
+
+                .pagination-number-active {
+                    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+                    color: white !important;
+                    border-color: transparent !important;
+                    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+                    font-weight: 700;
+                }
+
+                [data-theme="dark"] .pagination-number-active {
+                    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%) !important;
+                }
+
+                .pagination-dots {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 40px;
+                    height: 40px;
+                    color: var(--ds-text-soft);
+                    font-weight: 600;
+                }
+
+                /* Responsive */
+                @media (max-width: 1024px) {
+                    .table-header-modern,
+                    .ticket-card-modern {
+                        grid-template-columns: 1fr;
+                        gap: 0.75rem;
+                    }
+
+                    .ticket-card-modern {
+                        padding: 1.5rem;
+                    }
+
+                    .ticket-status-modern {
+                        justify-content: flex-start;
+                    }
+
+                    .table-header-modern {
+                        display: none;
+                    }
                 }
             </style>
 
@@ -348,8 +596,8 @@
                     </a>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="ds-stat-card bg-gradient-to-br from-blue-500 to-blue-600">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <a href="{{ request()->fullUrlWithQuery(['status' => '']) }}" class="ds-stat-card bg-gradient-to-br from-purple-500 to-indigo-600">
                         <div class="stat-icon">
                             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -358,20 +606,31 @@
                         <p class="text-sm font-bold uppercase tracking-widest opacity-90 relative z-1">Total Tiket</p>
                         <h2 class="text-6xl font-black mt-3 relative z-1">{{ $tickets->total() }}</h2>
                         <p class="text-xs opacity-75 mt-2 relative z-1">Semua laporan</p>
-                    </div>
+                    </a>
 
-                    <div class="ds-stat-card bg-gradient-to-br from-amber-500 to-orange-500">
+                    <a href="{{ request()->fullUrlWithQuery(['status' => 'waiting']) }}" class="ds-stat-card bg-gradient-to-br from-orange-400 to-orange-600">
                         <div class="stat-icon">
                             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
+                        <p class="text-sm font-bold uppercase tracking-widest opacity-90 relative z-1">Menunggu</p>
+                        <h2 class="text-6xl font-black mt-3 relative z-1">{{ $tickets->where('status', 'waiting')->count() }}</h2>
+                        <p class="text-xs opacity-75 mt-2 relative z-1">Belum diproses</p>
+                    </a>
+
+                    <a href="{{ request()->fullUrlWithQuery(['status' => 'process']) }}" class="ds-stat-card bg-gradient-to-br from-blue-500 to-blue-700">
+                        <div class="stat-icon">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                        </div>
                         <p class="text-sm font-bold uppercase tracking-widest opacity-90 relative z-1">Sedang Diproses</p>
                         <h2 class="text-6xl font-black mt-3 relative z-1">{{ $tickets->where('status', 'process')->count() }}</h2>
                         <p class="text-xs opacity-75 mt-2 relative z-1">Dalam penanganan</p>
-                    </div>
+                    </a>
 
-                    <div class="ds-stat-card bg-gradient-to-br from-emerald-500 to-teal-500">
+                    <a href="{{ request()->fullUrlWithQuery(['status' => 'done']) }}" class="ds-stat-card bg-gradient-to-br from-emerald-500 to-teal-500">
                         <div class="stat-icon">
                             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -380,7 +639,7 @@
                         <p class="text-sm font-bold uppercase tracking-widest opacity-90 relative z-1">Tuntas</p>
                         <h2 class="text-6xl font-black mt-3 relative z-1">{{ $tickets->where('status', 'done')->count() }}</h2>
                         <p class="text-xs opacity-75 mt-2 relative z-1">Selesai ditangani</p>
-                    </div>
+                    </a>
                 </div>
 
                 <div class="ds-card overflow-hidden">
@@ -401,7 +660,6 @@
                                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari laporan..." class="ds-search-input">
                                 </div>
                                 
-                                {{-- PERUBAHAN: Menambahkan onchange untuk fungsi filter --}}
                                 <select name="status" onchange="this.form.submit()" class="ds-filter-select">
                                     <option value="">Semua Status</option>
                                     <option value="waiting" {{ request('status') == 'waiting' ? 'selected' : '' }}>📝 Waiting</option>
@@ -413,88 +671,80 @@
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead>
-                                <tr class="text-xs font-bold uppercase tracking-wider border-b table-header" style="color: var(--ds-text-soft); border-color: var(--ds-border)">
-                                    <th class="text-center px-6 py-5 w-16">No</th>
-                                    <th class="text-left px-8 py-5">Ref ID</th>
-                                    <th class="text-left px-8 py-5">Permasalahan</th>
-                                    <th class="text-center px-8 py-5">Status</th>
-                                    <th class="text-right px-8 py-5">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody style="color: var(--ds-text-main)">
-                                @forelse($tickets as $index => $ticket)
-                                <tr class="border-b last:border-0 ds-table-row" style="border-color: var(--ds-border)">
-                                    <td class="px-6 py-5 text-center font-medium subtitle">
-                                        {{ $tickets->firstItem() + $index }}
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        <div class="flex items-center gap-3">
-                                            <div class="w-10 h-10 rounded-xl icon-box flex items-center justify-center">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-                                                </svg>
-                                            </div>
-                                            <span class="font-black text-base ref-id">
-                                                #{{ $ticket->ticket_number }}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        <div class="font-bold text-base mb-1" style="color: var(--ds-text-main)">{{ $ticket->title }}</div>
-                                        <div class="flex items-center gap-2 text-xs subtitle">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                            </svg>
-                                            {{ $ticket->created_at->format('d M Y, H:i') }}
-                                        </div>
-                                    </td>
-                                    <td class="px-8 py-5 text-center">
-                                        <span class="ds-badge 
-                                            {{ $ticket->status == 'done' ? 'bg-emerald-100 text-emerald-700' : 
-                                                ($ticket->status == 'process' ? 'bg-amber-100 text-amber-700' : 
-                                                'bg-blue-100 text-blue-700') }}">
-                                            {{ $ticket->status == 'done' ? '✓ Selesai' : ($ticket->status == 'process' ? '⏱ Proses' : '📝 waiting') }}
-                                        </span>
-                                    </td>
-                                    <td class="px-8 py-5 text-right">
-                                        <a href="{{ route('tickets.show', $ticket) }}" class="action-link">
-                                            Lihat Detail
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                            </svg>
-                                        </a>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="5" class="py-20 text-center">
-                                        <div class="flex flex-col items-center gap-4">
-                                            <div class="w-20 h-20 rounded-full empty-state-icon flex items-center justify-center">
-                                                <svg class="w-10 h-10 subtitle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <p class="font-bold text-lg main-title">Belum ada laporan</p>
-                                                <p class="text-sm mt-1 subtitle">Data tidak ditemukan atau belum ada laporan</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                    <div class="table-header-modern">
+                        <div class="table-header-cell">#</div>
+                        <div class="table-header-cell">Info Tiket</div>
+                        <div class="table-header-cell" style="justify-content: center;">Waktu</div>
+                        <div class="table-header-cell" style="justify-content: center;">Status</div>
+                        <div class="table-header-cell" style="justify-content: center;">Aksi</div>
                     </div>
-                    
-                    <div class="px-8 py-6 border-t" style="border-color: var(--ds-border)">
-                        {{-- PERUBAHAN: Dibungkus dengan class pagination-modern --}}
-                        <div class="mt-4 pagination-modern">
-                            {{ $tickets->links() }}
+
+                    <div class="tickets-list-modern">
+                        @forelse($tickets as $index => $ticket)
+                        <div class="ticket-card-modern">
+                            <div class="ticket-number-badge">{{ $tickets->firstItem() + $index }}</div>
+                            
+                            <div class="ticket-info-modern">
+                                <div class="ticket-id-badge">
+                                    <span class="ticket-id-hash">#</span>
+                                    <span class="ticket-id-code">{{ $ticket->ticket_number }}</span>
+                                </div>
+                                <div class="ticket-title-modern">{{ $ticket->title }}</div>
+                                <div class="ticket-author-modern">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                    </svg>
+                                    {{ $ticket->user->name ?? 'safira' }}
+                                </div>
+                            </div>
+
+                            <div class="ticket-time-modern">
+                                <div class="ticket-date-modern">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    {{ $ticket->created_at->format('d M Y') }}
+                                </div>
+                                <div class="ticket-time-label">{{ $ticket->created_at->format('H:i') }} WIB</div>
+                            </div>
+
+                            <div class="ticket-status-modern">
+                                <span class="status-badge-modern {{ $ticket->status }}">
+                                    @if($ticket->status == 'done')
+                                        Done
+                                    @elseif($ticket->status == 'process')
+                                        Process
+                                    @else
+                                        Waiting
+                                    @endif
+                                </span>
+                            </div>
+
+                            <div class="ticket-actions">
+                                <a href="{{ route('tickets.show', $ticket) }}" class="action-btn-detail">
+                                    Lihat Detail
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
+                        @empty
+                        <div class="empty-state-modern">
+                            <div class="empty-state-icon-modern">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 01-9-9"/>
+                                </svg>
+                            </div>
+                            <h3>Belum ada tiket</h3>
+                            <p>Tiket yang Anda buat akan muncul di sini.</p>
+                        </div>
+                        @endforelse
                     </div>
+                </div>
+                
+                <div class="mt-6">
+                    {{ $tickets->links() }}
                 </div>
             </div>
         </div>

@@ -87,8 +87,8 @@
                 <div class="absolute left-0 top-0 w-1.5 h-full bg-blue-600"></div>
 
                 <div class="flex items-center gap-5">
-                    {{-- Tombol Kembali - Diarahkan ke Kelola Tiket (Admin) --}}
-                    <a href="{{ route('admin.tickets.index') }}" 
+                    {{-- Tombol Kembali Otomatis: Admin ke Index, User ke Dashboard --}}
+                    <a href="{{ strtolower(trim(auth()->user()->role)) === 'admin' ? route('admin.tickets.index') : route('dashboard') }}" 
                        style="background: var(--bg-main); border: 1px solid var(--border-ui);"
                        class="group p-3 rounded-2xl hover:bg-blue-600 transition-all duration-300 shadow-sm">
                         <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
@@ -200,14 +200,13 @@
                                     </div>
                                 @endif
 
-                                {{-- Admin Status Controller - DI BAWAH GAMBAR --}}
+                                {{-- Admin Status Controller - HANYA MUNCUL UNTUK ADMIN --}}
                                 @if(strtolower(trim(auth()->user()->role)) === 'admin')
                                 <div class="mt-8 pt-8 border-t" style="border-color: var(--border-ui);">
                                     <span class="detail-label text-center mb-6 block">Pembaruan Status</span>
                                     <form action="{{ route('admin.tickets.updateStatus', $ticket) }}" method="POST" class="flex flex-col gap-3">
                                         @csrf @method('PATCH')
                                         
-                                        {{-- Hidden inputs untuk mengirim data user ke controller agar bisa buat link WA --}}
                                         <input type="hidden" name="phone" value="{{ $ticket->user->phone }}">
                                         <input type="hidden" name="ticket_number" value="{{ $ticket->ticket_number }}">
 
@@ -253,10 +252,8 @@
             const waUrl = "{!! session('waUrl') !!}";
             
             if (waUrl) {
-                // Mencoba membuka otomatis
                 const win = window.open(waUrl, '_blank');
                 
-                // Jika diblokir browser, munculkan tombol melayang agar admin bisa klik manual
                 if (!win || win.closed || typeof win.closed == 'undefined') {
                     const div = document.createElement('div');
                     div.innerHTML = `

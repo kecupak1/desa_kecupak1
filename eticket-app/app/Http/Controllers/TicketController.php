@@ -143,11 +143,15 @@ class TicketController extends Controller
 
     public function show(Ticket $ticket)
     {
-        if (strtolower(trim(auth()->user()->role)) !== 'admin' && $ticket->user_id !== auth()->id()) {
+        $user = auth()->user();
+
+        // Proteksi: User biasa tidak boleh lihat tiket orang lain
+        if (strtolower(trim($user->role)) !== 'admin' && $ticket->user_id !== $user->id) {
             abort(403);
         }
 
-        $viewPath = View::exists('admin.tickets.show') ? 'admin.tickets.show' : 'tickets.show';
-        return view($viewPath, compact('ticket'));
+        // Karena file tickets.show tidak ada, semua role diarahkan ke view admin
+        // Logika redirect tombol "Kembali" diatur di dalam file Blade tersebut
+        return view('admin.tickets.show', compact('ticket'));
     }
 }
