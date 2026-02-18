@@ -174,7 +174,7 @@
                     background: var(--ds-bg-card);
                     border: 1px solid var(--ds-border);
                     border-radius: 12px;
-                    padding: 10px 16px 10px 40px;
+                    padding: 10px 40px 10px 40px;
                     color: var(--ds-text-main);
                     width: 100%;
                     max-width: 300px;
@@ -554,6 +554,31 @@
                     font-weight: 600;
                 }
 
+                /* Clear Search Icon Styling */
+                .ds-clear-search {
+                    position: absolute;
+                    right: 12px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: var(--ds-text-soft);
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 4px;
+                    border-radius: 50%;
+                    transition: all 0.2s;
+                }
+
+                .ds-clear-search:hover {
+                    background: rgba(0, 0, 0, 0.05);
+                    color: var(--ds-text-main);
+                }
+
+                [data-theme="dark"] .ds-clear-search:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                }
+
                 /* Responsive */
                 @media (max-width: 1024px) {
                     .table-header-modern,
@@ -657,15 +682,16 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                         </svg>
                                     </span>
-                                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari laporan..." class="ds-search-input">
+                                    <input type="text" name="search" id="searchInput" value="{{ request('search') }}" placeholder="Cari laporan..." class="ds-search-input">
+                                    
+                                    @if(request('search'))
+                                    <a href="{{ request()->url() }}" class="ds-clear-search">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
+                                    </a>
+                                    @endif
                                 </div>
-                                
-                                <select name="status" onchange="this.form.submit()" class="ds-filter-select">
-                                    <option value="">Semua Status</option>
-                                    <option value="waiting" {{ request('status') == 'waiting' ? 'selected' : '' }}>📝 Waiting</option>
-                                    <option value="process" {{ request('status') == 'process' ? 'selected' : '' }}>⏱ Process</option>
-                                    <option value="done" {{ request('status') == 'done' ? 'selected' : '' }}>✓ Done</option>
-                                </select>
                             </form>
                             <span class="live-badge hidden lg:inline-flex">LIVE DATA</span>
                         </div>
@@ -733,18 +759,14 @@
                         <div class="empty-state-modern">
                             <div class="empty-state-icon-modern">
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 01-9-9"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
                             </div>
-                            <h3>Belum ada tiket</h3>
-                            <p>Tiket yang Anda buat akan muncul di sini.</p>
+                            <h3>Belum ada laporan</h3>
+                            <p>Laporan yang Anda buat akan muncul di sini</p>
                         </div>
                         @endforelse
                     </div>
-                </div>
-                
-                <div class="mt-6">
-                    {{ $tickets->links() }}
                 </div>
             </div>
         </div>

@@ -528,7 +528,7 @@
         <div class="sidebar-header">
             <div class="logo-wrapper">
                 <div class="logo-icon">
-                    <img src="{{ asset('images/Kominfo.png') }}" alt="Binjai">
+                    <img src="{{ asset('images/binjai.png') }}" alt="Binjai">
                 </div>
                 <div class="logo-text">
                     <h1>E-TICKET</h1>

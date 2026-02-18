@@ -127,7 +127,7 @@
     <header class="w-full px-6 lg:px-16 py-8 flex justify-between items-center relative z-10">
         <div class="flex items-center gap-3.5">
             <div class="w-11 h-11 logo-box flex items-center justify-center rounded-xl">
-                <img src="{{ asset('images/kominfo.png') }}" alt="Logo Kominfo" class="w-8 h-8 object-contain">
+                <img src="{{ asset('images/binjai.png') }}" alt="Logo Kominfo" class="w-8 h-8 object-contain">
             </div>
             <div class="flex flex-col">
                 <h1 class="font-bold text-white text-lg leading-tight">E-TICKET</h1>
