@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('status')->default('waiting');
             $table->string('priority')->default('low');
-            $table->timestamps(); // Ini otomatis membuat created_at dan updated_at
+           // $table->timestamps(); // Ini otomatis membuat created_at dan updated_at
         });
     }
 

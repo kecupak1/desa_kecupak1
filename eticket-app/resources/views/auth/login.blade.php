@@ -162,6 +162,14 @@
 
         .btn-portal:hover { background: #ff6b35; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3); }
 
+        .error-text {
+            color: #ef4444;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 6px;
+            display: block;
+        }
+
         @media (max-width: 1024px) {
             .ultra-card { grid-template-columns: 1fr; height: auto; }
             .side-branding { display: none; }
@@ -200,19 +208,26 @@
                 @csrf
                 <div class="input-group">
                     <label>Alamat Email</label>
-                    <input type="email" name="email" class="custom-input" placeholder="admin@binjaikota.go.id" required autofocus>
+                    <input type="email" name="email" class="custom-input" placeholder="admin@binjaikota.go.id" required autofocus value="{{ old('email') }}">
                 </div>
 
-                <div class="input-group">
-                    <div style="display: flex; justify-content: space-between;">
-                        <label>Kata Sandi</label>
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" style="font-size: 0.8rem; color: #ff6b35; text-decoration: none; font-weight: 700;">Lupa Sandi?</a>
-                        @endif
-                    </div>
-                    <input type="password" name="password" class="custom-input" placeholder="••••••••" required>
-                </div>
 
+  <div class="input-group">
+    <div style="display: flex; justify-content: space-between;">
+        <label>Kata Sandi</label>
+        @if (Route::has('password.request'))
+            <a href="{{ route('password.request') }}" style="font-size: 0.8rem; color: #ff6b35; text-decoration: none; font-weight: 700;">Lupa Sandi?</a>
+        @endif
+    </div>
+    <input type="password" name="password" class="custom-input" placeholder="••••••••" required>
+    
+    {{-- Pengecekan Error Universal --}}
+    @if ($errors->any())
+        <span class="error-text" style="color: #ef4444; font-size: 0.8rem; font-weight: 600; margin-top: 6px; display: block;">
+            * Email atau password anda salah.
+        </span>
+    @endif
+</div>
                 <button type="submit" class="btn-portal">Masuk ke Portal →</button>
             </form>
 
