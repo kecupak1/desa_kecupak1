@@ -79,10 +79,6 @@
                                     <span>📊</span>
                                     <span>Rekap Bulanan/Tahunan</span>
                                 </a>
-                                <a href="{{ route('admin.reports.opd') }}" class="block px-4 py-3 text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-colors duration-200 flex items-center gap-2">
-                                    <span>🏛️</span>
-                                    <span>Rekap Per OPD</span>
-                                </a>
                                 <a href="{{ route('admin.reports.sla') }}" class="block px-4 py-3 text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 last:rounded-b-xl transition-colors duration-200 flex items-center gap-2">
                                     <span>⏱️</span>
                                     <span>Metrik SLA</span>
@@ -191,9 +187,6 @@
                     <div x-show="reportsOpen" class="mt-2 space-y-1 bg-white/5 rounded-lg p-3">
                         <a href="{{ route('admin.reports.period') }}" class="block px-3 py-2 text-sm font-semibold text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors duration-200">
                             📊 Rekap Bulanan/Tahunan
-                        </a>
-                        <a href="{{ route('admin.reports.opd') }}" class="block px-3 py-2 text-sm font-semibold text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors duration-200">
-                            🏛️ Rekap Per OPD
                         </a>
                         <a href="{{ route('admin.reports.sla') }}" class="block px-3 py-2 text-sm font-semibold text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors duration-200">
                             ⏱️ Metrik SLA

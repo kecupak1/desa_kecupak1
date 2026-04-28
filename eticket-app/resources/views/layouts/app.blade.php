@@ -576,12 +576,6 @@
                         </svg>
                         <span>Rekap Bulanan</span>
                     </a>
-                    <a href="{{ route('admin.reports.opd') }}" class="nav-link {{ request()->routeIs('admin.reports.opd') ? 'active' : '' }}">
-                        <svg class="nav-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
-                        </svg>
-                        <span>Rekap Per OPD</span>
-                    </a>
                 </div>
             @endif
 
