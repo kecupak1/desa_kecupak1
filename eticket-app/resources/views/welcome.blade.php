@@ -426,7 +426,7 @@
                                 </button>
                             </div>
                         </div>
-                        <button type="submit" class="btn-submit">Masuk ke Sistem</button>
+                        <button type="submit" class="btn-submit">Masuk</button>
                     </form>
                     <div class="divider"><span>ATAU</span></div>
                     <p class="switch-text">Belum punya akun? <a href="#" onclick="toggleForm('register')" class="switch-link">Daftar Sekarang</a></p>

@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tickets', function (Blueprint $table) {
-            if (!Schema::hasColumn('tickets', 'opd')) {
-                $table->string('opd')->nullable()->after('instansi');
+            // Kolom untuk tracking kapan ticket selesai (untuk menghitung SLA)
+            if (!Schema::hasColumn('tickets', 'completed_at')) {
+                $table->timestamp('completed_at')->nullable()->after('updated_at');
             }
         });
     }
@@ -24,8 +25,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tickets', function (Blueprint $table) {
-            if (Schema::hasColumn('tickets', 'opd')) {
-                $table->dropColumn('opd');
+            if (Schema::hasColumn('tickets', 'completed_at')) {
+                $table->dropColumn('completed_at');
             }
         });
     }

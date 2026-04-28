@@ -60,6 +60,35 @@
                                 @endif
                             </div>
                         </x-nav-link>
+
+                        <!-- Reports Dropdown -->
+                        <div class="relative group">
+                            <button class="px-5 py-2.5 rounded-xl text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200 {{ request()->routeIs('admin.reports.*') ? 'bg-white/20 text-white shadow-lg' : '' }} flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                                <span>{{ __('Laporan') }}</span>
+                                <svg class="w-4 h-4 transform group-hover:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                </svg>
+                            </button>
+
+                            <!-- Dropdown Menu -->
+                            <div class="absolute left-0 mt-2 w-48 bg-indigo-800/95 backdrop-blur-md border border-white/20 rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transform scale-95 group-hover:scale-100 transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+                                <a href="{{ route('admin.reports.period') }}" class="block px-4 py-3 text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 first:rounded-t-xl transition-colors duration-200 flex items-center gap-2">
+                                    <span>📊</span>
+                                    <span>Rekap Bulanan/Tahunan</span>
+                                </a>
+                                <a href="{{ route('admin.reports.opd') }}" class="block px-4 py-3 text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-colors duration-200 flex items-center gap-2">
+                                    <span>🏛️</span>
+                                    <span>Rekap Per OPD</span>
+                                </a>
+                                <a href="{{ route('admin.reports.sla') }}" class="block px-4 py-3 text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 last:rounded-b-xl transition-colors duration-200 flex items-center gap-2">
+                                    <span>⏱️</span>
+                                    <span>Metrik SLA</span>
+                                </a>
+                            </div>
+                        </div>
                     @endif
                 </div>
             </div>
@@ -145,6 +174,32 @@
                         <span class="bg-orange-500 text-white px-2.5 py-1 rounded-full text-xs font-black shadow-lg">{{ $waitingCount }}</span>
                     @endif
                 </x-responsive-nav-link>
+
+                <!-- Mobile Reports Menu -->
+                <div x-data="{ reportsOpen: false }" class="px-4 py-2">
+                    <button @click="reportsOpen = !reportsOpen" class="w-full text-left px-0 py-3 text-sm font-bold text-white/90 hover:text-white flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                            <span>{{ __('Laporan') }}</span>
+                        </div>
+                        <svg class="w-5 h-5 transform transition-transform duration-200" :class="{'rotate-180': reportsOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        </svg>
+                    </button>
+                    <div x-show="reportsOpen" class="mt-2 space-y-1 bg-white/5 rounded-lg p-3">
+                        <a href="{{ route('admin.reports.period') }}" class="block px-3 py-2 text-sm font-semibold text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors duration-200">
+                            📊 Rekap Bulanan/Tahunan
+                        </a>
+                        <a href="{{ route('admin.reports.opd') }}" class="block px-3 py-2 text-sm font-semibold text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors duration-200">
+                            🏛️ Rekap Per OPD
+                        </a>
+                        <a href="{{ route('admin.reports.sla') }}" class="block px-3 py-2 text-sm font-semibold text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors duration-200">
+                            ⏱️ Metrik SLA
+                        </a>
+                    </div>
+                </div>
             @endif
 
             <!-- Logout Mobile -->

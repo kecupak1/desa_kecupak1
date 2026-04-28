@@ -1,10 +1,11 @@
-<x-app-layout>
+@extends('layouts.app')
+
+@section('content')
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <style>
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-                /* Scoped styles hanya untuk elemen di dalam .dashboard-scope */
                 .dashboard-scope {
                     font-family: 'Inter', sans-serif;
                     zoom: 0.95;
@@ -20,7 +21,6 @@
                     --ds-shadow: rgba(15, 23, 42, 0.08);
                 }
 
-                /* Dark Mode Scoped */
                 [data-theme="dark"] .dashboard-scope {
                     --ds-bg-card: #1e293b;
                     --ds-bg-table-header: #0f172a;
@@ -46,7 +46,7 @@
                     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
                     position: relative;
                     overflow: hidden;
-                    text-decoration: none !important; /* Memastikan link tidak ada garis bawah */
+                    text-decoration: none !important;
                     display: block;
                 }
 
@@ -152,7 +152,6 @@
                     50% { opacity: 0.5; }
                 }
 
-                /* Main title with consistent colors */
                 .main-title {
                     color: var(--ds-text-main);
                 }
@@ -169,7 +168,6 @@
                     color: var(--ds-text-soft);
                 }
 
-                /* Search Input Styling */
                 .ds-search-input {
                     background: var(--ds-bg-card);
                     border: 1px solid var(--ds-border);
@@ -186,7 +184,6 @@
                     border-color: var(--ds-primary);
                 }
 
-                /* Filter Select Styling */
                 .ds-filter-select {
                     background: var(--ds-bg-card);
                     border: 1px solid var(--ds-border);
@@ -209,7 +206,6 @@
                     border-color: var(--ds-primary);
                 }
 
-                /* NEW CARD-BASED TABLE STYLES */
                 .table-header-modern {
                     display: grid;
                     grid-template-columns: 80px 1.5fr 1fr 200px 200px;
@@ -326,21 +322,20 @@
                     flex-shrink: 0;
                 }
 
-                /* CSS untuk membuat konten di tengah kolom */
                 .ticket-time-modern {
                     display: flex;
                     flex-direction: column;
-                    align-items: center;    /* Membuat konten rata tengah secara horizontal */
-                    justify-content: center; /* Membuat konten rata tengah secara vertikal */
+                    align-items: center;
+                    justify-content: center;
                     text-align: center;
-                    gap: 2px;               /* Jarak antara tanggal dan jam */
-                    width: 100%;            /* Memastikan mengambil ruang penuh kolom */
+                    gap: 2px;
+                    width: 100%;
                 }
 
                 .ticket-date-modern {
                     display: flex;
                     align-items: center;
-                    justify-content: center; /* Memastikan icon dan teks tanggal juga center */
+                    justify-content: center;
                     gap: 6px;
                     font-size: 0.85rem;
                     font-weight: 600;
@@ -356,8 +351,7 @@
                 .ticket-time-label {
                     font-size: 0.75rem;
                     color: var(--ds-text-soft);
-                    /* Hapus padding-left jika sebelumnya ada agar tidak berat sebelah */
-                    padding-left: 0; 
+                    padding-left: 0;
                 }
 
                 .ticket-status-modern {
@@ -442,7 +436,6 @@
                     transform: translateX(3px);
                 }
 
-                /* Empty state */
                 .empty-state-modern {
                     padding: 4rem 2rem;
                     text-align: center;
@@ -477,7 +470,6 @@
                     color: var(--ds-text-soft);
                 }
 
-                /* CUSTOM PAGINATION STYLES */
                 .pagination-btn {
                     display: inline-flex;
                     align-items: center;
@@ -554,7 +546,6 @@
                     font-weight: 600;
                 }
 
-                /* Clear Search Icon Styling */
                 .ds-clear-search {
                     position: absolute;
                     right: 12px;
@@ -579,7 +570,6 @@
                     background: rgba(255, 255, 255, 0.1);
                 }
 
-                /* Responsive */
                 @media (max-width: 1024px) {
                     .table-header-modern,
                     .ticket-card-modern {
@@ -621,6 +611,7 @@
                     </a>
                 </div>
 
+                {{-- ✅ STAT CARDS - Sekarang pakai $stats dari controller --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <a href="{{ request()->fullUrlWithQuery(['status' => '']) }}" class="ds-stat-card bg-gradient-to-br from-purple-500 to-indigo-600">
                         <div class="stat-icon">
@@ -629,7 +620,7 @@
                             </svg>
                         </div>
                         <p class="text-sm font-bold uppercase tracking-widest opacity-90 relative z-1">Total Tiket</p>
-                        <h2 class="text-6xl font-black mt-3 relative z-1">{{ $tickets->total() }}</h2>
+                        <h2 class="text-6xl font-black mt-3 relative z-1">{{ $stats['total'] }}</h2>
                         <p class="text-xs opacity-75 mt-2 relative z-1">Semua laporan</p>
                     </a>
 
@@ -640,7 +631,7 @@
                             </svg>
                         </div>
                         <p class="text-sm font-bold uppercase tracking-widest opacity-90 relative z-1">Menunggu</p>
-                        <h2 class="text-6xl font-black mt-3 relative z-1">{{ $tickets->where('status', 'waiting')->count() }}</h2>
+                        <h2 class="text-6xl font-black mt-3 relative z-1">{{ $stats['waiting'] }}</h2>
                         <p class="text-xs opacity-75 mt-2 relative z-1">Belum diproses</p>
                     </a>
 
@@ -651,7 +642,7 @@
                             </svg>
                         </div>
                         <p class="text-sm font-bold uppercase tracking-widest opacity-90 relative z-1">Sedang Diproses</p>
-                        <h2 class="text-6xl font-black mt-3 relative z-1">{{ $tickets->where('status', 'process')->count() }}</h2>
+                        <h2 class="text-6xl font-black mt-3 relative z-1">{{ $stats['process'] }}</h2>
                         <p class="text-xs opacity-75 mt-2 relative z-1">Dalam penanganan</p>
                     </a>
 
@@ -662,7 +653,7 @@
                             </svg>
                         </div>
                         <p class="text-sm font-bold uppercase tracking-widest opacity-90 relative z-1">Tuntas</p>
-                        <h2 class="text-6xl font-black mt-3 relative z-1">{{ $tickets->where('status', 'done')->count() }}</h2>
+                        <h2 class="text-6xl font-black mt-3 relative z-1">{{ $stats['done'] }}</h2>
                         <p class="text-xs opacity-75 mt-2 relative z-1">Selesai ditangani</p>
                     </a>
                 </div>
@@ -673,7 +664,7 @@
                             <h2 class="font-black text-2xl main-title">Laporan Terbaru</h2>
                             <p class="text-sm mt-1 subtitle">Data laporan yang masuk ke sistem</p>
                         </div>
-                        
+
                         <div class="flex flex-wrap items-center gap-4 w-full md:w-auto">
                             <form action="{{ request()->url() }}" method="GET" class="flex flex-wrap items-center gap-3 w-full md:w-auto">
                                 <div class="relative flex-1 md:flex-none">
@@ -683,7 +674,7 @@
                                         </svg>
                                     </span>
                                     <input type="text" name="search" id="searchInput" value="{{ request('search') }}" placeholder="Cari laporan..." class="ds-search-input">
-                                    
+
                                     @if(request('search'))
                                     <a href="{{ request()->url() }}" class="ds-clear-search">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -709,7 +700,7 @@
                         @forelse($tickets as $index => $ticket)
                         <div class="ticket-card-modern">
                             <div class="ticket-number-badge">{{ $tickets->firstItem() + $index }}</div>
-                            
+
                             <div class="ticket-info-modern">
                                 <div class="ticket-id-badge">
                                     <span class="ticket-id-hash">#</span>
@@ -720,7 +711,7 @@
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                     </svg>
-                                    {{ $ticket->user->name ?? 'safira' }}
+                                    {{ $ticket->user->name ?? 'Unknown' }}
                                 </div>
                             </div>
 
@@ -771,4 +762,5 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+
+@endsection

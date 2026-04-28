@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('layouts.app')
+
+@section('content')
     <style>
         /* Root Variables */
         :root {
@@ -622,4 +624,4 @@
             });
         });
     </script>
-</x-app-layout>
+@endsection

@@ -128,7 +128,6 @@
         }
 
         .logo-icon img {
-            /* Ukuran diperbesar dari 34px ke 44px agar lebih jelas */
             width: 44px;
             height: auto;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -568,6 +567,22 @@
                         <span class="badge-notification">{{ \App\Models\Ticket::count() }}</span>
                     </a>
                 </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">📊 Laporan & Analitik</div>
+                    <a href="{{ route('admin.reports.period') }}" class="nav-link {{ request()->routeIs('admin.reports.period') ? 'active' : '' }}">
+                        <svg class="nav-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        <span>Rekap Bulanan</span>
+                    </a>
+                    <a href="{{ route('admin.reports.opd') }}" class="nav-link {{ request()->routeIs('admin.reports.opd') ? 'active' : '' }}">
+                        <svg class="nav-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span>Rekap Per OPD</span>
+                    </a>
+                </div>
             @endif
 
             <div class="nav-section">
@@ -622,9 +637,9 @@
         </header>
 
         <main class="content-wrapper p-8">
-            <div class="content-container max-w-[1400px] mx-auto">
-                {{ $slot }}
-            </div>
+        <div class="content-container max-w-[1400px] mx-auto">
+            @yield('content')
+        </div>
         </main>
     </div>
 

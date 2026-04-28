@@ -55,7 +55,14 @@ class AdminTicketController extends Controller
         ];
 
         $newStatus = $request->status;
-        $ticket->update(['status' => $newStatus]);
+        
+        // Update status dan set completed_at jika status menjadi 'done'
+        $updateData = ['status' => $newStatus];
+        if ($newStatus === 'done') {
+            $updateData['completed_at'] = now();
+        }
+        
+        $ticket->update($updateData);
 
         // Ambil nomor langsung dari kolom 'whatsapp' di tabel tickets
         $phone = $ticket->whatsapp ?? '0'; 
