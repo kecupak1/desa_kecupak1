@@ -633,6 +633,7 @@
         <main class="content-wrapper p-8">
         <div class="content-container max-w-[1400px] mx-auto">
             @yield('content')
+            {{ $slot ?? '' }}
         </div>
         </main>
     </div>

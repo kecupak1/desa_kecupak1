@@ -92,7 +92,7 @@
 
         /* ATURAN CETAK (PRINT) - Sidebar & Navbar Otomatis Hilang */
         @media print {
-            .sidebar, .navbar, .main-header, .toolbar, nav { display: none !important; }
+            .sidebar, .top-header, .navbar, .main-header, .toolbar, nav, header, .footer, .user-profile-wrapper, .menu-toggle { display: none !important; }
             body { background: white !important; padding: 0 !important; }
             .report-card { border: none !important; box-shadow: none !important; padding: 0 !important; }
             .kop { display: block !important; }
@@ -114,11 +114,11 @@
         </div>
 
         <div class="report-card">
-            {{-- Kop surat (Hanya muncul saat print) --}}
+            {{-- Kop surat Diskominfo (Hanya muncul saat print) --}}
             <div class="kop">
-                <h1>Pemerintah Kota Binjai</h1>
-                <h2>Rekap Pengaduan Masyarakat — E-Ticket Binjai</h2>
-                <p>Pusat Layanan Terpadu Kota Binjai</p>
+                <h1>Dinas Komunikasi dan Informatika</h1>
+                <h2>Pemerintah Kota Binjai</h2>
+                <p>Rekapitulasi Pengaduan Masyarakat — E-Ticket Binjai</p>
             </div>
 
             {{-- Info periode --}}

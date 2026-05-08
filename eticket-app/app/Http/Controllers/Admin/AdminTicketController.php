@@ -48,6 +48,10 @@ class AdminTicketController extends Controller
     // Tambahan Method Update Status & WhatsApp (Sudah Diperbaiki)
     public function updateStatus(Request $request, Ticket $ticket)
     {
+        $request->validate([
+            'status' => 'required|in:waiting,process,done',
+        ]);
+
         $statusMap = [
             'waiting' => 'MENUNGGU ANTRIAN',
             'process' => 'SEDANG DIPROSES',
@@ -75,9 +79,16 @@ class AdminTicketController extends Controller
             $cleanPhone = '62' . substr($cleanPhone, 1);
         }
 
-        // Format pesan WhatsApp
+        // Format pesan WhatsApp (BAGIAN YANG DIUBAH)
         $txtStatus = $statusMap[$newStatus] ?? strtoupper($newStatus);
-        $pesan = "Halo, kami menginformasikan bahwa laporan Anda dengan nomor tiket *{$ticket->ticket_number}* telah diperbarui menjadi: *{$txtStatus}*. Terima kasih.";
+        
+        if ($newStatus === 'process') {
+            $pesan = "Halo, kami menginformasikan bahwa laporan Anda dengan nomor tiket *#{$ticket->ticket_number}* saat ini: *{$txtStatus}*.\n\nPetugas teknisi kami sedang menuju lokasi untuk melakukan pengecekan dan perbaikan. Mohon ditunggu. Terima kasih.";
+        } elseif ($newStatus === 'done') {
+            $pesan = "Halo, laporan Anda dengan nomor tiket *#{$ticket->ticket_number}* telah dinyatakan: *{$txtStatus}*.\n\nTeknisi telah menyelesaikan perbaikan di lokasi. Terima kasih telah menggunakan layanan kami.";
+        } else {
+            $pesan = "Halo, kami menginformasikan bahwa laporan Anda dengan nomor tiket *#{$ticket->ticket_number}* telah diperbarui menjadi: *{$txtStatus}*. Terima kasih.";
+        }
         
         $waUrl = "https://api.whatsapp.com/send?phone=" . $cleanPhone . "&text=" . urlencode($pesan);
 
