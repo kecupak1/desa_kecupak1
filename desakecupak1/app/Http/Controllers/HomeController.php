@@ -9,6 +9,7 @@ use App\Models\Pengumuman;
 use App\Models\Galeri;
 use App\Models\Slider;
 use App\Models\Penduduk;
+use App\Models\PerangkatDesa;
 
 class HomeController extends Controller
 {
@@ -20,8 +21,8 @@ class HomeController extends Controller
         $agenda = Agenda::akanDatang()->take(5)->get();
         $pengumuman = Pengumuman::orderBy('tanggal', 'desc')->take(5)->get();
         $galeri = Galeri::where('tipe', 'foto')->latest()->take(8)->get();
+        $perangkat = PerangkatDesa::urut()->take(4)->get();
 
-        // Statistik penduduk
         $totalPenduduk = Penduduk::count();
         $totalLaki = Penduduk::where('jenis_kelamin', 'Laki-laki')->count();
         $totalPerempuan = Penduduk::where('jenis_kelamin', 'Perempuan')->count();
@@ -33,6 +34,7 @@ class HomeController extends Controller
             'agenda',
             'pengumuman',
             'galeri',
+            'perangkat',
             'totalPenduduk',
             'totalLaki',
             'totalPerempuan'
