@@ -1,5 +1,4 @@
 <nav class="bg-white shadow-md sticky top-0 z-50">
-    {{-- Hapus max-w-7xl dan mx-auto agar navbar memenuhi lebar layar --}}
     <div class="px-6 sm:px-8 lg:px-12">
         <div class="flex justify-between items-center h-20">
             <a href="{{ route('home') }}" class="flex items-center gap-3">
@@ -22,7 +21,7 @@
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Sejarah Desa</a>
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Visi & Misi</a>
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Kondisi Geografis</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Demografi</a>
+                        <a href="{{ route('demografi') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Demografi</a>
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Peta Desa</a>
                     </div>
                 </div>
@@ -56,6 +55,7 @@
         <div id="mobile-menu" class="hidden lg:hidden pb-4 space-y-1">
             <a href="{{ route('home') }}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-primary-50 rounded-lg">Beranda</a>
             <a href="#" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-primary-50 rounded-lg">Profil Desa</a>
+            <a href="{{ route('demografi') }}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-primary-50 rounded-lg">Demografi</a>
             <a href="#" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-primary-50 rounded-lg">Pemerintahan</a>
             <a href="#" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-primary-50 rounded-lg">Berita</a>
             <a href="#" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-primary-50 rounded-lg">Wisata</a>
