@@ -4,54 +4,47 @@
 
 @section('content')
 
-{{-- HERO SLIDER --}}
-<section class="relative h-[520px] md:h-[620px] overflow-hidden bg-gray-900">
-    @if($slider->count() > 0)
-        @foreach($slider as $index => $item)
-        <div class="hero-slide absolute inset-0 transition-opacity duration-1000 {{ $index === 0 ? 'opacity-100' : 'opacity-0' }}">
-            <img src="{{ asset('storage/'.$item->gambar) }}" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
-        </div>
-        @endforeach
-    @else
-        <div class="absolute inset-0 bg-gradient-to-br from-primary-800 via-primary-700 to-primary-900"></div>
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute -right-24 -top-24 w-[500px] h-[500px] bg-white rounded-full"></div>
-            <div class="absolute -left-16 -bottom-40 w-96 h-96 bg-white rounded-full"></div>
-        </div>
-    @endif
-
-    <div class="relative z-10 h-full flex flex-col justify-end px-6 sm:px-10 lg:px-16 pb-16 max-w-7xl mx-auto">
-        <span class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 text-white text-xs font-medium px-4 py-1.5 rounded-full mb-5 w-fit">
-            <span class="w-1.5 h-1.5 bg-primary-400 rounded-full"></span>
-            Website Resmi Pemerintah Desa
-        </span>
-        <h1 class="text-3xl md:text-5xl font-bold text-white leading-tight mb-3 max-w-2xl">
-            {{ $profil->nama_desa ?? 'Desa Kami' }}
-        </h1>
-        <p class="text-white/80 text-base md:text-lg max-w-xl mb-8">
-            {{ $profil->motto ?? 'Melayani dengan transparan, membangun bersama masyarakat.' }}
-        </p>
-        <div class="flex flex-wrap gap-3">
-            <a href="#profil" class="bg-white text-primary-700 px-6 py-3 rounded-lg font-semibold text-sm hover:bg-primary-50 transition shadow-lg">
-                Jelajahi Desa
-            </a>
-            <a href="#berita" class="border border-white/40 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/10 transition backdrop-blur-sm">
-                Baca Berita Terbaru
-            </a>
+{{-- HERO SLIDER FOTO DESA --}}
+<section class="relative h-[600px] md:h-[700px] overflow-hidden bg-gray-900">
+    {{-- SLIDE 1: FOTO GAPURA DESA 1 --}}
+    <div class="hero-slide absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-100 z-10">
+        <img src="{{ asset('images/fotogapuradesa1.jpeg') }}" class="w-full h-full object-cover" alt="Gapura Desa 1">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="absolute inset-0 flex items-center justify-center text-center px-4 z-10">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 tracking-tight drop-shadow-md font-sans">
+                    SELAMAT DATANG DI {{ strtoupper($profil->nama_desa ?? 'DESA KAMI') }}
+                </h1>
+                <p class="text-white/95 text-lg md:text-2xl font-bold tracking-wide drop-shadow-md uppercase">
+                    {{ $profil->motto ?? 'DESA KECUPAK 1' }}
+                </p>
+            </div>
         </div>
     </div>
 
-    @if($slider->count() > 1)
-    <div class="absolute bottom-6 right-6 z-10 flex gap-2">
-        <button onclick="changeSlide(-1)" class="bg-white/10 hover:bg-white/25 backdrop-blur-sm text-white rounded-full w-10 h-10 flex items-center justify-center border border-white/20 transition">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-        </button>
-        <button onclick="changeSlide(1)" class="bg-white/10 hover:bg-white/25 backdrop-blur-sm text-white rounded-full w-10 h-10 flex items-center justify-center border border-white/20 transition">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        </button>
+    {{-- SLIDE 2: FOTO GAPURA DESA 2 --}}
+    <div class="hero-slide absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0 z-0">
+        <img src="{{ asset('images/airterjun.jpeg') }}" class="w-full h-full object-cover" alt="Gapura Desa 2">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="absolute inset-0 flex items-center justify-center text-center px-4 z-10">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 tracking-tight drop-shadow-md font-sans">
+                    WISATA & POTENSI {{ strtoupper($profil->nama_desa ?? 'DESA') }}
+                </h1>
+                <p class="text-white/95 text-lg md:text-2xl font-bold tracking-wide drop-shadow-md uppercase">
+                    Jelajahi keindahan alam dan potensi unggulan yang ada di desa kami
+                </p>
+            </div>
+        </div>
     </div>
-    @endif
+
+    {{-- TOMBOL NAVIGASI --}}
+    <button onclick="changeSlide(-1)" class="absolute left-6 top-1/2 -translate-y-1/2 z-20 text-white hover:text-green-400 transition text-2xl">
+        &#8592;
+    </button>
+    <button onclick="changeSlide(1)" class="absolute right-6 top-1/2 -translate-y-1/2 z-20 text-white hover:text-green-400 transition text-2xl">
+        &#8594;
+    </button>
 </section>
 
 <script>
@@ -60,7 +53,9 @@
     function showSlide(i) {
         slides.forEach((s, idx) => {
             s.classList.toggle('opacity-100', idx === i);
+            s.classList.toggle('z-10', idx === i);
             s.classList.toggle('opacity-0', idx !== i);
+            s.classList.toggle('z-0', idx !== i);
         });
     }
     function changeSlide(dir) {
@@ -71,172 +66,221 @@
     if (slides.length > 1) setInterval(() => changeSlide(1), 5000);
 </script>
 
-{{-- MENU AKSES CEPAT (mengambang di atas hero, style kartu) --}}
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 relative z-20">
-    <div class="bg-white rounded-2xl shadow-xl border p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-        <a href="#" class="group flex flex-col items-center text-center p-4 rounded-xl hover:bg-primary-50 transition">
-            <div class="w-12 h-12 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 21h18M5 21V7l8-4v18M13 21V11l6 3v7"/></svg>
+{{-- JELAJAHI DESA --}}
+<section class="bg-gray-50/60 py-20">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div class="grid lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-5 pr-0 lg:pr-6">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-[#5CB338] mb-6 tracking-wide uppercase">Jelajahi Desa</h2>
+                <p class="text-gray-700 leading-relaxed text-base md:text-lg font-normal">
+                    Melalui website ini Anda dapat menjelajahi segala hal yang terkait dengan desa. Aspek pemerintahan, penduduk, demografi, potensi desa, dan juga berita tentang desa.
+                </p>
             </div>
-            <p class="text-sm font-semibold text-gray-700">Profil Desa</p>
-        </a>
-        <a href="#" class="group flex flex-col items-center text-center p-4 rounded-xl hover:bg-primary-50 transition">
-            <div class="w-12 h-12 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 19v-6a2 2 0 012-2h2a2 2 0 012 2v6m-9 0h10a2 2 0 002-2V9.5a2 2 0 00-.6-1.4l-4-4a2 2 0 00-2.8 0l-4 4A2 2 0 005 9.5V17a2 2 0 002 2z"/></svg>
+            <div class="lg:col-span-7 grid grid-cols-2 gap-6 sm:gap-8">
+                <a href="#profil" class="bg-white border border-gray-100 rounded-2xl p-8 sm:p-10 text-center shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition duration-300 flex flex-col items-center justify-center">
+                    <svg class="w-16 h-16 mb-5 text-[#1a5c38]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l8-4v18M13 21V11l6 3v7M9 9h1m-1 3h1m-1 3h1"/></svg>
+                    <p class="font-bold text-gray-700 text-xs sm:text-sm tracking-wider uppercase">Profil Desa</p>
+                </a>
+                <a href="#sotk" class="bg-white border border-gray-100 rounded-2xl p-8 sm:p-10 text-center shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition duration-300 flex flex-col items-center justify-center">
+                    <svg class="w-16 h-16 mb-5 text-[#1a5c38]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    <p class="font-bold text-gray-700 text-xs sm:text-sm tracking-wider uppercase">Infografis</p>
+                </a>
+                <a href="#" class="bg-white border border-gray-100 rounded-2xl p-8 sm:p-10 text-center shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition duration-300 flex flex-col items-center justify-center">
+                    <svg class="w-16 h-16 mb-5 text-[#1a5c38]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/></svg>
+                    <p class="font-bold text-gray-700 text-xs sm:text-sm tracking-wider uppercase">IDM</p>
+                </a>
+                <a href="#berita" class="bg-white border border-gray-100 rounded-2xl p-8 sm:p-10 text-center shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition duration-300 flex flex-col items-center justify-center">
+                    <svg class="w-16 h-16 mb-5 text-[#1a5c38]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <p class="font-bold text-gray-700 text-xs sm:text-sm tracking-wider uppercase">PPID</p>
+                </a>
             </div>
-            <p class="text-sm font-semibold text-gray-700">Data Penduduk</p>
-        </a>
-        <a href="#" class="group flex flex-col items-center text-center p-4 rounded-xl hover:bg-primary-50 transition">
-            <div class="w-12 h-12 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V6m0 10v2m9-8a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-            <p class="text-sm font-semibold text-gray-700">UMKM & Wisata</p>
-        </a>
-        <a href="#" class="group flex flex-col items-center text-center p-4 rounded-xl hover:bg-primary-50 transition">
-            <div class="w-12 h-12 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-            </div>
-            <p class="text-sm font-semibold text-gray-700">Dokumen Desa</p>
-        </a>
+        </div>
     </div>
 </section>
 
 {{-- SAMBUTAN KEPALA DESA --}}
-<section id="profil" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-    <div class="grid md:grid-cols-5 gap-12 items-center">
-        <div class="md:col-span-2 flex justify-center">
-            <div class="relative">
-                <div class="absolute -inset-3 border-2 border-primary-200 rounded-2xl -rotate-3"></div>
-                @if($profil && $profil->foto_kepala_desa)
-                    <img src="{{ asset('storage/'.$profil->foto_kepala_desa) }}" class="relative rounded-2xl w-64 h-72 object-cover shadow-lg">
-                @else
-                    <div class="relative w-64 h-72 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-400 text-sm text-center px-4 shadow-lg">
-                        Foto Kepala Desa
-                    </div>
-                @endif
+<section id="profil" class="py-24 bg-[#F8F9FA]">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div class="grid md:grid-cols-12 gap-10 md:gap-14 items-center">
+            <div class="md:col-span-5 flex justify-center">
+                <div class="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden shadow-2xl border-4 border-white bg-white">
+                    @if($profil && $profil->foto_kepala_desa)
+                        <img src="{{ asset('storage/'.$profil->foto_kepala_desa) }}" class="w-full h-full object-cover object-top">
+                    @else
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 font-medium text-sm text-center px-4">Foto Kepala Desa</div>
+                    @endif
+                </div>
             </div>
-        </div>
-        <div class="md:col-span-3">
-            <span class="text-primary-600 font-semibold text-sm uppercase tracking-wider">Sambutan</span>
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mt-2 mb-1">
-                {{ $profil->nama_kepala_desa ?? 'Kepala Desa' }}
-            </h2>
-            <p class="text-sm text-gray-400 mb-6">Kepala Desa {{ $profil->nama_desa ?? '' }}</p>
-            <p class="text-gray-600 leading-relaxed">
-                {{ $profil->sambutan_kepala_desa ?? 'Sambutan kepala desa akan tampil di sini setelah diisi melalui dashboard admin.' }}
-            </p>
+            <div class="md:col-span-7 text-left">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#5CB338] mb-3 tracking-wide">
+                    Sambutan Kepala Desa {{ $profil->nama_desa ?? '' }}
+                </h2>
+                <h3 class="font-extrabold text-gray-900 text-lg sm:text-xl uppercase tracking-wider mb-1">
+                    {{ $profil->nama_kepala_desa ?? 'Nama Kepala Desa' }}
+                </h3>
+                <p class="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-widest mb-6">
+                    Kepala Desa
+                </p>
+                <div class="border-l-4 border-gray-400 pl-4 py-1 my-4">
+                    <p class="text-gray-700 leading-relaxed text-xs sm:text-sm md:text-base font-medium uppercase tracking-wide">
+                        {{ $profil->sambutan_kepala_desa ?? 'Selamat datang di website resmi desa kami. Website ini dibangun untuk mempermudah sistem dan tatakelola kerja pemerintah desa serta mempermudah penyampaian informasi di setiap agenda dan kegiatan pemerintah desa kepada masyarakat agar terbangun keterbukaan informasi.' }}
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-{{-- STATISTIK PENDUDUK --}}
-<section class="bg-gray-900 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-10">
-            <span class="text-primary-400 font-semibold text-sm uppercase tracking-wider">Statistik</span>
-            <h2 class="text-2xl md:text-3xl font-bold text-white mt-2">Data Kependudukan</h2>
+{{-- PETA DESA --}}
+<section class="py-20 bg-gray-100/70 border-y border-gray-200/60">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-[#5CB338] mb-2 tracking-wide uppercase">Peta Desa</h2>
+        <p class="text-gray-600 mb-8 text-sm md:text-base font-normal">
+            Menampilkan Peta Desa Dengan <span class="italic">Interest Point</span> {{ $profil->nama_desa ?? 'Desa Tamang' }}
+        </p>
+        
+        <div class="flex flex-wrap gap-4 mb-6">
+            <div class="bg-white border border-gray-300 rounded-md px-4 py-2 text-xs text-gray-400 flex items-center justify-between w-64 shadow-sm">
+                <span>Telusuri Peta</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            <div class="bg-white border border-gray-300 rounded-md px-4 py-2 text-xs text-gray-400 flex items-center justify-between w-48 shadow-sm">
+                <span>Lihat Semua</span>
+                <span class="text-gray-300">&#8597;</span>
+            </div>
         </div>
-        <div class="grid grid-cols-3 gap-6 max-w-3xl mx-auto">
-            <div class="text-center border-r border-white/10 last:border-0">
-                <p class="text-3xl md:text-4xl font-bold text-white">{{ number_format($totalPenduduk) }}</p>
-                <p class="text-gray-400 text-sm mt-2">Total Penduduk</p>
+
+        <div class="rounded-xl overflow-hidden border border-gray-300 shadow-md h-[450px] bg-gray-300 relative">
+            @if($profil && $profil->link_maps)
+                <iframe src="{{ $profil->link_maps }}" class="w-full h-full" style="border:0;" allowfullscreen loading="lazy"></iframe>
+            @else
+                <div class="w-full h-full bg-[#B3C0D1] flex flex-col items-center justify-center text-white font-medium shadow-inner">
+                    <svg class="w-12 h-12 mb-2 text-[#2c7744] drop-shadow" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <span class="text-gray-700 font-semibold text-base drop-shadow-sm">Use Ctrl + scroll to zoom the map</span>
+                </div>
+            @endif
+        </div>
+    </div>
+</section>
+
+{{-- SOTK / STRUKTUR ORGANISASI --}}
+<section id="sotk" class="py-24 bg-[#F8F9FA]">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div class="mb-12">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-[#5CB338] uppercase tracking-wide">Bagan Desa</h2>
+            <p class="text-gray-600 mt-2">Struktur Organisasi Pemerintah Desa & BPD</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 mb-16">
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                <h3 class="font-bold text-gray-700 mb-4">Struktur Organisasi Pemerintahan Desa</h3>
+                <img src="{{ asset('images/struktur.png') }}" class="w-full h-auto rounded-lg" alt="SOTK 1">
             </div>
-            <div class="text-center border-r border-white/10 last:border-0">
-                <p class="text-3xl md:text-4xl font-bold text-white">{{ number_format($totalLaki) }}</p>
-                <p class="text-gray-400 text-sm mt-2">Laki-laki</p>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                <h3 class="font-bold text-gray-700 mb-4">Struktur Organisasi BPD</h3>
+                <img src="{{ asset('images/bpd.png') }}" class="w-full h-auto rounded-lg" alt="SOTK 2">
             </div>
-            <div class="text-center">
-                <p class="text-3xl md:text-4xl font-bold text-white">{{ number_format($totalPerempuan) }}</p>
-                <p class="text-gray-400 text-sm mt-2">Perempuan</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            @forelse($perangkat as $item)
+            <div class="bg-white rounded-lg overflow-hidden border border-gray-200/80 shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between">
+                <div class="relative w-full h-72 sm:h-64 md:h-60 lg:h-72 bg-gray-100 overflow-hidden">
+                    @if($item->foto)
+                        <img src="{{ asset('storage/'.$item->foto) }}" class="w-full h-full object-cover object-top">
+                    @else
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-sm font-medium">Foto</div>
+                    @endif
+                </div>
+                <div class="bg-[#78C841] text-white text-center py-4 px-3 flex flex-col justify-center items-center shadow-inner">
+                    <p class="font-extrabold text-sm uppercase tracking-wider text-white">{{ $item->nama }}</p>
+                    <p class="text-[11px] font-semibold uppercase tracking-widest text-white/90">{{ $item->jabatan }}</p>
+                </div>
             </div>
+            @empty
+            <p class="col-span-4 text-center text-gray-400 py-12">Data perangkat belum tersedia.</p>
+            @endforelse
         </div>
     </div>
 </section>
 
 {{-- BERITA TERBARU --}}
-<section id="berita" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-    <div class="flex justify-between items-end mb-10">
-        <div>
-            <span class="text-primary-600 font-semibold text-sm uppercase tracking-wider">Kabar Desa</span>
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mt-2">Berita Terbaru</h2>
-        </div>
-        <a href="#" class="text-primary-600 font-medium text-sm hover:underline flex items-center gap-1">
-            Lihat Semua
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        </a>
-    </div>
-    <div class="grid md:grid-cols-3 gap-6">
-        @forelse($beritaTerbaru as $berita)
-        <a href="#" class="group bg-white rounded-2xl border overflow-hidden hover:shadow-xl transition">
-            <div class="relative h-48 overflow-hidden">
-                @if($berita->gambar)
-                    <img src="{{ asset('storage/'.$berita->gambar) }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                @else
-                    <div class="w-full h-full bg-gray-100"></div>
-                @endif
-                @if($berita->kategori)
-                <span class="absolute top-3 left-3 bg-white/95 text-primary-700 text-xs font-semibold px-3 py-1 rounded-full">
-                    {{ $berita->kategori->nama_kategori }}
-                </span>
-                @endif
+<section id="berita" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div class="flex justify-between items-end mb-10 pb-4 border-b border-gray-100">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-[#5CB338] uppercase tracking-wide">Berita Terbaru</h2>
             </div>
-            <div class="p-5">
-                <p class="text-xs text-gray-400 mb-2">{{ $berita->tanggal_publish?->translatedFormat('d F Y') }}</p>
-                <h3 class="font-semibold text-gray-800 line-clamp-2 group-hover:text-primary-600 transition">{{ $berita->judul }}</h3>
-                <p class="text-sm text-gray-500 mt-2 line-clamp-2">{{ $berita->ringkasan }}</p>
-            </div>
-        </a>
-        @empty
-        <div class="col-span-3 text-center py-16 bg-gray-50 rounded-2xl">
-            <p class="text-gray-400">Belum ada berita yang dipublikasikan.</p>
+            <a href="#" class="text-gray-600 font-bold text-xs sm:text-sm uppercase tracking-wider hover:text-[#5CB338] transition flex items-center gap-1">
+                Lihat Semua 
+                <span class="text-lg leading-none">&rarr;</span>
+            </a>
         </div>
-        @endforelse
+        <div class="grid md:grid-cols-3 gap-8">
+            @forelse($beritaTerbaru as $berita)
+            <div class="bg-white rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-gray-100 overflow-hidden hover:shadow-[0_10px_25px_rgba(0,0,0,0.1)] transition duration-300 flex flex-col justify-between">
+                <div>
+                    <div class="relative w-full h-52 bg-gray-100 overflow-hidden">
+                        @if($berita->gambar)
+                            <img src="{{ asset('storage/'.$berita->gambar) }}" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+                        @else
+                            <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-sm">Tidak ada gambar</div>
+                        @endif
+                    </div>
+                    <div class="p-6">
+                        <p class="text-xs text-[#5CB338] font-extrabold uppercase tracking-widest mb-2">{{ $berita->tanggal_publish?->translatedFormat('d F Y') }}</p>
+                        <h3 class="font-bold text-gray-900 text-lg line-clamp-2 hover:text-[#5CB338] transition leading-snug">{{ $berita->judul }}</h3>
+                        <p class="text-sm text-gray-600 mt-3 line-clamp-3 leading-relaxed font-normal">{{ $berita->ringkasan }}</p>
+                    </div>
+                </div>
+                <div class="px-6 pb-6 pt-2">
+                    <a href="#" class="text-xs font-bold text-[#5CB338] uppercase tracking-wider hover:underline">Baca Selengkapnya &rarr;</a>
+                </div>
+            </div>
+            @empty
+            <p class="text-gray-400 col-span-3 text-center py-12 font-medium">Belum ada berita.</p>
+            @endforelse
+        </div>
     </div>
 </section>
 
 {{-- AGENDA & PENGUMUMAN --}}
-<section class="bg-primary-50/50 py-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12">
+<section class="py-20 bg-gray-50 border-t border-gray-200/60">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 grid md:grid-cols-2 gap-12 lg:gap-16">
         <div>
-            <span class="text-primary-600 font-semibold text-sm uppercase tracking-wider">Jadwal</span>
-            <h2 class="text-2xl font-bold text-gray-800 mt-2 mb-6">Agenda Desa</h2>
-            <div class="space-y-3">
+            <h2 class="text-2xl font-extrabold text-gray-800 uppercase tracking-wide mb-6 border-l-4 border-[#5CB338] pl-3">Agenda Desa</h2>
+            <div class="space-y-4">
                 @forelse($agenda as $item)
-                <div class="flex gap-4 bg-white p-4 rounded-xl border hover:border-primary-300 transition">
-                    <div class="bg-primary-600 text-white rounded-lg w-14 h-14 flex flex-col items-center justify-center flex-shrink-0">
-                        <span class="font-bold text-lg leading-none">{{ \Carbon\Carbon::parse($item->tanggal)->format('d') }}</span>
-                        <span class="text-[10px] uppercase">{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('M') }}</span>
+                <div class="flex items-center gap-5 bg-white p-5 rounded-xl border border-gray-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="bg-[#F4F9F1] text-[#5CB338] border border-green-200 rounded-lg px-4 py-3 text-center min-w-[70px]">
+                        <p class="font-extrabold text-2xl leading-none">{{ \Carbon\Carbon::parse($item->tanggal)->format('d') }}</p>
+                        <p class="text-[11px] font-bold uppercase tracking-wider mt-1 text-gray-600">{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('M') }}</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-gray-800 text-sm">{{ $item->judul_kegiatan }}</h4>
-                        <p class="text-xs text-gray-500 mt-1">{{ $item->lokasi }}</p>
+                        <h4 class="font-bold text-gray-900 text-base hover:text-[#5CB338] transition">{{ $item->judul_kegiatan }}</h4>
+                        <p class="text-xs font-medium text-gray-500 mt-1 flex items-center gap-1">
+                            <span>&#128205;</span> {{ $item->lokasi }}
+                        </p>
                     </div>
                 </div>
                 @empty
-                <p class="text-gray-400 py-4 text-sm">Belum ada agenda mendatang.</p>
+                <p class="text-gray-400 py-6 text-sm font-medium italic">Belum ada agenda mendatang.</p>
                 @endforelse
             </div>
         </div>
         <div>
-            <span class="text-primary-600 font-semibold text-sm uppercase tracking-wider">Info</span>
-            <h2 class="text-2xl font-bold text-gray-800 mt-2 mb-6">Pengumuman</h2>
-            <div class="space-y-3">
+            <h2 class="text-2xl font-extrabold text-gray-800 uppercase tracking-wide mb-6 border-l-4 border-[#5CB338] pl-3">Pengumuman</h2>
+            <div class="space-y-4">
                 @forelse($pengumuman as $item)
-                <div class="bg-white p-4 rounded-xl border hover:border-primary-300 transition">
-                    <div class="flex justify-between items-start gap-3">
-                        <h4 class="font-semibold text-gray-800 text-sm">{{ $item->judul }}</h4>
-                        <span class="text-xs text-gray-400 whitespace-nowrap">{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d M Y') }}</span>
+                <div class="bg-white p-6 rounded-xl border border-gray-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="flex justify-between items-start gap-4 mb-2">
+                        <h4 class="font-bold text-gray-900 text-base leading-snug">{{ $item->judul }}</h4>
+                        <span class="text-[11px] font-semibold bg-gray-100 text-gray-600 px-2.5 py-1 rounded whitespace-nowrap">{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d M Y') }}</span>
                     </div>
-                    <p class="text-sm text-gray-500 mt-2 line-clamp-2">{{ $item->isi }}</p>
-                    @if($item->file)
-                    <a href="{{ asset('storage/'.$item->file) }}" class="inline-flex items-center gap-1 text-xs text-primary-600 font-medium mt-2 hover:underline" target="_blank">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
-                        Unduh Lampiran
-                    </a>
-                    @endif
+                    <p class="text-sm text-gray-600 line-clamp-2 leading-relaxed">{{ $item->isi }}</p>
                 </div>
                 @empty
-                <p class="text-gray-400 py-4 text-sm">Belum ada pengumuman.</p>
+                <p class="text-gray-400 py-6 text-sm font-medium italic">Belum ada pengumuman.</p>
                 @endforelse
             </div>
         </div>
@@ -244,35 +288,19 @@
 </section>
 
 {{-- GALERI --}}
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-    <div class="text-center mb-10">
-        <span class="text-primary-600 font-semibold text-sm uppercase tracking-wider">Dokumentasi</span>
-        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mt-2">Galeri Kegiatan</h2>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        @forelse($galeri as $foto)
-        <div class="relative rounded-xl overflow-hidden h-44 group cursor-pointer">
-            <img src="{{ asset('storage/'.$foto->file) }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
-            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition"></div>
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <h2 class="text-2xl font-extrabold text-gray-800 uppercase tracking-wide mb-8 border-l-4 border-[#5CB338] pl-3">Galeri Terbaru</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
+            @forelse($galeri as $foto)
+            <div class="group relative rounded-xl overflow-hidden aspect-video bg-gray-100 shadow-sm">
+                <img src="{{ asset('storage/'.$foto->file) }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition duration-300"></div>
+            </div>
+            @empty
+            <p class="text-gray-400 col-span-4 text-center py-12 font-medium">Belum ada foto galeri.</p>
+            @endforelse
         </div>
-        @empty
-        <p class="text-gray-400 col-span-4 text-center py-16">Belum ada foto galeri.</p>
-        @endforelse
-    </div>
-</section>
-
-{{-- PETA LOKASI --}}
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-    <div class="text-center mb-10">
-        <span class="text-primary-600 font-semibold text-sm uppercase tracking-wider">Lokasi</span>
-        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mt-2">Peta Desa</h2>
-    </div>
-    <div class="rounded-2xl overflow-hidden border shadow-sm h-96">
-        @if($profil && $profil->link_maps)
-            <iframe src="{{ $profil->link_maps }}" class="w-full h-full" style="border:0;" allowfullscreen loading="lazy"></iframe>
-        @else
-            <div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">Peta belum tersedia</div>
-        @endif
     </div>
 </section>
 

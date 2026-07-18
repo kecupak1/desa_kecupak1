@@ -12,30 +12,31 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('desa_profil', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_desa');
-            $table->string('nama_kecamatan')->nullable();
-            $table->string('nama_kabupaten')->nullable();
-            $table->string('nama_provinsi')->nullable();
-            $table->text('sejarah')->nullable();
-            $table->text('visi')->nullable();
-            $table->text('misi')->nullable();
-            $table->string('motto')->nullable();
-            $table->text('gambaran_umum')->nullable();
-            $table->text('kondisi_geografis')->nullable();
-            $table->text('batas_wilayah')->nullable();
-            $table->string('luas_wilayah')->nullable();
-            $table->string('link_maps')->nullable();
-            $table->text('sambutan_kepala_desa')->nullable();
-            $table->string('foto_kepala_desa')->nullable();
-            $table->string('logo_desa')->nullable();
-            $table->string('alamat_kantor')->nullable();
-            $table->string('no_hp')->nullable();
-            $table->string('email')->nullable();
-            $table->string('facebook')->nullable();
-            $table->string('instagram')->nullable();
-            $table->string('youtube')->nullable();
-            $table->timestamps();
+        $table->id();
+        $table->string('nama_desa');
+        $table->string('nama_kecamatan')->nullable();
+        $table->string('nama_kabupaten')->nullable();
+        $table->string('nama_provinsi')->nullable();
+        $table->text('sejarah')->nullable();
+        $table->text('visi')->nullable();
+        $table->text('misi')->nullable();
+        $table->string('motto')->nullable();
+        $table->string('nama_kepala_desa')->nullable();
+        $table->text('gambaran_umum')->nullable();
+        $table->text('kondisi_geografis')->nullable();
+        $table->text('batas_wilayah')->nullable();
+        $table->string('luas_wilayah')->nullable();
+        $table->string('link_maps')->nullable();
+        $table->text('sambutan_kepala_desa')->nullable();
+        $table->string('foto_kepala_desa')->nullable();
+        $table->string('logo_desa')->nullable();
+        $table->string('alamat_kantor')->nullable();
+        $table->string('no_hp')->nullable();
+        $table->string('email')->nullable();
+        $table->string('facebook')->nullable();
+        $table->string('instagram')->nullable();
+        $table->string('youtube')->nullable();
+        $table->timestamps();
         });
     }
 
