@@ -85,14 +85,6 @@
                     <svg class="w-16 h-16 mb-5 text-[#1a5c38]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
                     <p class="font-bold text-gray-700 text-xs sm:text-sm tracking-wider uppercase">Infografis</p>
                 </a>
-                <a href="#" class="bg-white border border-gray-100 rounded-2xl p-8 sm:p-10 text-center shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition duration-300 flex flex-col items-center justify-center">
-                    <svg class="w-16 h-16 mb-5 text-[#1a5c38]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/></svg>
-                    <p class="font-bold text-gray-700 text-xs sm:text-sm tracking-wider uppercase">IDM</p>
-                </a>
-                <a href="#berita" class="bg-white border border-gray-100 rounded-2xl p-8 sm:p-10 text-center shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_25px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition duration-300 flex flex-col items-center justify-center">
-                    <svg class="w-16 h-16 mb-5 text-[#1a5c38]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    <p class="font-bold text-gray-700 text-xs sm:text-sm tracking-wider uppercase">PPID</p>
-                </a>
             </div>
         </div>
     </div>

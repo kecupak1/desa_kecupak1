@@ -19,7 +19,9 @@
                     </button>
                     <div class="absolute hidden group-hover:block top-full left-0 bg-white shadow-lg rounded-lg py-2 w-56 border">
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Sejarah Desa</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Visi & Misi</a>
+                        <!-- 👇 INI BAGIAN YANG DITAMBAHKAN LINK VISI & MISI 👇 -->
+                        <a href="{{ route('profil.visimisi') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Visi & Misi</a>
+                        <!-- 👆 ----------------------------------------------- 👆 -->
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Kondisi Geografis</a>
                         <a href="{{ route('demografi') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Demografi</a>
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Peta Desa</a>
@@ -28,16 +30,18 @@
 
                 <!-- Dropdown Pemerintahan -->
                 <div class="relative group">
-                    <button class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition flex items-center gap-1">
-                        Pemerintahan <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div class="absolute hidden group-hover:block top-full left-0 bg-white shadow-lg rounded-lg py-2 w-56 border">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Struktur Organisasi</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Perangkat Desa</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">BPD</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">PKK</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Karang Taruna</a>
-                    </div>
+                <button class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition flex items-center gap-1">
+                    Pemerintahan
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                
+                <!-- Bagian Dropdown (Kotak yang muncul saat diarahkan) -->
+                <div class="absolute hidden group-hover:block top-full left-0 bg-white shadow-lg rounded-lg py-2 w-56 border">
+                    <!-- Cukup ubah href pada baris ini saja, jangan tambah baris baru di luar -->
+                    <a href="{{ route('pemerintahan.struktur') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Struktur Organisasi Pemerintahan Desa</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Badan Permusyawaratan Desa</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">Pemberdayaan dan Kesejahteraan Keluarga</a>
+                </div>
                 </div>
 
                 <a href="#" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition">Berita</a>
@@ -45,7 +49,7 @@
                 <a href="#" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition">UMKM</a>
                 <a href="#" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition">Galeri</a>
                 <a href="#" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition">Kontak</a>
-
+                
                 <!-- TOMBOL LOGIN ADMIN (POSISI TERAKHIR) -->
                 @guest
                     <a href="{{ route('login') }}" class="ml-4 px-6 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition">Login</a>
@@ -63,6 +67,10 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden lg:hidden pb-4 space-y-1">
             <a href="{{ route('home') }}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-primary-50 rounded-lg">Beranda</a>
+            <!-- 👇 TAMBAHAN UNTUK MOBILE MENU 👇 -->
+            <a href="{{ route('profil.visimisi') }}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-primary-50 rounded-lg">Visi & Misi</a>
+            <!-- 👆 ---------------------------- 👆 -->
+            <a href="{{ route('demografi') }}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-primary-50 rounded-lg">Demografi</a>
             <!-- Tambahkan login untuk mobile juga -->
             @guest
                 <a href="{{ route('login') }}" class="block px-4 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg">Login Admin</a>

@@ -5,10 +5,14 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\InfografisController;
+use App\Http\Controllers\PemerintahanController;
+use App\Http\Controllers\ProfilDesaController;
 
 // 1. Rute Publik (Akses umum pengunjung)
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/demografi', [InfografisController::class, 'index'])->name('demografi');
+Route::get('/pemerintahan/struktur-organisasi', [PemerintahanController::class, 'strukturOrganisasi'])->name('pemerintahan.struktur');
+Route::get('/profil-desa/visi-misi', [ProfilDesaController::class, 'visiMisi'])->name('profil.visimisi');
 
 // 2. Rute Login (Akses masuk admin)
 Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('login');
