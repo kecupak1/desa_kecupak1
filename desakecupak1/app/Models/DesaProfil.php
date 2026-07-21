@@ -12,4 +12,4 @@ class DesaProfil extends Model
     protected $table = 'desa_profil';
 
     protected $guarded = ['id'];
-}
+}   

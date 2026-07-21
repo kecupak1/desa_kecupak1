@@ -78,12 +78,13 @@
                         Profil Desa <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
                     <div class="dropdown-panel absolute hidden group-hover:block top-full left-0 bg-white shadow-lg rounded-lg py-2 w-56 border border-[var(--garis)]">
-                        <a href="#">Sejarah Desa</a>
+                        <a href="{{ route('profil.sejarah') }}" >Sejarah Desa</a>
                         <!-- 👇 INI BAGIAN YANG DITAMBAHKAN LINK VISI & MISI 👇 -->
                         <a href="{{ route('profil.visimisi') }}">Visi &amp; Misi</a>
     
                         <a href="{{ route('demografi') }}">Demografi</a>
                         <a href="{{ route('profil.peta') }}">Peta Desa</a>
+                        
                     </div>
                 </div>
 

@@ -17,6 +17,7 @@ Route::get('/pemerintahan/struktur-organisasi', [PemerintahanController::class, 
 Route::get('/profil-desa/visi-misi', [ProfilDesaController::class, 'visiMisi'])->name('profil.visimisi');
 Route::get('/profil-desa/peta-desa', [PetaDesaController::class, 'index'])->name('profil.peta');
 Route::get('/pemerintahan/bpd', [BpdController::class, 'index'])->name('pemerintahan.bpd');
+Route::get('/profil/sejarah', [ProfilDesaController::class, 'sejarah'])->name('profil.sejarah');
 
 // 2. Rute Login (Akses masuk admin)
 Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('login');
