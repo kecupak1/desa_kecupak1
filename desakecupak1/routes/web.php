@@ -9,6 +9,7 @@ use App\Http\Controllers\PemerintahanController;
 use App\Http\Controllers\ProfilDesaController;
 use App\Http\Controllers\PetaDesaController;
 use App\Http\Controllers\BpdController;
+use App\Http\Controllers\Admin\BeritaController;
 
 // 1. Rute Publik (Akses umum pengunjung) - TIDAK TERGANGGU
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -24,21 +25,21 @@ Route::post('/login', [AdminAuthController::class, 'login']);
 
 // 3. Rute Terproteksi (Hanya admin yang sudah login bisa akses)
 Route::middleware(['auth'])->group(function () {
-    // Tambahkan baris ini untuk mengatasi error 'Route [dashboard] not defined'
+    // Rute untuk mengatasi error 'Route [dashboard] not defined'
     Route::get('/dashboard', function () {
-        return redirect('/admin/berita'); // atau ke /admin/agenda
+        return redirect('/admin/berita'); 
     })->name('dashboard');
 
     // Logout
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
     
     // Fitur Agenda Admin
-    Route::get('/admin/agenda', [AgendaController::class, 'index']);
-    Route::post('/admin/agenda', [AgendaController::class, 'store']);
-    Route::delete('/admin/agenda/{id}', [AgendaController::class, 'destroy']);
+    Route::get('/admin/agenda', [AgendaController::class, 'index'])->name('admin.agenda');
+    Route::post('/admin/agenda', [AgendaController::class, 'store'])->name('agenda.store');
+    Route::delete('/admin/agenda/{id}', [AgendaController::class, 'destroy'])->name('agenda.destroy');
 
-    // Fitur CRUD Berita Admin yang baru saja kita buat
-    Route::resource('/admin/berita', \App\Http\Controllers\Admin\BeritaController::class);
+    // Fitur CRUD Berita Admin (Otomatis mencakup index, create, store, edit, update, destroy)
+    Route::resource('/admin/berita', BeritaController::class);
 });
 
 // Rute bawaan Laravel (Autentikasi Breeze jika digunakan)
