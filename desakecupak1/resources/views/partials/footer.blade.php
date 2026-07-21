@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-                <h3 class="text-white font-bold text-lg mb-3">{{ $profil->nama_desa ?? 'Nama Desa' }}</h3>
+                <h3 class="text-white font-bold text-lg mb-3">{{ $profil->nama_desa ?? 'Desa Kecupak 1' }}</h3>
                 <p class="text-sm text-gray-400">{{ $profil->gambaran_umum ?? 'Website resmi desa untuk informasi dan pelayanan masyarakat.' }}</p>
             </div>
             <div>
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500">
-            &copy; {{ date('Y') }} {{ $profil->nama_desa ?? 'Desa' }}. Seluruh Hak Cipta Dilindungi.
+            &copy; {{ date('Y') }} {{ $profil->nama_desa ?? 'KKN' }}. Seluruh Hak Cipta Dilindungi.
         </div>
     </div>
 </footer>

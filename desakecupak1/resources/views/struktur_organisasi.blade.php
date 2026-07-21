@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Struktur Organisasi - Desa Kecupak 1')
-
 @section('content')
 <div class="py-12 bg-gray-50 min-h-screen">
     <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">

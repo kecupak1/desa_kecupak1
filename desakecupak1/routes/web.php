@@ -7,12 +7,16 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\InfografisController;
 use App\Http\Controllers\PemerintahanController;
 use App\Http\Controllers\ProfilDesaController;
+use App\Http\Controllers\PetaDesaController;
+use App\Http\Controllers\BpdController;
 
 // 1. Rute Publik (Akses umum pengunjung) - TIDAK TERGANGGU
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/demografi', [InfografisController::class, 'index'])->name('demografi');
 Route::get('/pemerintahan/struktur-organisasi', [PemerintahanController::class, 'strukturOrganisasi'])->name('pemerintahan.struktur');
 Route::get('/profil-desa/visi-misi', [ProfilDesaController::class, 'visiMisi'])->name('profil.visimisi');
+Route::get('/profil-desa/peta-desa', [PetaDesaController::class, 'index'])->name('profil.peta');
+Route::get('/pemerintahan/bpd', [BpdController::class, 'index'])->name('pemerintahan.bpd');
 
 // 2. Rute Login (Akses masuk admin)
 Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('login');

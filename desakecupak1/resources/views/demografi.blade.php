@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 
 <style>
@@ -144,7 +143,7 @@
                         ['label' => 'Islam',   'jumlah' => '455', 'satuan' => 'Jiwa'],
                         ['label' => 'Kristen', 'jumlah' => '452', 'satuan' => 'Jiwa'],
                         ['label' => 'Katolik', 'jumlah' => '7',   'satuan' => 'Jiwa'],
-                    
+                        ['label' => 'Masjid',  'jumlah' => '2',   'satuan' => 'Unit'],
                     ];
                 @endphp
 
@@ -215,6 +214,64 @@
                         </div>
                         @endforeach
                     </div>
+                </div>
+            </div>
+
+            <!-- DATA TAMBAHAN: PENDIDIKAN & KESEHATAN -->
+            <div class="card p-8 md:col-span-2">
+                <div class="section-head">
+                    <p class="eyebrow mb-1">Bagian 04</p>
+                    <h3 class="font-serif-display text-xl font-bold text-[var(--teks)]">Data Pendidikan &amp; Kesehatan Masyarakat</h3>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Pendidikan -->
+                    <div>
+                        <h4 class="font-serif-display text-lg font-bold text-[var(--hijau-tua)] mb-4">Tingkat Pendidikan</h4>
+                        @php
+                            $pendidikan = [
+                                'Tidak Sekolah / Tamat SD' => '120 Jiwa',
+                                'PAUD' => '21 Jiwa',
+                                'SD' => '107 Jiwa',
+                                'SMP' => '113 Jiwa',
+                                'SLTA' => '243 Jiwa',
+                                'Diploma I (D-I)' => '2 Jiwa',
+                                'Diploma III (D-III)' => '6 Jiwa',
+                                'Strata I (S-I)' => '45 Jiwa',
+                                'Strata II (S-II)' => '1 Jiwa',
+                                'Buta Huruf' => '1 Jiwa'
+                            ];
+                        @endphp
+                        <div class="space-y-2 text-sm">
+                            @foreach($pendidikan as $key => $val)
+                            <div class="flex justify-between border-b border-[var(--garis)] pb-2">
+                                <span class="text-[var(--teks-muted)]">{{ $key }}</span>
+                                <span class="font-semibold text-[var(--teks)]">{{ $val }}</span>
+                            </div>
+                          @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Kesehatan & Posyandu -->
+                    <div>
+                      <h4 class="font-serif-display text-lg font-bold text-[var(--hijau-tua)] mb-4">Layanan Kesehatan &amp; Imunisasi</h4>
+                      @php
+                          $kesehatan = [
+                              'Balita' => '80 Jiwa',
+                              'Pransia' => '66 Jiwa',
+                              'Lansia' => '73 Jiwa',
+                              'Penerima Bantuan (Raskin/BLT/Lainnya)' => '29 KK',
+                          ];
+                      @endphp
+                      <div class="space-y-2 text-sm">
+                          @foreach($kesehatan as $k => $v)
+                          <div class="flex justify-between border-b border-[var(--garis)] pb-2">
+                              <span class="text-[var(--teks-muted)]">{{ $k }}</span>
+                              <span class="font-semibold text-[var(--teks)]">{{ $v }}</span>
+                          </div>
+                        @endforeach
+                    </div>
+                  </div>
                 </div>
             </div>
 
