@@ -18,7 +18,7 @@ class BeritaController extends Controller
 
     public function create()
     {
-        return view('admin.berita.create');
+        return view('admin.Berita.create');
     }
 
     public function store(Request $request)
@@ -46,7 +46,7 @@ class BeritaController extends Controller
 
     public function edit(Berita $berita)
     {
-        return view('admin.berita.edit', compact('berita'));
+        return view('admin.Berita.edit', compact('berita'));
     }
 
     public function update(Request $request, Berita $berita)
